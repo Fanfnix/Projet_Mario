@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0" version="26.0.7">
   <diagram name="Page-1" id="3Ub4bXwL-AXnyBRuHnWu">
-    <mxGraphModel dx="2501" dy="730" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2725" dy="835" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -114,6 +114,9 @@
         <mxCell id="9y-omQngG6LSQe04KciU-28" value="Arrière" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="180" y="630" width="80" height="40" as="geometry" />
         </mxCell>
+        <mxCell id="NP3sbxv5JZVaydbufz7E-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="9y-omQngG6LSQe04KciU-31" target="NP3sbxv5JZVaydbufz7E-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="9y-omQngG6LSQe04KciU-31" value="Afficher map" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-207" y="620" width="120" height="60" as="geometry" />
         </mxCell>
@@ -202,6 +205,9 @@
               <mxPoint x="-147" y="570" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="NP3sbxv5JZVaydbufz7E-1" value="Affichage ligne par ligne" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-195.5" y="720" width="97" height="70" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
