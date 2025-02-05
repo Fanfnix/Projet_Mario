@@ -6,7 +6,25 @@
 #include <math.h>
 
 
+/* UTILITAIRES */
+
 int convInt(float y) {
+    /* #######################################################
+        convInt(float y)
+
+    PARAMETRE :
+        float y : valeur a convertir en int
+
+    RETOUR :
+        int : valeur converti en entier
+
+    DESCRIPTION :
+        Renvoie la valeur entière arrondie
+    
+    EXEMPLE :
+        convInt(8.7483)
+        >>> 9
+    ####################################################### */
     float tmp = y * 100;
     int res = (int)tmp;
     if (y > res / 100 + 0.5) {
@@ -17,8 +35,9 @@ int convInt(float y) {
     return res;
 }
 
-// MAP : Génération aléatoire //
+/* MAP : Génération aléatoire */
 
+// Pour les iterations de la seed
 int f(int x) {
     return (16807 * x) % 2147483646;
 }
@@ -27,6 +46,7 @@ void iterationSeed(int * seed) {
     *seed = f(*seed);
 }
 
+// Pour le lissage et l'interpolaion de la fonction de lissage
 float lissage(float x) {
     return 3 * pow(x, 2) - 2 * pow(x, 3);
 }
@@ -35,6 +55,7 @@ float interpolate(int y_prec, int y_suiv, int x) {
     return (y_suiv - y_prec) * lissage((float)(x % DISTANCE) / DISTANCE) + y_prec;
 }
 
+// Pour la table de valeur aléatoire : création et itération
 int * creerTableSeed(int * seed) {
     int * table = malloc(DISTANCE*sizeof(int));
     return table;
@@ -48,11 +69,32 @@ int * iterationTable(int * seed, int * table) {
     return table;
 }
 
+// Génére le relief
 int perlin(int x, int * table, int * seed) {
+    /* #######################################################
+        perlin(int x, int * table, int * seed)
+
+    PARAMETRE :
+        int x : valeur x où la valeur de hauteur doit être généré
+        int * table : pointeur vers la table de valeur aléatoire
+        int * seed : pointeur vers la seed
+
+    RETOUR :
+        int : valeur de la hauteur généré
+
+    DESCRIPTION :
+        Génére une valeur de hauteur avec la méthode du bruit
+        de perlin. La valeur généré sera comprise entre la
+        valeur minimale (Y_MIN) et la la valeur minimale plus
+        la variance (Y_MIN + VARIANCE).
+    
+    EXEMPLE :
+        convInt(0, table, seed)
+        >>> 4
+    ####################################################### */
     if (x % DISTANCE == 0) {
         table = iterationTable(seed, table);
         int y_prec = (abs(table[0] / 100000000) % VARIANCE) + Y_MIN;
-        // printf("X = %d | Y_PREC : %d\n", x, y_prec);
         return y_prec;
     }
     else {
@@ -61,14 +103,14 @@ int perlin(int x, int * table, int * seed) {
 
         int y = convInt(interpolate(y_prec, y_suiv, x));
 
-        // printf("X = %d | Y_PREC : %d | Y_SUIV : %d\n", x, y_prec, y_suiv);
         return y;
     }
 }
 
 
-// MAP : Création, affichage //
+/* MAP : Création, affichage */
 
+// Creer la Map
 struct Map * creerMap(int L, int l) {
     struct Map *niv = malloc(sizeof(struct Map));
     if (!niv) {return NULL;}
@@ -94,6 +136,7 @@ struct Map * creerMap(int L, int l) {
     return niv;
 }
 
+// Libère la Map
 void libMemMap(struct Map *niv) {
     if (!niv) return;
     for (int y = 0; y < niv->L; y++) {
@@ -103,6 +146,7 @@ void libMemMap(struct Map *niv) {
     free(niv);
 }
 
+// Affichage Map
 void afficherMap(struct Map *niv) {
     for (int y = 0; y < niv->L; y++) {
         for (int x = 0; x < niv->l; x++) {
@@ -112,6 +156,7 @@ void afficherMap(struct Map *niv) {
     }
 }
 
+// Génére un tronçon de la map
 void iterationMap(struct Map * niv, int x, int * table, int * seed, int version) {
     int y;
     switch (version) {

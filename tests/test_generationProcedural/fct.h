@@ -2,7 +2,7 @@
 #define TEST
 
 
-// MAP : Création, affichage //
+/* MAP : Création, affichage */
 struct Map {
     int L;
     int l;
@@ -15,10 +15,10 @@ void afficherMap(struct Map * niv);
 void iterationMap(struct Map * niv, int x, int * table, int * seed, int version);
 
 
-// MAP : Génération aléatoire //
-#define DISTANCE 20
-#define VARIANCE 6
-#define Y_MIN 2
+/* MAP : Génération aléatoire */
+#define DISTANCE 20  // Longueur de chaque pente
+#define VARIANCE 6  // Variation dans les hauteurs générées
+#define Y_MIN 2  // Hauteur minimale
 
 int * creerTableSeed(int * seed);
 int * iterationTable(int * seed, int * table);
