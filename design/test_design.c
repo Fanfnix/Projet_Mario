@@ -6,8 +6,8 @@
 
 // DRAPEAU : drapeau, 7, 3, 10
 // GOOMBA : goomba, 2, 3, 2
-// MARIO : mario, 3, 2, 4
-// PLANTE : plante, 4, 1, 3
+// MARIO : mario, 3, 3, 8
+// PLANTE : plante, 4, 3, 6
 
 struct Elem {
     char * nom;
@@ -52,11 +52,7 @@ int main() {
 
     printw("\n>>> Press any to quit :");
 
-    while (1) {
-        if (getch() != -1) {
-            break;
-        }
-    }
+    while (getch() == -1);
 
     endwin();
     return 0;

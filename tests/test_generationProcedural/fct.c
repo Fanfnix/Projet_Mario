@@ -182,4 +182,13 @@ void iterationMap(struct Map * niv, int x, int * table, int * seed, int version)
         }
     }
 }
-    
+
+void avancerMap(struct Map * niv, int * table, int * seed, int version) {
+    for (int y = 0; y < niv->L; y++) {
+        for (int x = 0; x < niv->l-1; x++) {
+            niv->carte[y][x] = niv->carte[y][x+1];
+        }
+    }
+    iterationMap(niv, niv->l-1, table, seed, version);
+    afficherMap(niv);
+}
