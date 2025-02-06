@@ -148,10 +148,15 @@ void libMemMap(struct Map *niv) {
 
 // Affichage Map
 void afficherMap(struct Map *niv) {
+    char ch;
     for (int y = 0; y < niv->L; y++) {
-        for (int x = 0; x < niv->l; x++) {
-            char ch = (niv->carte[y][x] == '0') ? ' ' : niv->carte[y][x];
-            printw("%c", ch);
+        for (int iy = 0; iy < TY; iy++) {
+            for (int x = 0; x < niv->l; x++) {
+                for (int ix = 0; ix < TX; ix++) {
+                    ch = (niv->carte[y][x] == '0') ? ' ' : niv->carte[y][x];
+                    printw("%c", ch);
+                }
+            }
         }
     }
 }

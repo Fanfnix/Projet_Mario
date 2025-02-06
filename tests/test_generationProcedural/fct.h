@@ -3,6 +3,9 @@
 
 
 /* MAP : Création, affichage */
+#define TX 3
+#define TY 2
+
 struct Map {
     int L;
     int l;
@@ -16,7 +19,7 @@ void iterationMap(struct Map * niv, int x, int * table, int * seed, int version)
 
 
 /* MAP : Génération aléatoire */
-#define DISTANCE 20  // Longueur de chaque pente
+#define DISTANCE 12  // Longueur de chaque pente
 #define VARIANCE 6  // Variation dans les hauteurs générées
 #define Y_MIN 2  // Hauteur minimale
 

@@ -16,8 +16,8 @@ int main() {
     initscr();  // Met la console en mode "ncurses"
 
     // Setup dimension carte
-    int L = 16;
-    int l = COLS;  // COLS renvoie la largeur de la console en mode "ncurses"
+    int L = 32 / TY;
+    int l = COLS / TX;  // COLS renvoie la largeur de la console en mode "ncurses"
 
     // Création d'un niveau vide
     struct Map * niv = creerMap(L, l);
