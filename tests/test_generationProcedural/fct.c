@@ -137,7 +137,7 @@ struct Map * creerMap(int L, int l) {
 }
 
 // Libère la Map
-void libMemMap(struct Map *niv) {
+void libMemMap(struct Map * niv) {
     if (!niv) return;
     for (int y = 0; y < niv->L; y++) {
         free(niv->carte[y]);
@@ -147,15 +147,18 @@ void libMemMap(struct Map *niv) {
 }
 
 // Affichage Map
-void afficherMap(struct Map *niv) {
-    char ch;
+void afficherMap(struct Map * niv) {
+    char ch[TX+1];
     for (int y = 0; y < niv->L; y++) {
-        for (int iy = 0; iy < TY; iy++) {
+        for (int i = 0; i < 2; i++) {
             for (int x = 0; x < niv->l; x++) {
-                for (int ix = 0; ix < TX; ix++) {
-                    ch = (niv->carte[y][x] == '0') ? ' ' : niv->carte[y][x];
-                    printw("%c", ch);
+                switch (niv->carte[y][x]) {
+                    case '0': strcpy(ch, "   "); break;
+                    case '#': strcpy(ch, "###"); break;
+                    case 'O': strcpy(ch, "OOO"); break;
+                    default: strcpy(ch, "???"); break;
                 }
+                mvaddstr(TY * y + i, TX * x, ch);
             }
         }
     }
