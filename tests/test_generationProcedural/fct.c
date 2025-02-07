@@ -147,7 +147,7 @@ void libMemMap(struct Map * niv) {
 }
 
 // Affichage Map
-void afficherMap(struct Map * niv) {
+void afficherMap(WINDOW * fenetre, struct Map * niv) {
     char ch[TX+1];
     for (int y = 0; y < niv->L; y++) {
         for (int i = 0; i < 2; i++) {
@@ -158,7 +158,7 @@ void afficherMap(struct Map * niv) {
                     case 'O': strcpy(ch, "OOO"); break;
                     default: strcpy(ch, "???"); break;
                 }
-                mvaddstr(TY * y + i, TX * x, ch);
+                mvwaddstr(fenetre, TY * y + i, TX * x, ch);
             }
         }
     }
@@ -186,12 +186,12 @@ void iterationMap(struct Map * niv, int x, int * table, int * seed, int version)
     }
 }
 
-void avancerMap(struct Map * niv, int * table, int * seed, int version) {
-    for (int y = 0; y < niv->L; y++) {
-        for (int x = 0; x < niv->l-1; x++) {
-            niv->carte[y][x] = niv->carte[y][x+1];
-        }
-    }
-    iterationMap(niv, niv->l-1, table, seed, version);
-    afficherMap(niv);
-}
+// void avancerMap(struct Map * niv, int * table, int * seed, int version) {
+//     for (int y = 0; y < niv->L; y++) {
+//         for (int x = 0; x < niv->l-1; x++) {
+//             niv->carte[y][x] = niv->carte[y][x+1];
+//         }
+//     }
+//     iterationMap(niv, niv->l-1, table, seed, version);
+//     afficherMap(niv);
+// }

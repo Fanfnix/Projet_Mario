@@ -13,14 +13,27 @@ int main() {
     int seed = rand() % 2147483646;
     int * table = creerTableSeed(&seed);
 
+    WINDOW * jeu;
+
     initscr();  // Met la console en mode "ncurses"
 
+    // Setup dimension fenêtre de jeu
+    int height_fenetre = 32;
+    int width_fenetre = COLS;
+    int startx_fenetre = 0;
+    int starty_fenetre = (LINES - height_fenetre) / 2;
+
+    // Creer fentre de jeu
+    jeu = newwin(height_fenetre, width_fenetre, starty_fenetre, startx_fenetre);
+	wborder(jeu, ' ', ' ', '-', '-', '+', '+', '+', '+');
+	wrefresh(jeu);
+
     // Setup dimension carte
-    int L = 32 / TY;
-    int l = COLS / TX;  // COLS renvoie la largeur de la console en mode "ncurses"
+    int height_carte = height_fenetre / TY;
+    int width_carte = width_fenetre / TX;  // COLS renvoie la largeur de la console en mode "ncurses"
 
     // Création d'un niveau vide
-    struct Map * niv = creerMap(L, l);
+    struct Map * niv = creerMap(height_carte, width_carte);
 
     // Vérification de la création du niveau
     if (!niv) {
@@ -30,13 +43,13 @@ int main() {
     }
 
     // Génération de la carte
-    for (int x = 0; x < l; x++) {
+    for (int x = 0; x < width_carte; x++) {
         iterationMap(niv, x, table, &seed, 1);  // 1. Mode de génération via perlin | 0. Mode de génération simple
     }
 
-    afficherMap(niv);
+    afficherMap(jeu, niv);
 
-    while (getch() == -1);  // Boucle jusqu'à qu'une touche soit pressé
+    while (wgetch(jeu) == -1);  // Boucle jusqu'à qu'une touche soit pressé
 
     // Libération de la mémoire : niveau et table aléatoire
     libMemMap(niv);
