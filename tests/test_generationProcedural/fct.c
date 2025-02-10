@@ -1,8 +1,8 @@
 #include "fct.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ncurses.h>
 #include <math.h>
 
 
@@ -158,7 +158,7 @@ void afficherMap(WINDOW * fenetre, struct Map * niv) {
                     case 'O': strcpy(ch, "OOO"); break;
                     default: strcpy(ch, "???"); break;
                 }
-                mvwaddstr(fenetre, TY * y + i, TX * x, ch);
+                mvwaddstr(fenetre, TY * y + i + 1, TX * x + 1, ch);
             }
         }
     }

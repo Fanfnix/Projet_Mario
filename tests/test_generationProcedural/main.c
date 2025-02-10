@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <ncurses.h>
 
 /* Test de la génération procédurale du relief du sol */
 
@@ -19,18 +18,18 @@ int main() {
 
     // Setup dimension fenêtre de jeu
     int height_fenetre = 32;
-    int width_fenetre = COLS;
+    int width_fenetre = COLS;  // COLS renvoie la largeur de la console en mode "ncurses"
     int startx_fenetre = 0;
-    int starty_fenetre = (LINES - height_fenetre) / 2;
+    int starty_fenetre = (LINES - height_fenetre) / 2;  // LINES renvoie la hauteur de la console en mode "ncurses"
 
     // Creer fentre de jeu
-    jeu = newwin(height_fenetre, width_fenetre, starty_fenetre, startx_fenetre);
-	wborder(jeu, ' ', ' ', '-', '-', '+', '+', '+', '+');
+    jeu = newwin(height_fenetre + 2, width_fenetre, starty_fenetre, startx_fenetre);
+	wborder(jeu, '|', '|', '-', '-', '+', '+', '+', '+');
 	wrefresh(jeu);
 
     // Setup dimension carte
     int height_carte = height_fenetre / TY;
-    int width_carte = width_fenetre / TX;  // COLS renvoie la largeur de la console en mode "ncurses"
+    int width_carte = (width_fenetre - 2) / TX;
 
     // Création d'un niveau vide
     struct Map * niv = creerMap(height_carte, width_carte);

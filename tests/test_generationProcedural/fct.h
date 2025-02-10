@@ -1,6 +1,7 @@
 #ifndef TEST
 #define TEST
 
+#include <ncurses.h>
 
 /* MAP : Création, affichage */
 #define TX 3
