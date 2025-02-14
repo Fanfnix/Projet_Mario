@@ -13,6 +13,15 @@
 #define WIDTH_MENU 80
 #define HEIGHT_MENU 20
 
+#define ELEM1 "LANCER UNE PARTIE"
+#define ELEM2 "HI-SCORES"
+#define ELEM3 "QUITTER"
+
+#define SZ1 17
+#define SZ2 9
+#define SZ3 7
+
 void affichageRetromario(WINDOW * win);
+void actionMenu(WINDOW * menu);
 
 #endif
