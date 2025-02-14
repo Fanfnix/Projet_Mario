@@ -2,6 +2,11 @@
 #define TEST
 
 #include <ncurses.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
 
 /* MAP : Création, affichage */
 #define TX 3
@@ -13,6 +18,13 @@ struct Map {
     char ** carte;
 };
 
+struct Elem {
+    char nom[20];
+    int nb_frame;
+    int L, l;
+    int x, y;
+};
+
 struct Map * creerMap(int L, int l);
 void libMemMap(struct Map * niv);
 void afficherMap(WINDOW * fenetre, struct Map * niv);
@@ -22,6 +34,7 @@ int avancerMap(struct Map * niv, int X, int dMax, int * table, int * seed, int v
 void afficherMap_simp(WINDOW * fenetre, struct Map * niv);
 void afficherTmp(WINDOW * tmp, int X, int Y, int dMax, int * table, int seed);
 
+void affichageElem(WINDOW * win, struct Elem truc, int dMax);
 
 /* MAP : Génération aléatoire */
 #define DISTANCE 12  // Longueur de chaque pente

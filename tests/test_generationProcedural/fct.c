@@ -1,10 +1,5 @@
 #include "fct.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-
 
 /* UTILITAIRES */
 
@@ -226,9 +221,33 @@ void afficherTmp(WINDOW * tmp, int X, int Y, int dMax, int * table, int seed) {
     snprintf(elem4, 255, "Y = %d", Y);
     
     mvwaddstr(tmp, 1, 1, elem1);
-    mvwaddstr(tmp, 2, 1, elem2);
-    mvwaddstr(tmp, 3, 1, elem3);
-    mvwaddstr(tmp, 1, 20, elem4);
+    mvwaddstr(tmp, 2, 1, elem4);
+    mvwaddstr(tmp, 3, 1, elem2);
+    mvwaddstr(tmp, 4, 1, elem3);
 	
     wrefresh(tmp);
+}
+
+void affichageElem(WINDOW * win, struct Elem truc, int dMax) {
+    char chemin[255];
+
+    snprintf(chemin, 255, "../../design/%s/%s%d.txt", truc.nom, truc.nom, truc.nb_frame);
+
+    FILE * file = fopen(chemin, "r");
+
+    for (int j = 0; j < truc.L; j++) {
+        char tmp[255];
+        fgets(tmp, truc.l+1, file);
+
+        for (int k = 0; k < strlen(tmp); k++) {
+            if (tmp[k] == '0') {
+                tmp[k] = ' ';
+            }
+        }
+        int x = (truc.x - dMax) * TX;
+        int y = truc.y * TY;
+        mvwaddstr(win, y, x, tmp);
+    }
+    wrefresh(win);
+    fclose(file);
 }

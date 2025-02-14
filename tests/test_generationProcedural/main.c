@@ -1,7 +1,5 @@
 #include "fct.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+
 
 /* Test de la génération procédurale du relief du sol */
 
@@ -12,6 +10,12 @@ int main() {
     int seed = rand() % 2147483646;
     int * table = creerTableSeed(&seed);
 
+    struct Elem drapeau;
+    strcpy(drapeau.nom, "drapeau");
+    drapeau.nb_frame = 7;
+    drapeau.L = 10;
+    drapeau.l = 3;
+
     WINDOW * jeu;
     WINDOW * tmp;
 
@@ -21,7 +25,7 @@ int main() {
     nodelay(stdscr, true);
 
     // Setup dimension fenêtre de jeu
-    int height_fenetre = 32;
+    int height_fenetre = 30;
     int width_fenetre = COLS;  // COLS renvoie la largeur de la console en mode "ncurses"
     int startx_fenetre = 0;
     int starty_fenetre = (LINES - height_fenetre) / 2;  // LINES renvoie la hauteur de la console en mode "ncurses"
@@ -32,7 +36,7 @@ int main() {
 	wrefresh(jeu);
 
     // Creer fenetre tmp
-    tmp = newwin(5, width_fenetre, 0, 0);
+    tmp = newwin(6, width_fenetre, 0, 0);
     afficherTmp(tmp, 0, 0, 0, table, seed);
 
     // Setup dimension carte
@@ -68,6 +72,11 @@ int main() {
             Y = avancerMap(niv, X, dMax, table, &seed, 1);
             afficherMap(jeu, niv);
             afficherTmp(tmp, X, Y, dMax, table, seed);
+            affichageElem(jeu, drapeau, dMax);
+        }
+        if (X % 150 == 0) {
+            drapeau.x = X;
+            drapeau.y = niv->L - Y;
         }
     }
 
