@@ -19,6 +19,17 @@ void affichageRetromario(WINDOW * logo) {
     fclose(file);
 }
 
+void affichageControle(WINDOW * controle) {
+    wborder(controle, '|', '|', '-', '-', '+', '+', '+', '+');
+
+    mvwaddstr(controle, 2, 3, "> SAUTER : Z");
+    mvwaddstr(controle, 4, 3, "> GAUCHE : Q");
+    mvwaddstr(controle, 6, 3, "> DROITE : D");
+    mvwaddstr(controle, 8, 3, "> PAUSE :  P");
+
+    wrefresh(controle);
+}
+
 void affichageMenu(WINDOW * menu, int choix) {
     char elem1[255], elem2[255], elem3[255];
     int p1, p2, p3;
@@ -60,7 +71,7 @@ void actionMenu(WINDOW * menu) {
     int ch = 0;
     int pressed;
     affichageMenu(menu, ch);
-    while ((pressed = wgetch(menu)) != 'q') {
+    while ((pressed = wgetch(menu)) != 'k') {
         if (pressed == 'z') {
             ch = abs((3 + ch - 1) % 3);
             affichageMenu(menu, ch);

@@ -10,6 +10,9 @@
 #define WIDTH_LOGO 72
 #define HEIGHT_LOGO 6
 
+#define WIDTH_CONTROLE 20
+#define HEIGHT_CONTROLE 9
+
 #define WIDTH_MENU 80
 #define HEIGHT_MENU 20
 
@@ -22,6 +25,7 @@
 #define SZ3 7
 
 void affichageRetromario(WINDOW * win);
+void affichageControle(WINDOW * controle);
 void actionMenu(WINDOW * menu);
 
 #endif
