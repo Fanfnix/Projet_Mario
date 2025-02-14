@@ -16,8 +16,11 @@ struct Map {
 struct Map * creerMap(int L, int l);
 void libMemMap(struct Map * niv);
 void afficherMap(WINDOW * fenetre, struct Map * niv);
-void iterationMap(struct Map * niv, int x, int * table, int * seed, int version);
-// void avancerMap(struct Map * niv, int * table, int * seed, int version);
+int iterationMap(struct Map * niv, int X, int dMax, int * table, int * seed, int version);
+int avancerMap(struct Map * niv, int X, int dMax, int * table, int * seed, int version);
+
+void afficherMap_simp(WINDOW * fenetre, struct Map * niv);
+void afficherTmp(WINDOW * tmp, int X, int Y, int dMax, int * table, int seed);
 
 
 /* MAP : Génération aléatoire */

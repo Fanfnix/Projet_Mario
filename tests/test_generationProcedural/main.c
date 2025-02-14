@@ -13,8 +13,12 @@ int main() {
     int * table = creerTableSeed(&seed);
 
     WINDOW * jeu;
+    WINDOW * tmp;
 
     initscr();  // Met la console en mode "ncurses"
+    curs_set(0);  // Cache le curseur dans la console
+    noecho();
+    nodelay(stdscr, true);
 
     // Setup dimension fenêtre de jeu
     int height_fenetre = 32;
@@ -22,10 +26,14 @@ int main() {
     int startx_fenetre = 0;
     int starty_fenetre = (LINES - height_fenetre) / 2;  // LINES renvoie la hauteur de la console en mode "ncurses"
 
-    // Creer fentre de jeu
+    // Creer fenetre de jeu
     jeu = newwin(height_fenetre + 2, width_fenetre, starty_fenetre, startx_fenetre);
 	wborder(jeu, '|', '|', '-', '-', '+', '+', '+', '+');
 	wrefresh(jeu);
+
+    // Creer fenetre tmp
+    tmp = newwin(5, width_fenetre, 0, 0);
+    afficherTmp(tmp, 0, 0, 0, table, seed);
 
     // Setup dimension carte
     int height_carte = height_fenetre / TY;
@@ -42,13 +50,26 @@ int main() {
     }
 
     // Génération de la carte
+    int X, Y;
     for (int x = 0; x < width_carte; x++) {
-        iterationMap(niv, x, table, &seed, 1);  // 1. Mode de génération via perlin | 0. Mode de génération simple
+        X = x;
+        Y = iterationMap(niv, X, 0, table, &seed, 1);  // 1. Mode de génération via perlin | 0. Mode de génération simple
     }
 
     afficherMap(jeu, niv);
 
-    while (wgetch(jeu) == -1);  // Boucle jusqu'à qu'une touche soit pressé
+    int dMax = 0;
+
+    int pressed;
+    while ((pressed = wgetch(jeu)) != 'k') {  // Boucle jusqu'à que "k" soit pressé
+        if (pressed == 'd') {
+            X++;
+            dMax++;
+            Y = avancerMap(niv, X, dMax, table, &seed, 1);
+            afficherMap(jeu, niv);
+            afficherTmp(tmp, X, Y, dMax, table, seed);
+        }
+    }
 
     // Libération de la mémoire : niveau et table aléatoire
     libMemMap(niv);

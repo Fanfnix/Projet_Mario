@@ -164,11 +164,23 @@ void afficherMap(WINDOW * fenetre, struct Map * niv) {
     }
 }
 
+void afficherMap_simp(WINDOW * fenetre, struct Map * niv) {
+    for (int y = 0; y < niv->L; y++) {
+        for (int x = 0; x < niv->l; x++) {
+            if (niv->carte[y][x] == '0') {
+                mvwaddch(fenetre, y + 1, x + 1, ' ');
+            } else {
+                mvwaddch(fenetre, y + 1, x + 1, niv->carte[y][x]);
+            }
+        }
+    }
+}
+
 // Génére un tronçon de la map
-void iterationMap(struct Map * niv, int x, int * table, int * seed, int version) {
-    int y;
+int iterationMap(struct Map * niv, int X, int dMax, int * table, int * seed, int version) {
+    int y, x;
     switch (version) {
-        case 1: y = perlin(x, table, seed); break;
+        case 1: y = perlin(X, table, seed); break;
         case 0: y = 5; break;
     }
 
@@ -176,22 +188,47 @@ void iterationMap(struct Map * niv, int x, int * table, int * seed, int version)
         printf("ERR M1 : Y = %d\n", y);
     }
     else {
-        for (int i = niv->L - 1; i >= niv->L - y; i--) {
-            if (x % DISTANCE == 0) {
-                niv->carte[i][x] = 'O';
+        x = X - dMax;
+        for (int i = niv->L - 1; i >= 0; i--) {
+            if (i >= niv->L - y) {
+                if (X % DISTANCE == 0) {
+                    niv->carte[i][x] = 'O';
+                } else {
+                    niv->carte[i][x] = '#';
+                }
             } else {
-                niv->carte[i][x] = '#';
+                niv->carte[i][x] = '0';
             }
         }
     }
+    return y;
 }
 
-// void avancerMap(struct Map * niv, int * table, int * seed, int version) {
-//     for (int y = 0; y < niv->L; y++) {
-//         for (int x = 0; x < niv->l-1; x++) {
-//             niv->carte[y][x] = niv->carte[y][x+1];
-//         }
-//     }
-//     iterationMap(niv, niv->l-1, table, seed, version);
-//     afficherMap(niv);
-// }
+int avancerMap(struct Map * niv, int X, int dMax, int * table, int * seed, int version) {
+    int Y;
+    for (int y = 0; y < niv->L; y++) {
+        for (int x = 1; x < niv->l; x++) {
+            niv->carte[y][x-1] = niv->carte[y][x];
+        }
+    }
+    Y = iterationMap(niv, X, dMax, table, seed, version);
+    return Y;
+}
+
+void afficherTmp(WINDOW * tmp, int X, int Y, int dMax, int * table, int seed) {
+    wborder(tmp, '|', '|', '-', '-', '+', '+', '+', '+');
+    char elem1[255], elem2[255], elem3[255], elem4[255];
+    int x = X - dMax;
+    
+    snprintf(elem1, 255, "X = %d", X);
+    snprintf(elem2, 255, "dMax = %d", dMax);
+    snprintf(elem3, 255, "x = %d", x);
+    snprintf(elem4, 255, "Y = %d", Y);
+    
+    mvwaddstr(tmp, 1, 1, elem1);
+    mvwaddstr(tmp, 2, 1, elem2);
+    mvwaddstr(tmp, 3, 1, elem3);
+    mvwaddstr(tmp, 1, 20, elem4);
+	
+    wrefresh(tmp);
+}
