@@ -13,8 +13,8 @@ int main() {
     struct Elem drapeau;
     strcpy(drapeau.nom, "drapeau");
     drapeau.nb_frame = 7;
-    drapeau.L = 10;
-    drapeau.l = 3;
+    drapeau.height = 10;
+    drapeau.width = 3;
 
     WINDOW * jeu;
     WINDOW * tmp;
@@ -24,24 +24,30 @@ int main() {
     noecho();
     nodelay(stdscr, true);
 
+    // Setup dimension fenêtre tmp
+    int height_fenetre_tmp = 6;
+    int width_fenetre_tmp = COLS;
+    int startx_fenetre_tmp = 0;
+    int starty_fenetre_tmp = 0;
+
     // Setup dimension fenêtre de jeu
-    int height_fenetre = 30;
-    int width_fenetre = COLS;  // COLS renvoie la largeur de la console en mode "ncurses"
-    int startx_fenetre = 0;
-    int starty_fenetre = (LINES - height_fenetre) / 2;  // LINES renvoie la hauteur de la console en mode "ncurses"
+    int height_fenetre_jeu = 30;
+    int width_fenetre_jeu = COLS;  // COLS renvoie la largeur de la console en mode "ncurses"
+    int startx_fenetre_jeu = 0;
+    int starty_fenetre_jeu = starty_fenetre_tmp + height_fenetre_tmp;
 
     // Creer fenetre de jeu
-    jeu = newwin(height_fenetre + 2, width_fenetre, starty_fenetre, startx_fenetre);
+    jeu = newwin(height_fenetre_jeu + 2, width_fenetre_jeu, starty_fenetre_jeu, startx_fenetre_jeu);
 	wborder(jeu, '|', '|', '-', '-', '+', '+', '+', '+');
 	wrefresh(jeu);
 
     // Creer fenetre tmp
-    tmp = newwin(6, width_fenetre, 0, 0);
+    tmp = newwin(height_fenetre_tmp, width_fenetre_tmp, starty_fenetre_tmp, startx_fenetre_tmp);
     afficherTmp(tmp, 0, 0, 0, table, seed);
 
     // Setup dimension carte
-    int height_carte = height_fenetre / TY;
-    int width_carte = (width_fenetre - 2) / TX;
+    int height_carte = height_fenetre_jeu / TY;
+    int width_carte = (width_fenetre_jeu - 2) / TX;
 
     // Création d'un niveau vide
     struct Map * niv = creerMap(height_carte, width_carte);
@@ -76,7 +82,7 @@ int main() {
         }
         if (X % 150 == 0) {
             drapeau.x = X;
-            drapeau.y = niv->L - Y;
+            drapeau.y = niv->height - Y;
         }
     }
 

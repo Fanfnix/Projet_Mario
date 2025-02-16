@@ -13,15 +13,14 @@
 #define TY 2
 
 struct Map {
-    int L;
-    int l;
+    int height, width;
     char ** carte;
 };
 
 struct Elem {
     char nom[20];
     int nb_frame;
-    int L, l;
+    int height, width;
     int x, y;
 };
 

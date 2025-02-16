@@ -106,27 +106,27 @@ int perlin(int x, int * table, int * seed) {
 /* MAP : Création, affichage */
 
 // Creer la Map
-struct Map * creerMap(int L, int l) {
-    struct Map *niv = malloc(sizeof(struct Map));
+struct Map * creerMap(int height, int width) {
+    struct Map * niv = malloc(sizeof(struct Map));
     if (!niv) {return NULL;}
-    niv->L = L;
-    niv->l = l;
+    niv->height = height;
+    niv->width = width;
     
-    niv->carte = malloc(L * sizeof(char *));
+    niv->carte = malloc(height * sizeof(char *));
     if (!niv->carte) {
         free(niv);
         return NULL;
     }
     
-    for (int y = 0; y < L; y++) {
-        niv->carte[y] = malloc(l * sizeof(char));
+    for (int y = 0; y < height; y++) {
+        niv->carte[y] = malloc(width * sizeof(char));
         if (!niv->carte[y]) {
             for (int j = 0; j < y; j++) free(niv->carte[j]);
             free(niv->carte);
             free(niv);
             return NULL;
         }
-        memset(niv->carte[y], '0', l);
+        memset(niv->carte[y], '0', width);
     }
     return niv;
 }
@@ -134,7 +134,7 @@ struct Map * creerMap(int L, int l) {
 // Libère la Map
 void libMemMap(struct Map * niv) {
     if (!niv) return;
-    for (int y = 0; y < niv->L; y++) {
+    for (int y = 0; y < niv->height; y++) {
         free(niv->carte[y]);
     }
     free(niv->carte);
@@ -144,24 +144,24 @@ void libMemMap(struct Map * niv) {
 // Affichage Map
 void afficherMap(WINDOW * fenetre, struct Map * niv) {
     char ch[TX+1];
-    for (int y = 0; y < niv->L; y++) {
+    for (int y = 0; y < niv->height; y++) {
         for (int i = 0; i < 2; i++) {
-            for (int x = 0; x < niv->l; x++) {
+            for (int x = 0; x < niv->width; x++) {
                 switch (niv->carte[y][x]) {
                     case '0': strcpy(ch, "   "); break;
                     case '#': strcpy(ch, "###"); break;
                     case 'O': strcpy(ch, "OOO"); break;
                     default: strcpy(ch, "???"); break;
                 }
-                mvwaddstr(fenetre, TY * y + i + 1, TX * x + 1, ch);
+                mvwaddstr(fenetre, TY*y+i+1, TX*x+1, ch);
             }
         }
     }
 }
 
 void afficherMap_simp(WINDOW * fenetre, struct Map * niv) {
-    for (int y = 0; y < niv->L; y++) {
-        for (int x = 0; x < niv->l; x++) {
+    for (int y = 0; y < niv->height; y++) {
+        for (int x = 0; x < niv->width; x++) {
             if (niv->carte[y][x] == '0') {
                 mvwaddch(fenetre, y + 1, x + 1, ' ');
             } else {
@@ -179,13 +179,13 @@ int iterationMap(struct Map * niv, int X, int dMax, int * table, int * seed, int
         case 0: y = 5; break;
     }
 
-    if (y < 0 || y >= niv->L) {
+    if (y < 0 || y >= niv->height) {
         printf("ERR M1 : Y = %d\n", y);
     }
     else {
         x = X - dMax;
-        for (int i = niv->L - 1; i >= 0; i--) {
-            if (i >= niv->L - y) {
+        for (int i = niv->height - 1; i >= 0; i--) {
+            if (i >= niv->height - y) {
                 if (X % DISTANCE == 0) {
                     niv->carte[i][x] = 'O';
                 } else {
@@ -201,8 +201,8 @@ int iterationMap(struct Map * niv, int X, int dMax, int * table, int * seed, int
 
 int avancerMap(struct Map * niv, int X, int dMax, int * table, int * seed, int version) {
     int Y;
-    for (int y = 0; y < niv->L; y++) {
-        for (int x = 1; x < niv->l; x++) {
+    for (int y = 0; y < niv->height; y++) {
+        for (int x = 1; x < niv->width; x++) {
             niv->carte[y][x-1] = niv->carte[y][x];
         }
     }
@@ -235,17 +235,17 @@ void affichageElem(WINDOW * win, struct Elem truc, int dMax) {
 
     FILE * file = fopen(chemin, "r");
 
-    for (int j = 0; j < truc.L; j++) {
+    for (int j = 0; j < truc.height; j++) {
         char tmp[255];
-        fgets(tmp, truc.l+1, file);
+        fgets(tmp, truc.width+1, file);
 
         for (int k = 0; k < strlen(tmp); k++) {
             if (tmp[k] == '0') {
                 tmp[k] = ' ';
             }
         }
-        int x = (truc.x - dMax) * TX;
-        int y = truc.y * TY;
+        int x = 1 + (truc.x - dMax) * TX;
+        int y = 1 + truc.y * TY + j - truc.height;
         mvwaddstr(win, y, x, tmp);
     }
     wrefresh(win);
