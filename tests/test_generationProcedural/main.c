@@ -13,8 +13,8 @@ int main() {
     struct Elem drapeau;
     strcpy(drapeau.nom, "drapeau");
     drapeau.nb_frame = 7;
-    drapeau.height = 10;
-    drapeau.width = 3;
+    drapeau.height = 5;
+    drapeau.width = 1;
 
     WINDOW * jeu;
     WINDOW * tmp;

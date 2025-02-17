@@ -235,9 +235,9 @@ void affichageElem(WINDOW * win, struct Elem truc, int dMax) {
 
     FILE * file = fopen(chemin, "r");
 
-    for (int j = 0; j < truc.height; j++) {
+    for (int j = 0; j < truc.height * TY; j++) {
         char tmp[255];
-        fgets(tmp, truc.width+1, file);
+        fgets(tmp, truc.width*TX+1, file);
 
         for (int k = 0; k < strlen(tmp); k++) {
             if (tmp[k] == '0') {
@@ -245,7 +245,7 @@ void affichageElem(WINDOW * win, struct Elem truc, int dMax) {
             }
         }
         int x = 1 + (truc.x - dMax) * TX;
-        int y = 1 + truc.y * TY + j - truc.height;
+        int y = 1 + (truc.y - truc.height) * TY + j;
         mvwaddstr(win, y, x, tmp);
     }
     wrefresh(win);
