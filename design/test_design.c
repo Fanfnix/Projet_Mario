@@ -8,6 +8,7 @@
 // GOOMBA : goomba, 2, 3, 2
 // MARIO : mario, 3, 3, 8
 // PLANTE : plante, 4, 3, 6
+// TUYAU : tuyau, 1, 9, 4
 
 // RETROMARIO : retromario, 1, 72, 6
 
@@ -49,7 +50,7 @@ int main() {
     initscr();
 
     // Modifiiez les valeurs de a_teste pour tester (les valeurs a entrer sont au début du programme)
-    struct Elem a_teste = {"drapeau", 7, 3, 10};
+    struct Elem a_teste = {"plante", 4, 3, 6};
     affichage(a_teste.nom, a_teste.nb_frame, a_teste.width, a_teste.height);
 
     printw("\n>>> Press any to quit :");
