@@ -171,8 +171,7 @@ void afficherMap_simp(WINDOW * fenetre, struct Map * niv) {
     }
 }
 
-// Génére un tronçon de la map
-int iterationMap(struct Map * niv, int X, int dMax, int * table, int * seed, int version) {
+int iterationTerrain(struct Map * niv, int X, int dMax, int * table, int * seed, int version) {
     int y, x;
     switch (version) {
         case 1: y = perlin(X, table, seed); break;
@@ -197,6 +196,75 @@ int iterationMap(struct Map * niv, int X, int dMax, int * table, int * seed, int
         }
     }
     return y;
+}
+
+int insertElem(struct Elem ** tabElem, struct Elem * elem, int * len) {
+    *len++;
+    tabElem = realloc(tabElem, *len*sizeof(struct Elem *));
+    if (tabElem != NULL) {
+        tabElem[0] = elem;
+        return 1;
+    }
+    return 0;
+}
+
+int supprElem(struct Elem ** tabElem, struct Elem * elem, int * len) {
+    for (int i = 0; i < *len; i++) {
+        if (tabElem[i] == elem) {
+            free(tabElem[i]);
+            tabElem[i] = NULL;
+            for (int j = i + 1; j < *len; j++) {
+                if (tabElem[i] != NULL) {
+                    tabElem[i-1] = tabElem[i];
+                }
+            }
+            *len--;
+            tabElem = realloc(tabElem, *len*sizeof(struct Elem *));
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void supprTabElem(struct Elem ** tabElem, int * len, int X, int dMax) {
+    for (int i = 0; i < *len; i++) {
+        if (tabElem[i]->x <= X - dMax) {
+            supprElem(tabElem, tabElem[i], len);
+        }
+    }
+}
+
+struct Elem ** iterationElem(struct Map * niv, int X, int Y, int dMax, int table) {
+    int len = 1;
+    struct Elem ** tabElem = malloc(sizeof(struct Elem *));
+    if (tabElem == NULL) {
+        printf("ERR : tabElem pas créée\n");
+        return NULL;
+    }
+    if (X % 150 == 0) {
+        struct Elem * drapeau = malloc(sizeof(struct Elem));
+        strcpy(drapeau->nom, "drapeau");
+        drapeau->nb_frame = 7;
+        drapeau->height = 5;
+        drapeau->width = 1;
+        drapeau->x = X;
+        drapeau->y = niv->height - Y;
+        if(!insertElem(tabElem, drapeau, &len)) {
+            printf("ERR : Elemément non-inséré\n");
+            return NULL;
+        }
+    }
+    supprTabElem(tabElem, &len, X, dMax);
+    return tabElem;
+}
+
+// Génére un tronçon de la map
+int iterationMap(struct Map * niv, int X, int dMax, int * table, int * seed, int version) {
+    int Y;
+    struct Elem ** tabElem;
+    Y = iterationTerrain(niv, X, dMax, table, seed, version);
+    tabElem = iterationElem(niv, X, Y, dMax, *table);
+    return Y;
 }
 
 int avancerMap(struct Map * niv, int X, int dMax, int * table, int * seed, int version) {

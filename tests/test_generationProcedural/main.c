@@ -10,12 +10,6 @@ int main() {
     int seed = rand() % 2147483646;
     int * table = creerTableSeed(&seed);
 
-    struct Elem drapeau;
-    strcpy(drapeau.nom, "drapeau");
-    drapeau.nb_frame = 7;
-    drapeau.height = 5;
-    drapeau.width = 1;
-
     WINDOW * jeu;
     WINDOW * tmp;
 
@@ -26,13 +20,13 @@ int main() {
 
     // Setup dimension fenêtre tmp
     int height_fenetre_tmp = 6;
-    int width_fenetre_tmp = COLS;
+    int width_fenetre_tmp = COLS;  // COLS renvoie la largeur de la console en mode "ncurses"
     int startx_fenetre_tmp = 0;
     int starty_fenetre_tmp = 0;
 
     // Setup dimension fenêtre de jeu
     int height_fenetre_jeu = 30;
-    int width_fenetre_jeu = COLS;  // COLS renvoie la largeur de la console en mode "ncurses"
+    int width_fenetre_jeu = COLS;
     int startx_fenetre_jeu = 0;
     int starty_fenetre_jeu = starty_fenetre_tmp + height_fenetre_tmp;
 
@@ -78,11 +72,6 @@ int main() {
             Y = avancerMap(niv, X, dMax, table, &seed, 1);
             afficherMap(jeu, niv);
             afficherTmp(tmp, X, Y, dMax, table, seed);
-            affichageElem(jeu, drapeau, dMax);
-        }
-        if (X % 150 == 0) {
-            drapeau.x = X;
-            drapeau.y = niv->height - Y;
         }
     }
 
