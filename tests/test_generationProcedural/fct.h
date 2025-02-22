@@ -19,7 +19,7 @@ struct Map {
 
 struct Elem {
     char nom[20];
-    int nb_frame;
+    int nb_frames;
     int height, width;
     int x, y;
 };
@@ -32,8 +32,6 @@ int avancerMap(struct Map * niv, int X, int dMax, int * table, int * seed, int v
 
 void afficherMap_simp(WINDOW * fenetre, struct Map * niv);
 void afficherTmp(WINDOW * tmp, int X, int Y, int dMax, int * table, int seed);
-
-void affichageElem(WINDOW * win, struct Elem truc, int dMax);
 
 /* MAP : Génération aléatoire */
 #define DISTANCE 12  // Longueur de chaque pente

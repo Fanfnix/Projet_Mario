@@ -198,63 +198,84 @@ int iterationTerrain(struct Map * niv, int X, int dMax, int * table, int * seed,
     return y;
 }
 
-int insertElem(struct Elem ** tabElem, struct Elem * elem, int * len) {
-    *len++;
-    tabElem = realloc(tabElem, *len*sizeof(struct Elem *));
-    if (tabElem != NULL) {
-        tabElem[0] = elem;
-        return 1;
-    }
-    return 0;
+/* ========== Création et manipulation tabElem ========== */
+
+struct Elem * creerElem(char * nom, int width, int height, int x, int y, int nb_frames) {
+    struct Elem * elem = malloc(sizeof(struct Elem));
+    strcpy(elem->nom, nom);
+    elem->width = width;
+    elem->height = height;
+    elem->x = x;
+    elem->y = y;
+    elem->nb_frames = nb_frames;
+    return elem;
 }
 
-int supprElem(struct Elem ** tabElem, struct Elem * elem, int * len) {
-    for (int i = 0; i < *len; i++) {
-        if (tabElem[i] == elem) {
+struct Elem ** creerTabElem(int size) {
+    struct Elem ** tabElem = malloc(size * sizeof(struct Elem *));
+    for (int i = 0; i < size; i++) {
+        tabElem[i] = NULL;
+    }
+    return tabElem;
+}
+
+void libTabElem(struct Elem ** tabElem, int size) {
+    for (int i = 0; i < size; i++) {
+        if (tabElem[i] != NULL) {
             free(tabElem[i]);
             tabElem[i] = NULL;
-            for (int j = i + 1; j < *len; j++) {
-                if (tabElem[i] != NULL) {
-                    tabElem[i-1] = tabElem[i];
-                }
-            }
-            *len--;
-            tabElem = realloc(tabElem, *len*sizeof(struct Elem *));
-            return 1;
+        }
+    }
+    free(tabElem);
+    tabElem = NULL;
+}
+
+int ajouterElem(struct Elem ** tabElem, int size, struct Elem * elem) {
+    if (tabElem == NULL) return 0;
+    for (int i = 0; i < size; i++) {
+        if (tabElem[i] == NULL) {
+            tabElem[i] = elem;
+            return (tabElem[i] == NULL) ? 0 : 1;
         }
     }
     return 0;
 }
 
-void supprTabElem(struct Elem ** tabElem, int * len, int X, int dMax) {
-    for (int i = 0; i < *len; i++) {
-        if (tabElem[i]->x <= X - dMax) {
-            supprElem(tabElem, tabElem[i], len);
+void supprElem(struct Elem ** tabElem, int X) {
+    for (int i = 0; tabElem[i] != NULL; i++) {
+        tabElem[i]->x++;
+        if (tabElem[i]->x >= X) {
+            free(tabElem[i]);
+            tabElem[i] = NULL;
+            for (int j = i+1; tabElem[j] != NULL; j++) {
+                tabElem[j-1] = tabElem[j];
+                tabElem[j] = NULL;
+            }
         }
     }
 }
 
+/* ====================================================== */
+
 struct Elem ** iterationElem(struct Map * niv, int X, int Y, int dMax, int table) {
-    int len = 1;
-    struct Elem ** tabElem = malloc(sizeof(struct Elem *));
-    if (tabElem == NULL) {
-        printf("ERR : tabElem pas créée\n");
-        return NULL;
-    }
+    int size;
+    struct Elem ** tabElem;
+    do {
+        size = 100;
+        tabElem = creerTabElem(size);
+        if (tabElem == NULL) {
+            printf("ERR : tabElem pas créée\n");
+            return NULL;
+        }
+    } while (tabElem == NULL);
     if (X % 150 == 0) {
-        struct Elem * drapeau = malloc(sizeof(struct Elem));
-        strcpy(drapeau->nom, "drapeau");
-        drapeau->nb_frame = 7;
-        drapeau->height = 5;
-        drapeau->width = 1;
-        drapeau->x = X;
-        drapeau->y = niv->height - Y;
-        if(!insertElem(tabElem, drapeau, &len)) {
+        struct Elem * drapeau = creerElem("drapeau", 1, 5, X, niv->height-Y, 1);
+        if(!ajouterElem(tabElem, size, drapeau)) {
             printf("ERR : Elemément non-inséré\n");
             return NULL;
         }
     }
-    supprTabElem(tabElem, &len, X, dMax);
+    supprElem(tabElem, X);
     return tabElem;
 }
 
@@ -299,7 +320,7 @@ void afficherTmp(WINDOW * tmp, int X, int Y, int dMax, int * table, int seed) {
 void affichageElem(WINDOW * win, struct Elem truc, int dMax) {
     char chemin[255];
 
-    snprintf(chemin, 255, "../../design/%s/%s%d.txt", truc.nom, truc.nom, truc.nb_frame);
+    snprintf(chemin, 255, "../../design/%s/%s%d.txt", truc.nom, truc.nom, truc.nb_frames);
 
     FILE * file = fopen(chemin, "r");
 

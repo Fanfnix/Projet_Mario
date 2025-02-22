@@ -82,3 +82,5 @@ void supprElem(struct Element ** tabElem, int X) {
         }
     }
 }
+
+/* ====================================================== */
