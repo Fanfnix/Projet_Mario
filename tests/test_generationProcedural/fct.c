@@ -30,6 +30,7 @@ int convInt(float y) {
     return res;
 }
 
+
 /* MAP : Génération aléatoire */
 
 // Pour les iterations de la seed
@@ -37,24 +38,29 @@ int f(int x) {
     return (16807 * x) % 2147483646;
 }
 
+
 void iterationSeed(int * seed) {
     *seed = f(*seed);
 }
+
 
 // Pour le lissage et l'interpolaion de la fonction de lissage
 float lissage(float x) {
     return 3 * pow(x, 2) - 2 * pow(x, 3);
 }
 
+
 float interpolate(int y_prec, int y_suiv, int x) {
     return (y_suiv - y_prec) * lissage((float)(x % DISTANCE) / DISTANCE) + y_prec;
 }
+
 
 // Pour la table de valeur aléatoire : création et itération
 int * creerTableSeed(int * seed) {
     int * table = malloc(DISTANCE*sizeof(int));
     return table;
 }
+
 
 int * iterationTable(int * seed, int * table) {
     for (int i = 0; i < DISTANCE; i++) {
@@ -63,6 +69,7 @@ int * iterationTable(int * seed, int * table) {
     }
     return table;
 }
+
 
 // Génére le relief
 int perlin(int x, int * table, int * seed) {
@@ -131,6 +138,7 @@ struct Map * creerMap(int height, int width) {
     return niv;
 }
 
+
 // Libère la Map
 void libMemMap(struct Map * niv) {
     if (!niv) return;
@@ -140,6 +148,7 @@ void libMemMap(struct Map * niv) {
     free(niv->carte);
     free(niv);
 }
+
 
 // Affichage Map
 void afficherMap(WINDOW * fenetre, struct Map * niv) {
@@ -159,6 +168,7 @@ void afficherMap(WINDOW * fenetre, struct Map * niv) {
     }
 }
 
+
 void afficherMap_simp(WINDOW * fenetre, struct Map * niv) {
     for (int y = 0; y < niv->height; y++) {
         for (int x = 0; x < niv->width; x++) {
@@ -170,6 +180,7 @@ void afficherMap_simp(WINDOW * fenetre, struct Map * niv) {
         }
     }
 }
+
 
 int iterationTerrain(struct Map * niv, int X, int dMax, int * table, int * seed, int version) {
     int y, x;
@@ -198,6 +209,7 @@ int iterationTerrain(struct Map * niv, int X, int dMax, int * table, int * seed,
     return y;
 }
 
+
 /* ========== Création et manipulation tabElem ========== */
 
 struct Elem * creerElem(char * nom, int width, int height, int x, int y, int nb_frames) {
@@ -211,6 +223,7 @@ struct Elem * creerElem(char * nom, int width, int height, int x, int y, int nb_
     return elem;
 }
 
+
 struct Elem ** creerTabElem(int size) {
     struct Elem ** tabElem = malloc(size * sizeof(struct Elem *));
     for (int i = 0; i < size; i++) {
@@ -218,6 +231,7 @@ struct Elem ** creerTabElem(int size) {
     }
     return tabElem;
 }
+
 
 void libTabElem(struct Elem ** tabElem, int size) {
     for (int i = 0; i < size; i++) {
@@ -230,6 +244,7 @@ void libTabElem(struct Elem ** tabElem, int size) {
     tabElem = NULL;
 }
 
+
 int ajouterElem(struct Elem ** tabElem, int size, struct Elem * elem) {
     if (tabElem == NULL) return 0;
     for (int i = 0; i < size; i++) {
@@ -240,6 +255,7 @@ int ajouterElem(struct Elem ** tabElem, int size, struct Elem * elem) {
     }
     return 0;
 }
+
 
 void supprElem(struct Elem ** tabElem, int X) {
     for (int i = 0; tabElem[i] != NULL; i++) {
@@ -254,6 +270,7 @@ void supprElem(struct Elem ** tabElem, int X) {
         }
     }
 }
+
 
 /* ====================================================== */
 
@@ -279,6 +296,7 @@ struct Elem ** iterationElem(struct Map * niv, int X, int Y, int dMax, int table
     return tabElem;
 }
 
+
 // Génére un tronçon de la map
 int iterationMap(struct Map * niv, int X, int dMax, int * table, int * seed, int version) {
     int Y;
@@ -287,6 +305,7 @@ int iterationMap(struct Map * niv, int X, int dMax, int * table, int * seed, int
     tabElem = iterationElem(niv, X, Y, dMax, *table);
     return Y;
 }
+
 
 int avancerMap(struct Map * niv, int X, int dMax, int * table, int * seed, int version) {
     int Y;
@@ -298,6 +317,7 @@ int avancerMap(struct Map * niv, int X, int dMax, int * table, int * seed, int v
     Y = iterationMap(niv, X, dMax, table, seed, version);
     return Y;
 }
+
 
 void afficherTmp(WINDOW * tmp, int X, int Y, int dMax, int * table, int seed) {
     wborder(tmp, '|', '|', '-', '-', '+', '+', '+', '+');
@@ -316,6 +336,7 @@ void afficherTmp(WINDOW * tmp, int X, int Y, int dMax, int * table, int seed) {
 	
     wrefresh(tmp);
 }
+
 
 void affichageElem(WINDOW * win, struct Elem truc, int dMax) {
     char chemin[255];

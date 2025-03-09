@@ -1,0 +1,79 @@
+#include "header.h"
+
+
+/* Test de la génération procédurale du relief du sol */
+
+int main() {
+
+    // Initialisation aléatoire
+    srand(time(NULL));
+    int seed = 16807 + rand() % (2147483646 - 16807);
+    int * table = creerTableSeed(&seed);
+
+    WINDOW * jeu;
+    WINDOW * tmp;
+
+    initscr();  // Met la console en mode "ncurses"
+    curs_set(0);  // Cache le curseur dans la console
+    noecho();
+    nodelay(stdscr, true);
+
+    // Setup dimension fenêtre tmp
+    int height_fenetre_tmp = 6;
+    int width_fenetre_tmp = COLS;  // COLS renvoie la largeur de la console en mode "ncurses"
+    int startx_fenetre_tmp = 0;
+    int starty_fenetre_tmp = 0;
+
+    // Setup dimension fenêtre de jeu
+    int height_fenetre_jeu = 30;
+    int width_fenetre_jeu = COLS;
+    int startx_fenetre_jeu = 0;
+    int starty_fenetre_jeu = starty_fenetre_tmp + height_fenetre_tmp;
+
+    // Creer fenetre de jeu
+    jeu = newwin(height_fenetre_jeu + 2, width_fenetre_jeu, starty_fenetre_jeu, startx_fenetre_jeu);
+	wborder(jeu, '|', '|', '-', '-', '+', '+', '+', '+');
+	wrefresh(jeu);
+
+    // Creer fenetre tmp
+    tmp = newwin(height_fenetre_tmp, width_fenetre_tmp, starty_fenetre_tmp, startx_fenetre_tmp);
+    afficherTmp(tmp, 0, 0, 0, table, seed);
+
+    // Setup dimension carte
+    int height_carte = height_fenetre_jeu / TY;
+    int width_carte = (width_fenetre_jeu - 2) / TX;
+
+    // Setup création
+    int nb_chunk = width_carte / DISTANCE + 2;
+    int height_gen = height_carte;
+    int width_gen = nb_chunk * DISTANCE;
+
+    // Création d'un niveau vide
+    struct Map * niv = creerMap(height_gen, width_gen);
+
+    // Vérification de la création du niveau
+    if (!niv) {
+        endwin();  // Sort la console du mode "ncurses"
+        fprintf(stderr, "Erreur d'allocation mémoire\n");
+        return EXIT_FAILURE;
+    }
+
+    // Ajout de la génération de base
+    for (int i = 0; i < nb_chunk; i++) {
+        genererChunk(niv, i, table, &seed, 1);
+    }
+
+    // afficherMap_simp(jeu, niv, height_carte, width_carte);
+    afficherMap(jeu, niv, height_carte, width_carte);
+
+    while (wgetch(jeu) != 'k');
+
+    // Libération de la mémoire : niveau et table aléatoire
+    libMemMap(niv);
+    free(table);
+    table = NULL;
+
+    endwin();  // Sort la console du mode "ncurses"
+
+    return 0;
+}

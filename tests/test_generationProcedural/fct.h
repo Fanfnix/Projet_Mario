@@ -35,8 +35,8 @@ void afficherTmp(WINDOW * tmp, int X, int Y, int dMax, int * table, int seed);
 
 /* MAP : Génération aléatoire */
 #define DISTANCE 12  // Longueur de chaque pente
-#define VARIANCE 6  // Variation dans les hauteurs générées
-#define Y_MIN 2  // Hauteur minimale
+#define VARIANCE 5  // Variation dans les hauteurs générées
+#define Y_MIN 1  // Hauteur minimale
 
 int * creerTableSeed(int * seed);
 int * iterationTable(int * seed, int * table);
