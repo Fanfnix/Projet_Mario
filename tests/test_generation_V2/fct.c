@@ -192,6 +192,7 @@ void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_
 
 void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
     int ymax;
+    int x_mystery, y_mystery, genere_mystery = 0;
     // Plateforme >>>
     int plateforme = table[0] % 3;
     int startx_plateforme, starty_plateforme, finishy_plateforme, len_plateforme, mod;
@@ -230,6 +231,14 @@ void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
         }
         if (starty_plateforme < 0) starty_plateforme = 0;
         for (int x = id_chunk*DISTANCE+startx_plateforme; x < id_chunk*DISTANCE+startx_plateforme+len_plateforme; x++) niv->carte[starty_plateforme][x] = 1;
+            for (int i = startx_plateforme; i < startx_plateforme+len_plateforme; i++) {
+            if (!genere_mystery && table[i] % 5 == 1) {
+                x_mystery = id_chunk * DISTANCE + i;
+                y_mystery = starty_plateforme;
+                genere_mystery = 1;
+            }
+        }
+        if (genere_mystery) niv->carte[y_mystery][x_mystery] = 3;
     }
     // <<< Plateforme
 }
