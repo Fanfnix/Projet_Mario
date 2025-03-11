@@ -7,8 +7,8 @@ int main() {
 
     // Initialisation aléatoire
     srand(time(NULL));
-    int seed = 16807 + rand() % (2147483646 - 16807);
-    int * table = creerTableSeed(&seed);
+    int seed = (16807 + rand() % (2147483646 - 16807)) / VARIANCE * VARIANCE;
+    int * table = creerTableSeed();
 
     WINDOW * jeu;
     WINDOW * tmp;
@@ -60,7 +60,9 @@ int main() {
 
     // Ajout de la génération de base
     for (int i = 0; i < nb_chunk; i++) {
-        genererChunk(niv, i, table, &seed, 1);
+        int tmp_seed = 0;
+        if (i < 3) genererChunk(niv, i, table, &tmp_seed);
+        else genererChunk(niv, i, table, &seed);
     }
 
     // afficherMap_simp(jeu, niv, height_carte, width_carte);

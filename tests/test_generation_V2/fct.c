@@ -48,7 +48,7 @@ void iterationSeed(int* seed) {
 /* Table aléatoire */
 
 // Pour la table de valeur aléatoire : création et itération
-int * creerTableSeed(int* seed) {
+int * creerTableSeed() {
     int * table = malloc(DISTANCE*sizeof(int));
     return table;
 }
@@ -190,59 +190,48 @@ void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_
 }
 
 
-void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed, int version) {
+void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
     int ymax;
-    if (!version) {
-        for (int x = id_chunk*DISTANCE; x < DISTANCE*(id_chunk+1); x++) {
-            ymax = Y_MIN;
-            if (x % DISTANCE == 0) {
-                for (int y = niv->height-ymax; y < niv->height; y++) niv->carte[y][x] = 2;
-            } else {
-                for (int y = niv->height-ymax; y < niv->height; y++) niv->carte[y][x] = 1;
-            }
+    // Plateforme >>>
+    int plateforme = table[0] % 3;
+    int startx_plateforme, starty_plateforme, finishy_plateforme, len_plateforme, mod;
+    if (plateforme) {
+        startx_plateforme = abs(table[0]) % (DISTANCE - 3);
+        starty_plateforme = 0;
+        finishy_plateforme = 0;
+        mod = DISTANCE - startx_plateforme - 3;
+        if (mod <= 0) mod = 1;
+        len_plateforme = 3 + abs(table[startx_plateforme]) % mod;
+    }
+    // <<< Plateforme
+    // Terrain >>>
+    for (int x = id_chunk*DISTANCE; x < DISTANCE*(id_chunk+1); x++) {
+        ymax = perlin(x, table, seed);
+        if (x % DISTANCE == 0) {
+            for (int y = niv->height-ymax; y < niv->height; y++) niv->carte[y][x] = 2;
+        } else {
+            for (int y = niv->height-ymax; y < niv->height; y++) niv->carte[y][x] = 1;
         }
-    } else {
-        // Plateforme >>>
-        int plateforme = table[0] % 3;
-        int startx_plateforme, starty_plateforme, finishy_plateforme, len_plateforme, mod;
-        if (plateforme) {
-            startx_plateforme = abs(table[0]) % (DISTANCE - 3);
-            starty_plateforme = 0;
-            finishy_plateforme = 0;
-            mod = DISTANCE - startx_plateforme - 3;
-            if (mod <= 0) mod = 1;
-            len_plateforme = 3 + abs(table[startx_plateforme]) % mod;
-        }
-        // <<< Plateforme
-        // Terrain >>>
-        for (int x = id_chunk*DISTANCE; x < DISTANCE*(id_chunk+1); x++) {
-            ymax = perlin(x, table, seed);
-            if (x % DISTANCE == 0) {
-                for (int y = niv->height-ymax; y < niv->height; y++) niv->carte[y][x] = 2;
-            } else {
-                for (int y = niv->height-ymax; y < niv->height; y++) niv->carte[y][x] = 1;
-            }
-            // <<< Terrain
-            // Plateforme >>>
-            if (plateforme) {
-                if (x % DISTANCE == startx_plateforme) starty_plateforme = niv->height-ymax;
-                if (x % DISTANCE == startx_plateforme+len_plateforme) finishy_plateforme = niv->height-ymax;
-            }
-            // <<< Plateforme
-        }
+        // <<< Terrain
         // Plateforme >>>
         if (plateforme) {
-            if (starty_plateforme > finishy_plateforme) {
-                finishy_plateforme -= H_PLATEFORME;
-                starty_plateforme = finishy_plateforme;
-            } else {
-                starty_plateforme -= H_PLATEFORME;
-            }
-            if (starty_plateforme < 0) starty_plateforme = 0;
-            for (int x = id_chunk*DISTANCE+startx_plateforme; x < id_chunk*DISTANCE+startx_plateforme+len_plateforme; x++) niv->carte[starty_plateforme][x] = 1;
+            if (x % DISTANCE == startx_plateforme) starty_plateforme = niv->height-ymax;
+            if (x % DISTANCE == startx_plateforme+len_plateforme) finishy_plateforme = niv->height-ymax;
         }
         // <<< Plateforme
     }
+    // Plateforme >>>
+    if (plateforme) {
+        if (starty_plateforme > finishy_plateforme) {
+            finishy_plateforme -= H_PLATEFORME;
+            starty_plateforme = finishy_plateforme;
+        } else {
+            starty_plateforme -= H_PLATEFORME;
+        }
+        if (starty_plateforme < 0) starty_plateforme = 0;
+        for (int x = id_chunk*DISTANCE+startx_plateforme; x < id_chunk*DISTANCE+startx_plateforme+len_plateforme; x++) niv->carte[starty_plateforme][x] = 1;
+    }
+    // <<< Plateforme
 }
 
 

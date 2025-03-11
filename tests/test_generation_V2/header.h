@@ -31,7 +31,7 @@ void afficherMap(WINDOW * fenetre, struct Map * niv, int height_carte, int width
 // int avancerMap(struct Map* niv, int X, int dMax, int* table, int* seed, int version);
 
 void afficherMap_simp(WINDOW* fenetre, struct Map* niv, int height_carte, int width_carte);
-void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed, int version);
+void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed);
 void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed);
 
 /* MAP : Génération aléatoire */
@@ -41,7 +41,7 @@ void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed);
 
 #define H_PLATEFORME 4
 
-int * creerTableSeed(int* seed);
+int * creerTableSeed();
 int * iterationTable(int* seed, int* table);
 int rand_nb(int seed);
 int perlin(int x, int* table, int* seed);
