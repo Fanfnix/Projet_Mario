@@ -163,6 +163,8 @@ void afficherMap_simp(WINDOW* fenetre, struct Map* niv, int height_carte, int wi
                 case 0: ch = ' '; break;
                 case 1: ch = '#'; break;
                 case 2: ch = 'O'; break;
+                case 3: ch = '&'; break;
+                case 4: ch = '$'; break;
                 default: ch = '?'; break;
             }
             mvwaddch(fenetre, y + 1, x + 1, ch);
@@ -181,6 +183,8 @@ void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_
                     case 0: strcpy(str, "   "); break;
                     case 1: strcpy(str, "###"); break;
                     case 2: strcpy(str, "OOO"); break;
+                    case 3: if (!i) strcpy(str, "==="); else strcpy(str, "=?="); break;
+                    case 4: if (!i) strcpy(str, "($)"); else strcpy(str, "   "); break;
                     default: strcpy(str, "???"); break;
                 }
                 mvwaddstr(fenetre, TY*y+i+1, TX*x+1, str);
