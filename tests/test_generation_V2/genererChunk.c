@@ -47,7 +47,7 @@ void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
         if (piece && x%DISTANCE >= startx_piece && compteur_piece < nb_piece) {
             x_piece = x;
             y_piece = niv->height - ymax - 1;
-            niv->carte[y_piece][x_piece] = 4;
+            if (niv->carte[y_piece][x_piece] == 0) niv->carte[y_piece][x_piece] = 4;
             compteur_piece++;
         }
         // <<< Piece

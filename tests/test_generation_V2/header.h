@@ -35,7 +35,7 @@ void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed);
 void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed);
 
 /* MAP : Génération aléatoire */
-#define DISTANCE 10  // Longueur de chaque pente
+#define DISTANCE 8  // Longueur de chaque pente
 #define VARIANCE 5  // Variation dans les hauteurs générées
 #define Y_MIN 1  // Hauteur minimale
 
