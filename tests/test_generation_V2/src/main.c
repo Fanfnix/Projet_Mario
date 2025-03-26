@@ -10,6 +10,8 @@ int main() {
     int seed = (16807 + rand() % (2147483646 - 16807)) / VARIANCE * VARIANCE;
     int * table = creerTableSeed();
 
+    #if __linux__
+
     WINDOW * jeu;
     WINDOW * tmp;
 
@@ -43,6 +45,15 @@ int main() {
     int height_carte = height_fenetre_jeu / TY;
     int width_carte = (width_fenetre_jeu - 2) / TX;
 
+    #elif _WIN32
+
+    afficherTmp_W(0, 0, 0, table, seed);
+
+    int height_carte = 30 / TY;
+    int width_carte = (50 - 2) / TX;
+
+    #endif
+
     // Setup création
     int nb_chunk = width_carte / DISTANCE + 2;
     int height_gen = height_carte;
@@ -53,7 +64,9 @@ int main() {
 
     // Vérification de la création du niveau
     if (!niv) {
+        #if __linux__
         endwin();  // Sort la console du mode "ncurses"
+        #endif
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return EXIT_FAILURE;
     }
@@ -65,17 +78,28 @@ int main() {
         else genererChunk(niv, i, table, &seed);
     }
 
+    #if __linux__
     // afficherMap_simp(jeu, niv, height_carte, width_carte);
     afficherMap(jeu, niv, height_carte, width_carte);
+    #elif _WIN32
+    // afficherMap_simp_W(niv, height_carte, width_carte);
+    afficherMap_W(niv, height_carte, width_carte);
+    #endif
 
+    #if __linux__
     while (wgetch(jeu) != 'k');
+    #elif _WIN32
+    if (kbhit) while (getch() != 'k');
+    #endif
 
     // Libération de la mémoire : niveau et table aléatoire
     libMemMap(niv);
     free(table);
     table = NULL;
 
+    #if __linux__
     endwin();  // Sort la console du mode "ncurses"
+    #endif
 
     return 0;
 }
