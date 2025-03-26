@@ -3,7 +3,7 @@
 
 #if __linux__
 #include <ncurses.h>
-#else
+#elif _WIN32
 #include <conio.h>
 #endif
 
@@ -32,19 +32,19 @@ struct Elem {
 struct Map* creerMap(int L, int l);
 void libMemMap(struct Map* niv);
 
+#if __linux__
 void afficherMap(WINDOW * fenetre, struct Map * niv, int height_carte, int width_carte);
+void afficherMap_simp(WINDOW* fenetre, struct Map* niv, int height_carte, int width_carte);
+void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed);
+#elif _WIN32
 void afficherMap_W(struct Map * niv, int height_carte, int width_carte);
+void afficherMap_simp_W(struct Map* niv, int height_carte, int width_carte);
+void afficherTmp_W(int X, int Y, int dMax, int* table, int seed);
+#endif
 
-// int iterationMap(struct Map* niv, int X, int dMax, int* table, int* seed, int version);
 // int avancerMap(struct Map* niv, int X, int dMax, int* table, int* seed, int version);
 
-void afficherMap_simp(WINDOW* fenetre, struct Map* niv, int height_carte, int width_carte);
-void afficherMap_simp_W(struct Map* niv, int height_carte, int width_carte);
-
 void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed);
-
-void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed);
-void afficherTmp_W(int X, int Y, int dMax, int* table, int seed);
 
 /* MAP : Génération aléatoire */
 #define DISTANCE 8  // Longueur de chaque pente
