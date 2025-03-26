@@ -1,4 +1,4 @@
-#include "../include/header.h"
+#include "header.h"
 
 
 /* === UTILITAIRES === */
@@ -163,34 +163,11 @@ void afficherMap_simp(WINDOW* fenetre, struct Map* niv, int height_carte, int wi
                 case 0: ch = ' '; break;
                 case 1: ch = '#'; break;
                 case 2: ch = 'O'; break;
-                case 3: ch = '&'; break;
-                case 4: ch = '$'; break;
                 default: ch = '?'; break;
             }
             mvwaddch(fenetre, y + 1, x + 1, ch);
         }
     }
-}
-
-void afficherMap_W(struct Map * niv, int height_carte, int width_carte) {
-    char str[TX+1];
- for (int y = 0; y < height_carte; y++) {
-     for (int i = 0; i < 2; i++) {
-         for (int x = 0; x < width_carte; x++) {
-             switch (niv->carte[y][x]) {
-                 case 0: strcpy(str, "   "); break;
-                 case 1: strcpy(str, "###"); break;
-                 case 2: strcpy(str, "OOO"); break;
-                 case 3: if (!i) strcpy(str, "==="); else strcpy(str, "=?="); break;
-                 case 4: if (!i) strcpy(str, "($)"); else strcpy(str, "   "); break;
-                 default: strcpy(str, "???"); break;
-             }
-             gotoxy(TX*x+1, TY*y+i+1);
-             putch(str[TX+1]);
-         }
-     }
- }
- return; // version windows a completer -- Normalement fait
 }
 
 
@@ -204,8 +181,6 @@ void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_
                     case 0: strcpy(str, "   "); break;
                     case 1: strcpy(str, "###"); break;
                     case 2: strcpy(str, "OOO"); break;
-                    case 3: if (!i) strcpy(str, "==="); else strcpy(str, "=?="); break;
-                    case 4: if (!i) strcpy(str, "($)"); else strcpy(str, "   "); break;
                     default: strcpy(str, "???"); break;
                 }
                 mvwaddstr(fenetre, TY*y+i+1, TX*x+1, str);
@@ -214,24 +189,60 @@ void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_
     }
 }
 
-void afficherMap_simp_W(struct Map* niv, int height_carte, int width_carte) {
-    char ch;
-    for (int y = 0; y < height_carte; y++) {
-        for (int x = 0; x < width_carte; x++) {
-            switch (niv->carte[y][x]) {
-                case 0: ch = ' '; break;
-                case 1: ch = '#'; break;
-                case 2: ch = 'O'; break;
-                case 3: ch = '&'; break;
-                case 4: ch = '$'; break;
-                default: ch = '?'; break;
-            }
-            gotoxy(x+1, y+1);
-            putch(ch);
-        }
+
+void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
+    int ymax;
+    int x_mystery, y_mystery, genere_mystery = 0;
+    // Plateforme >>>
+    int plateforme = table[0] % 3;
+    int startx_plateforme, starty_plateforme, finishy_plateforme, len_plateforme, mod;
+    if (plateforme) {
+        startx_plateforme = abs(table[0]) % (DISTANCE - 3);
+        starty_plateforme = 0;
+        finishy_plateforme = 0;
+        mod = DISTANCE - startx_plateforme - 3;
+        if (mod <= 0) mod = 1;
+        len_plateforme = 3 + abs(table[startx_plateforme]) % mod;
     }
-    return; // version windows a completer -- Normalement fait
+    // <<< Plateforme
+    // Terrain >>>
+    for (int x = id_chunk*DISTANCE; x < DISTANCE*(id_chunk+1); x++) {
+        ymax = perlin(x, table, seed);
+        if (x % DISTANCE == 0) {
+            for (int y = niv->height-ymax; y < niv->height; y++) niv->carte[y][x] = 2;
+        } else {
+            for (int y = niv->height-ymax; y < niv->height; y++) niv->carte[y][x] = 1;
+        }
+        // <<< Terrain
+        // Plateforme >>>
+        if (plateforme) {
+            if (x % DISTANCE == startx_plateforme) starty_plateforme = niv->height-ymax;
+            if (x % DISTANCE == startx_plateforme+len_plateforme) finishy_plateforme = niv->height-ymax;
+        }
+        // <<< Plateforme
+    }
+    // Plateforme >>>
+    if (plateforme) {
+        if (starty_plateforme > finishy_plateforme) {
+            finishy_plateforme -= H_PLATEFORME;
+            starty_plateforme = finishy_plateforme;
+        } else {
+            starty_plateforme -= H_PLATEFORME;
+        }
+        if (starty_plateforme < 0) starty_plateforme = 0;
+        for (int x = id_chunk*DISTANCE+startx_plateforme; x < id_chunk*DISTANCE+startx_plateforme+len_plateforme; x++) niv->carte[starty_plateforme][x] = 1;
+            for (int i = startx_plateforme; i < startx_plateforme+len_plateforme; i++) {
+            if (!genere_mystery && table[i] % 5 == 1) {
+                x_mystery = id_chunk * DISTANCE + i;
+                y_mystery = starty_plateforme;
+                genere_mystery = 1;
+            }
+        }
+        if (genere_mystery) niv->carte[y_mystery][x_mystery] = 3;
+    }
+    // <<< Plateforme
 }
+
 
 void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed) {
     wborder(tmp, '|', '|', '-', '-', '+', '+', '+', '+');
@@ -249,25 +260,4 @@ void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed) {
     mvwaddstr(tmp, 4, 1, elem3);
 	
     wrefresh(tmp);
-}
-
-void afficherTmp_W(int X, int Y, int dMax, int* table, int seed) {
-    clrscr();
-    char elem1[255], elem2[255], elem3[255], elem4[255];
-    int x = X - dMax;
-    
-    snprintf(elem1, 255, "X = %d", X);
-    snprintf(elem2, 255, "dMax = %d", dMax);
-    snprintf(elem3, 255, "x = %d", x);
-    snprintf(elem4, 255, "Y = %d", Y);
-    
-    gotoxy(1, 1);
-    cputs(elem1);
-    gotoxy(1, 2);
-    cputs(elem4);
-    gotoxy(1, 3);
-    cputs(elem2);
-    gotoxy(1, 4);
-    cputs(elem3);	
-    return; // version windows a completer
 }
