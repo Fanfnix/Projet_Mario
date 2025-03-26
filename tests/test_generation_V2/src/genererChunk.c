@@ -1,4 +1,4 @@
-#include "header.h"
+#include "../include/header.h"
 
 void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
     // Variables >>>

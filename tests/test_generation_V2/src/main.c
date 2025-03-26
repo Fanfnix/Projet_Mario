@@ -1,4 +1,4 @@
-#include "header.h"
+#include "../include/header.h"
 
 
 /* Test de la génération procédurale du relief du sol */

@@ -3,17 +3,14 @@ CFLAGS = -Wall -Iinclude/
 LDFLAGS =
 LIBS = -lm
 SRCDIR = src
-EXEC = genere
+EXEC = main
 
 CFLAGS += $(shell pkg-config --cflags ncurses)
 LIBS += $(shell pkg-config --libs ncurses)
 
-SRCFILES = $(wildcard $(SRCDIR)/*.c)
-OBJFILES = $(patsubst %.c, %.o, $(SRCFILES))
-
 all: $(EXEC)
 
-genere: $(OBJFILES)
+main: $(SRCDIR)/fct.o $(SRCDIR)/genererChunk.o $(SRCDIR)/main.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 $(SRCDIR)/%.o: $(SRCDIR)/%.c

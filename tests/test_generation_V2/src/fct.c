@@ -1,4 +1,4 @@
-#include "header.h"
+#include "../include/header.h"
 
 
 /* === UTILITAIRES === */
@@ -172,6 +172,10 @@ void afficherMap_simp(WINDOW* fenetre, struct Map* niv, int height_carte, int wi
     }
 }
 
+void afficherMap_W(struct Map * niv, int height_carte, int width_carte) {
+    return; // version windows a completer
+}
+
 
 // Affichage Map
 void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_carte) {
@@ -193,6 +197,10 @@ void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_
     }
 }
 
+void afficherMap_simp_W(struct Map* niv, int height_carte, int width_carte) {
+    return; // version windows a completer
+}
+
 
 void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed) {
     wborder(tmp, '|', '|', '-', '-', '+', '+', '+', '+');
@@ -210,4 +218,8 @@ void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed) {
     mvwaddstr(tmp, 4, 1, elem3);
 	
     wrefresh(tmp);
+}
+
+void afficherTmp_W(int X, int Y, int dMax, int* table, int seed) {
+    return; // version windows a completer
 }
