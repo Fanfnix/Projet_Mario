@@ -3,20 +3,23 @@ CFLAGS = -Wall -Iinclude/
 LDFLAGS =
 LIBS = -lm
 SRCDIR = src
-EXEC = genere
+EXEC = main
 
 CFLAGS += $(shell pkg-config --cflags ncurses)
 LIBS += $(shell pkg-config --libs ncurses)
 
-SRCFILES = $(wildcard $(SRCDIR)/*.c)
-OBJFILES = $(patsubst %.c, %.o, $(SRCFILES))
-
 all: $(EXEC)
 
-genere: $(OBJFILES)
+main: $(SRCDIR)/fct.o $(SRCDIR)/genererChunk.o $(SRCDIR)/main.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
-$(SRCDIR)/%.o: $(SRCDIR)/%.c
+$(SRCDIR)/main.o: $(SRCDIR)/main.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(SRCDIR)/fct.o: $(SRCDIR)/fct.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(SRCDIR)/genererChunk.o: $(SRCDIR)/genererChunk.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 .PHONY: clean mrproper
