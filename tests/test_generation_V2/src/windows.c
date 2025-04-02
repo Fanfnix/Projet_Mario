@@ -30,8 +30,8 @@ WINDOW *derwin(WINDOW *win, int height, int width, int yo, int xo) {
 void mvwaddstr(WINDOW *win, int y, int x, char str[]){
     while(win->precedent != NULL){
         WINDOW * tmp = win->precedent;
-       y += tmp->yo;
-       x += tmp->xo;
+        y += tmp->yo;
+        x += tmp->xo;
         gotoxy(x,y);
         for(int i = 0; i < strlen(str); i++){
             putch(str[i]);
@@ -43,8 +43,8 @@ void mvwaddstr(WINDOW *win, int y, int x, char str[]){
 void mvwaddch(WINDOW *win, int y, int x, char ch){
     while(win->precedent != NULL){
         WINDOW * tmp = win->precedent;
-       y += tmp->yo;
-       x += tmp->xo;
+        y += tmp->yo;
+        x += tmp->xo;
         gotoxy(x,y);
         putch(ch);
     }
