@@ -9,11 +9,11 @@ WINDOW *derwin(WINDOW *win, int height, int width, int yo, int xo){
 
 };
 
-void mvwaddstr(WINDOW *win, int y, int x, int str){
+void mvwaddstr(WINDOW *win, int y, int x, char str[]){
 
 };
 
-void mvwaddch(WINDOW *win, int y, int x, int ch){
+void mvwaddch(WINDOW *win, int y, int x, char ch){
 
 };
 
