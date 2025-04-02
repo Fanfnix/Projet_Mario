@@ -1,5 +1,5 @@
 #include "../include/header.h"
-
+#if _WIN32
 
 WINDOW *newwin(int height, int width, int yo, int xo) {
     WINDOW * new = malloc(sizeof(WINDOW));
@@ -57,3 +57,4 @@ void wrefresh(WINDOW *win){
 
 };
 
+#endif
