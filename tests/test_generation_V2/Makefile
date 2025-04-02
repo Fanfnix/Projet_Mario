@@ -4,6 +4,7 @@ LDFLAGS =
 LIBS = -lm
 SRCDIR = src
 EXEC = genere
+OS = $(shell uname -s)
 
 CFLAGS += $(shell pkg-config --cflags ncurses)
 LIBS += $(shell pkg-config --libs ncurses)
