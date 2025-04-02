@@ -50,8 +50,13 @@ void mvwaddch(WINDOW *win, int y, int x, char ch){
 }
 
 void wborder(WINDOW *win, char gauche, char droit, char haut, char bas, char haut_g, char haut_d, char bas_g, char bas_d){
+    if(win == NULL) return;
+    WINDOW * tmp = win;
+    while(tmp !=NULL){
+        
+    }
 
-};
+}
 
 void wrefresh(WINDOW *win){
 
