@@ -23,28 +23,27 @@ WINDOW *derwin(WINDOW *win, int height, int width, int yo, int xo) {
         der->width = width;
         der->height = height;
         return der;
-    } else printf("ERR : newwin failed\n");
+    } else printf("ERR : derwin failed\n");
     return NULL;
 }
 
-void mvwaddstr(WINDOW *win, int y, int x, char str[]){
-    while(win->precedent != NULL){
-        WINDOW * tmp = win->precedent;
+void mvwaddstr(WINDOW *win, int y, int x, char str[]) {
+    WINDOW * tmp = win;
+    while(tmp != NULL) {
         y += tmp->yo;
         x += tmp->xo;
+        tmp = tmp->precedent;
         gotoxy(x,y);
-        for(int i = 0; i < strlen(str); i++){
-            putch(str[i]);
-        }
+        for(int i = 0; i < strlen(str); i++) putch(str[i]);
     }
-
 }
 
 void mvwaddch(WINDOW *win, int y, int x, char ch){
-    while(win->precedent != NULL){
-        WINDOW * tmp = win->precedent;
+    WINDOW * tmp = win;
+    while(tmp != NULL) {
         y += tmp->yo;
         x += tmp->xo;
+        tmp = tmp->precedent;
         gotoxy(x,y);
         putch(ch);
     }
