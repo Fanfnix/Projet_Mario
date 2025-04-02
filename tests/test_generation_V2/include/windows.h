@@ -5,10 +5,6 @@
 #include <conio.h>
 #endif
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 typedef struct WINDOW {
     int xo;
     int yo;
