@@ -1,13 +1,31 @@
 #include "../include/windows.h"
 
 
-WINDOW *newwin(int height, int width, int yo, int xo){
+WINDOW *newwin(int height, int width, int yo, int xo) {
+    WINDOW * new = malloc(sizeof(WINDOW));
+    if (new != NULL) {
+        new->precedent = NULL;
+        new->yo = yo;
+        new->xo = xo;
+        new->width = width;
+        new->height = height;
+        return new;
+    } else printf("ERR : newwin failed\n");
+    return NULL;
+}
 
-};
-
-WINDOW *derwin(WINDOW *win, int height, int width, int yo, int xo){
-
-};
+WINDOW *derwin(WINDOW *win, int height, int width, int yo, int xo) {
+    WINDOW * der = malloc(sizeof(WINDOW));
+    if (win != NULL) {
+        der->precedent = win;
+        der->yo = yo;
+        der->xo = xo;
+        der->width = width;
+        der->height = height;
+        return der;
+    } else printf("ERR : newwin failed\n");
+    return NULL;
+}
 
 void mvwaddstr(WINDOW *win, int y, int x, char str[]){
 
