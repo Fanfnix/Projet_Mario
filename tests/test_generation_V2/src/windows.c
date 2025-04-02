@@ -28,10 +28,26 @@ WINDOW *derwin(WINDOW *win, int height, int width, int yo, int xo) {
 }
 
 void mvwaddstr(WINDOW *win, int y, int x, char str[]){
+    while(win->precedent != NULL){
+        WINDOW * tmp = win->precedent;
+       y += tmp->yo;
+       x += tmp->xo;
+        gotoxy(x,y);
+        for(int i = 0; i < strlen(str); i++){
+            putch(str[i]);
+        }
+    }
+
 }
 
 void mvwaddch(WINDOW *win, int y, int x, char ch){
-
+    while(win->precedent != NULL){
+        WINDOW * tmp = win->precedent;
+       y += tmp->yo;
+       x += tmp->xo;
+        gotoxy(x,y);
+        putch(ch);
+    }
 }
 
 void wborder(WINDOW *win, char gauche, char droit, char haut, char bas, char haut_g, char haut_d, char bas_g, char bas_d){
