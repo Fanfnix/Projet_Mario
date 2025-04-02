@@ -10,15 +10,17 @@ int main() {
     int seed = (16807 + rand() % (2147483646 - 16807)) / VARIANCE * VARIANCE;
     int * table = creerTableSeed();
 
-    #if __linux__
-
     WINDOW * jeu;
     WINDOW * tmp;
+
+    #if __linux__
 
     initscr();  // Met la console en mode "ncurses"
     curs_set(0);  // Cache le curseur dans la console
     noecho();
     nodelay(stdscr, true);
+
+    #endif
 
     // Setup dimension fenêtre tmp
     int height_fenetre_tmp = 6;
@@ -34,25 +36,32 @@ int main() {
 
     // Creer fenetre de jeu
     jeu = newwin(height_fenetre_jeu + 2, width_fenetre_jeu, starty_fenetre_jeu, startx_fenetre_jeu);
+    if (!jeu) {
+        #if __linux__
+        endwin();  // Sort la console du mode "ncurses"
+        #endif
+        fprintf(stderr, "Erreur d'allocation mémoire\n");
+        return EXIT_FAILURE;
+    }
 	wborder(jeu, '|', '|', '-', '-', '+', '+', '+', '+');
+    #if __linux__
 	wrefresh(jeu);
+    #endif
 
     // Creer fenetre tmp
     tmp = newwin(height_fenetre_tmp, width_fenetre_tmp, starty_fenetre_tmp, startx_fenetre_tmp);
+    if (!tmp) {
+        #if __linux__
+        endwin();  // Sort la console du mode "ncurses"
+        #endif
+        fprintf(stderr, "Erreur d'allocation mémoire\n");
+        return EXIT_FAILURE;
+    }
     afficherTmp(tmp, 0, 0, 0, table, seed);
 
     // Setup dimension carte
     int height_carte = height_fenetre_jeu / TY;
     int width_carte = (width_fenetre_jeu - 2) / TX;
-
-    #elif _WIN32
-
-    afficherTmp_W(0, 0, 0, table, seed);
-
-    int height_carte = 30 / TY;
-    int width_carte = (50 - 2) / TX;
-
-    #endif
 
     // Setup création
     int nb_chunk = width_carte / DISTANCE + 2;
@@ -78,13 +87,8 @@ int main() {
         else genererChunk(niv, i, table, &seed);
     }
 
-    #if __linux__
     // afficherMap_simp(jeu, niv, height_carte, width_carte);
     afficherMap(jeu, niv, height_carte, width_carte);
-    #elif _WIN32
-    // afficherMap_simp_W(niv, height_carte, width_carte);
-    afficherMap_W(niv, height_carte, width_carte);
-    #endif
 
     #if __linux__
     while (wgetch(jeu) != 'k');
