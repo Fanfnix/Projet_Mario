@@ -4,8 +4,7 @@
 #if __linux__
 #include <ncurses.h>
 #elif _WIN32
-#include <conio.h>
-#include <windows.h>
+#include "windows.h"
 #endif
 
 #include <string.h>
