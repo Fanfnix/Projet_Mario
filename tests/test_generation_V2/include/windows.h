@@ -1,7 +1,13 @@
 #ifndef WIN
 #define WIN
 
+#if _WIN32
 #include <conio.h>
+#endif
+
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct WINDOW {
     int xo;

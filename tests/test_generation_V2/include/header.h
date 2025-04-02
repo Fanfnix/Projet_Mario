@@ -1,17 +1,17 @@
 #ifndef TEST
 #define TEST
 
-#if __linux__
-#include <ncurses.h>
-#elif _WIN32
-#include "windows.h"
-#endif
-
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+
+#if __linux__
+#include <ncurses.h>
+#elif _WIN32
+#include "windows.h"
+#endif
 
 /* MAP : Création, affichage */
 #define TX 3
