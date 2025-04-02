@@ -1,4 +1,4 @@
-#include "../include/windows.h"
+#include "../include/header.h"
 
 
 WINDOW *newwin(int height, int width, int yo, int xo) {
