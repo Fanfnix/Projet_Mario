@@ -1,10 +1,6 @@
 #ifndef WIN
 #define WIN
 
-#include <conio.h>
-#include <windows.h>
-
-
 typedef struct  
 {
     int xo;
@@ -13,5 +9,13 @@ typedef struct
     int width;
     WINDOW *precedent;    
 }WINDOW;
+
+newwin(height, width, yo, xo);
+delwin(win, height, width, yo, xo);
+wborder(win, "...");
+wrefresh();
+mvwaddstr(win, y, x, str);
+mvwaddch(win, y, x, ch);
+
 
 #endif
