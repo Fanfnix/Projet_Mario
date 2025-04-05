@@ -17,8 +17,14 @@
 #define WIDTH_MENU 70
 #define HEIGHT_MENU 19
 
+struct Score {
+    int id;
+    char pseudo;
+    int score;
+};
+
 void affichageRetromario(WINDOW * win);
 void affichageControle(WINDOW * controle);
-void actionMenuPrincipal(WINDOW * menu);
+int actionMenuPrincipal(WINDOW * menu);
 
 #endif

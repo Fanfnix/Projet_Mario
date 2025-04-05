@@ -37,7 +37,10 @@ int main() {
 
     menu = newwin(height_fenetre_menu, width_fenetre_menu, starty_fenetre_menu, startx_fenetre_menu);
     
-    actionMenuPrincipal(menu);
+    int choix;
+    do {
+        choix = actionMenuPrincipal(menu);
+    } while (choix != 3);
 
     endwin();
 

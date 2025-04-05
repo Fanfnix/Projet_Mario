@@ -51,20 +51,27 @@ void affichageMenuPrincipal(WINDOW * menu, int choix) {
     wrefresh(menu);
 }
 
-void actionMenuPrincipal(WINDOW * menu) {
+int actionMenuPrincipal(WINDOW * menu) {
     int id = 0;
     char pressed;
     do {
         if (pressed == 'z') id--;
         else if (pressed == 's') id++;
-        else if (pressed == '\n') {
-            if (id == 0) continue;  // Lancer partie
-            else if (id == 1) continue;  // Afficher hi-scores
-            else if (id == 2) continue;  // Afficher sauvegardes
-            else if (id == 3) break;
-        }
+        else if (pressed == '\n') break;
         if (id < 0) id = 3;
         if (id > 3) id = 0;
         affichageMenuPrincipal(menu, id);
     } while ((pressed = wgetch(menu)) != 'k');
+    return id;
+}
+
+
+void affichageHiscores() {
+    char chemin[] = "data/hi_scores.txt";  // Le chemin est à calculer depuis l'éxécutable.
+    FILE * file = fopen(chemin, "r");
+
+    char c = fgets(f);
+    struct Score ** liste_score = malloc(10 * sizeof(struct Score *));
+
+    
 }
