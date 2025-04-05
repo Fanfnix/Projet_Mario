@@ -14,15 +14,11 @@
 #define WIDTH_CONTROLE 20
 #define HEIGHT_CONTROLE 9
 
-#define WIDTH_MENU 80
-#define HEIGHT_MENU 20
-
-#define ELEM1 "LANCER UNE PARTIE"
-#define ELEM2 "HI-SCORES"
-#define ELEM3 "QUITTER"
+#define WIDTH_MENU 70
+#define HEIGHT_MENU 19
 
 void affichageRetromario(WINDOW * win);
 void affichageControle(WINDOW * controle);
-void actionMenu(WINDOW * menu);
+void actionMenuPrincipal(WINDOW * menu);
 
 #endif

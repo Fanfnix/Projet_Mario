@@ -36,7 +36,8 @@ int main() {
     starty_fenetre_menu = (LINES - height_fenetre_menu) / 2;
 
     menu = newwin(height_fenetre_menu, width_fenetre_menu, starty_fenetre_menu, startx_fenetre_menu);
-    actionMenu(menu);
+    
+    actionMenuPrincipal(menu);
 
     endwin();
 
