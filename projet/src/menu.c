@@ -66,12 +66,58 @@ int actionMenuPrincipal(WINDOW * menu) {
 }
 
 
-void affichageHiscores() {
+struct Score * recupScore(char * str) {
+    struct Score * struct_score = malloc(sizeof(struct Score));
+    if (struct_score == NULL) return NULL;
+    char tmp_str[255]; strcpy(tmp_str, str);
+
+    char * elem = strtok(tmp_str, ",");
+    int i = 0;
+    while (elem != NULL) {
+        if (i == 0) struct_score->id = atoi(elem);
+        if (i == 1) struct_score->pseudo = elem;
+        if (i == 2) struct_score->score = atoi(elem);
+        elem = strtok(NULL, ",");
+        i++;
+    }
+
+    return struct_score;
+}
+
+
+struct Score ** recupHiscores() {
     char chemin[] = "data/hi_scores.txt";  // Le chemin est à calculer depuis l'éxécutable.
     FILE * file = fopen(chemin, "r");
 
-    char c = fgets(f);
-    struct Score ** liste_score = malloc(10 * sizeof(struct Score *));
+    char contenu[255] = "";
+    char tmp[3];
+    while (contenu[strlen(contenu)-1] != '\\') {
+        fgets(tmp, 2, file);
+        strcat(contenu, tmp);
+    }
+    contenu[strlen(contenu)-1] = '\0';
+    fclose(file);
 
-    
+    struct Score ** liste_score = malloc(10 * sizeof(struct Score *));
+    for (int i = 0; i < 10; i++) liste_score[i] = NULL;
+
+    char * tmp_score = strtok(contenu, ";");
+    int i = 0;
+    while (tmp_score != NULL) {
+        liste_score[i] = recupScore(tmp_score);
+        printf("TMP_SCORE : %s\n", tmp_score);
+        tmp_score = strtok(NULL, ";");
+        i++;
+    }
+
+    return liste_score;
+}
+
+
+void affichageHiscores(struct Score ** liste_score) {
+    for (int j = 0; j < 10; j++) {
+        if (liste_score[j] != NULL) {
+            printf("ID = %d | PSEUDO = %s | SCORE = %d\n", liste_score[j]->id, liste_score[j]->pseudo, liste_score[j]->score);
+        } else break;
+    }
 }

@@ -19,12 +19,15 @@
 
 struct Score {
     int id;
-    char pseudo;
+    char * pseudo;
     int score;
 };
 
 void affichageRetromario(WINDOW * win);
 void affichageControle(WINDOW * controle);
 int actionMenuPrincipal(WINDOW * menu);
+
+struct Score ** recupHiscores();
+void affichageHiscores(struct Score ** liste_score);
 
 #endif
