@@ -1,4 +1,18 @@
 #include "../include/header.h"
+#if _WIN32
+#include <conio.h>
+#include <windows.h>
+#endif
+
+void gotoxy(int xpos, int ypos)
+{
+        COORD scrn;
+        HANDLE hOuput = GetStdHandle(STD_OUTPUT_HANDLE);
+
+        scrn.X = xpos;
+        scrn.Y = ypos;
+        SetConsoleCursorPosition(hOuput, scrn);
+}
 
 WINDOW *newwin_perso(int height, int width, int yo, int xo) {
     #if __linux__
@@ -70,33 +84,31 @@ void wborder_perso(WINDOW *win, char gauche, char droit, char haut, char bas, ch
     #elif _WIN32
     if(win == NULL) return;
     // Bar haut
-    char bar[255] = "";
+    char bar_haut[255] = "";
     for (int i = 0; i < win->width; i++) {
-        if (i == 0) strcat(bar, haut_g);
-        else if (i == (win->width-1)) strcat(bar, haut_d);
-        else strcat(bar, haut);
+        if (i == 0) strcat(bar_haut, &haut_g);
+        else if (i == (win->width-1)) strcat(bar_haut, &haut_d);
+        else strcat(bar_haut, &haut);
     }
-    mvwaddstr_perso(win, win->yo, win->xo, bar);
+    mvwaddstr_perso(win, win->yo, win->xo, bar_haut);
     // Cotes
     for (int j = 1; j < win->height-2; j++) {
         mvwaddch_perso(win, win->yo-j, win->xo, gauche);
         mvwaddch_perso(win, win->yo-j, win->xo+win->width-1, droit);
     }
     // Bar bas
-    bar = "";
+    char bar_bas[255] = "";
     for (int i = 0; i < win->width; i++) {
-        if (i == 0) strcat(bar, bas_g);
-        else if (i == (win->width-1)) strcat(bar, bas_d);
-        else strcat(bar, bas);
+        if (i == 0) strcat(bar_bas, &bas_g);
+        else if (i == (win->width-1)) strcat(bar_bas, &bas_d);
+        else strcat(bar_bas, &bas);
     }
-    mvwaddstr_perso(win, win->yo-win->height+1, win->xo, bar);
+    mvwaddstr_perso(win, win->yo-win->height+1, win->xo, bar_bas);
     #endif
 }
 
 void wrefresh_perso(WINDOW *win){
     #if __linux__
     return wrefresh(win);
-    #elif _WIN32
-    continue;
     #endif
 };
