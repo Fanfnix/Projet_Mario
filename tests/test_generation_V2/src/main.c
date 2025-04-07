@@ -24,13 +24,13 @@ int main() {
 
     // Setup dimension fenêtre tmp
     int height_fenetre_tmp = 6;
-    int width_fenetre_tmp = 50;  // COLS renvoie la largeur de la console en mode "ncurses"
+    int width_fenetre_tmp = 200;  // COLS renvoie la largeur de la console en mode "ncurses"
     int startx_fenetre_tmp = 0;
     int starty_fenetre_tmp = 0;
 
     // Setup dimension fenêtre de jeu
     int height_fenetre_jeu = 30;
-    int width_fenetre_jeu = 50;
+    int width_fenetre_jeu = 200;
     int startx_fenetre_jeu = 0;
     int starty_fenetre_jeu = starty_fenetre_tmp + height_fenetre_tmp;
 

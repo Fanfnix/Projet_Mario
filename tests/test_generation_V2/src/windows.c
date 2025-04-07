@@ -2,7 +2,6 @@
 #if _WIN32
 #include <conio.h>
 #include <windows.h>
-#endif
 
 void gotoxy(int xpos, int ypos)
 {
@@ -13,6 +12,8 @@ void gotoxy(int xpos, int ypos)
         scrn.Y = ypos;
         SetConsoleCursorPosition(hOuput, scrn);
 }
+
+#endif
 
 WINDOW *newwin_perso(int height, int width, int yo, int xo) {
     #if __linux__
@@ -50,10 +51,9 @@ WINDOW *derwin_perso(WINDOW *win, int height, int width, int yo, int xo) {
 
 void mvwaddstr_perso(WINDOW *win, int y, int x, char str[]) {
     #if __linux__
-    return mvwaddstr(win, y, x, str);
+    mvwaddstr(win, y, x, str);
     #elif _WIN32
-    WINDOW * tmp = win;
-    while(tmp != NULL) {
+    if (win != NULL) {
         y += tmp->yo;
         x += tmp->xo;
         tmp = tmp->precedent;
@@ -65,10 +65,9 @@ void mvwaddstr_perso(WINDOW *win, int y, int x, char str[]) {
 
 void mvwaddch_perso(WINDOW *win, int y, int x, char ch) {
     #if __linux__
-    return mvwaddch(win, y, x, ch);
+    mvwaddch(win, y, x, ch);
     #elif _WIN32
-    WINDOW * tmp = win;
-    while(tmp != NULL) {
+    if (win != NULL) {
         y += tmp->yo;
         x += tmp->xo;
         tmp = tmp->precedent;
@@ -80,7 +79,7 @@ void mvwaddch_perso(WINDOW *win, int y, int x, char ch) {
 
 void wborder_perso(WINDOW *win, char gauche, char droit, char haut, char bas, char haut_g, char haut_d, char bas_g, char bas_d) {
     #if __linux__
-    return wborder(win, gauche, droit, haut, bas, haut_g, haut_d, bas_g, bas_d);
+    wborder(win, gauche, droit, haut, bas, haut_g, haut_d, bas_g, bas_d);
     #elif _WIN32
     if(win == NULL) return;
     // Bar haut
@@ -109,6 +108,6 @@ void wborder_perso(WINDOW *win, char gauche, char droit, char haut, char bas, ch
 
 void wrefresh_perso(WINDOW *win){
     #if __linux__
-    return wrefresh(win);
+    wrefresh(win);
     #endif
 };
