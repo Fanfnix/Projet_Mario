@@ -35,7 +35,7 @@ int main() {
     int starty_fenetre_jeu = starty_fenetre_tmp + height_fenetre_tmp;
 
     // Creer fenetre de jeu
-    jeu = newwin(height_fenetre_jeu + 2, width_fenetre_jeu, starty_fenetre_jeu, startx_fenetre_jeu);
+    jeu = newwin_perso(height_fenetre_jeu + 2, width_fenetre_jeu, starty_fenetre_jeu, startx_fenetre_jeu);
     if (!jeu) {
         #if __linux__
         endwin();  // Sort la console du mode "ncurses"
@@ -43,13 +43,13 @@ int main() {
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return EXIT_FAILURE;
     }
-	wborder(jeu, '|', '|', '-', '-', '+', '+', '+', '+');
+	wborder_perso(jeu, '|', '|', '-', '-', '+', '+', '+', '+');
     #if __linux__
-	wrefresh(jeu);
+	wrefresh_perso(jeu);
     #endif
 
     // Creer fenetre tmp
-    tmp = newwin(height_fenetre_tmp, width_fenetre_tmp, starty_fenetre_tmp, startx_fenetre_tmp);
+    tmp = newwin_perso(height_fenetre_tmp, width_fenetre_tmp, starty_fenetre_tmp, startx_fenetre_tmp);
     if (!tmp) {
         #if __linux__
         endwin();  // Sort la console du mode "ncurses"

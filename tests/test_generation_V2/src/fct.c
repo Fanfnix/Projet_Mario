@@ -155,8 +155,6 @@ void libMemMap(struct Map* niv) {
 }
 
 
-#if __linux__
-
 void afficherMap_simp(WINDOW* fenetre, struct Map* niv, int height_carte, int width_carte) {
     char ch;
     for (int y = 0; y < height_carte; y++) {
@@ -169,7 +167,7 @@ void afficherMap_simp(WINDOW* fenetre, struct Map* niv, int height_carte, int wi
                 case 4: ch = '$'; break;
                 default: ch = '?'; break;
             }
-            mvwaddch(fenetre, y + 1, x + 1, ch);
+            mvwaddch_perso(fenetre, y + 1, x + 1, ch);
         }
     }
 }
@@ -188,7 +186,7 @@ void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_
                     case 4: if (!i) strcpy(str, "($)"); else strcpy(str, "   "); break;
                     default: strcpy(str, "???"); break;
                 }
-                mvwaddstr(fenetre, TY*y+i+1, TX*x+1, str);
+                mvwaddstr_perso(fenetre, TY*y+i+1, TX*x+1, str);
             }
         }
     }
@@ -196,7 +194,7 @@ void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_
 
 
 void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed) {
-    wborder(tmp, '|', '|', '-', '-', '+', '+', '+', '+');
+    wborder_perso(tmp, '|', '|', '-', '-', '+', '+', '+', '+');
     char elem1[255], elem2[255], elem3[255], elem4[255];
     int x = X - dMax;
     
@@ -205,75 +203,10 @@ void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed) {
     snprintf(elem3, 255, "x = %d", x);
     snprintf(elem4, 255, "Y = %d", Y);
     
-    mvwaddstr(tmp, 1, 1, elem1);
-    mvwaddstr(tmp, 2, 1, elem4);
-    mvwaddstr(tmp, 3, 1, elem2);
-    mvwaddstr(tmp, 4, 1, elem3);
+    mvwaddstr_perso(tmp, 1, 1, elem1);
+    mvwaddstr_perso(tmp, 2, 1, elem4);
+    mvwaddstr_perso(tmp, 3, 1, elem2);
+    mvwaddstr_perso(tmp, 4, 1, elem3);
 	
-    wrefresh(tmp);
+    wrefresh_perso(tmp);
 }
-
-#elif _WIN32
-
-void afficherMap_W(struct Map * niv, int height_carte, int width_carte) {
-    char str[TX+1];
-    for (int y = 0; y < height_carte; y++) {
-        for (int i = 0; i < 2; i++) {
-            for (int x = 0; x < width_carte; x++) {
-                switch (niv->carte[y][x]) {
-                    case 0: strcpy(str, "   "); break;
-                    case 1: strcpy(str, "###"); break;
-                    case 2: strcpy(str, "OOO"); break;
-                    case 3: if (!i) strcpy(str, "==="); else strcpy(str, "=?="); break;
-                    case 4: if (!i) strcpy(str, "($)"); else strcpy(str, "   "); break;
-                    default: strcpy(str, "???"); break;
-                }
-                gotoxy(TX*x+1, TY*y+i+1);
-                putch(str[TX+1]);
-            }
-        }
-    }
-}
-
-
-void afficherMap_simp_W(struct Map* niv, int height_carte, int width_carte) {
-    char ch;
-    for (int y = 0; y < height_carte; y++) {
-        for (int x = 0; x < width_carte; x++) {
-            switch (niv->carte[y][x]) {
-                case 0: ch = ' '; break;
-                case 1: ch = '#'; break;
-                case 2: ch = 'O'; break;
-                case 3: ch = '&'; break;
-                case 4: ch = '$'; break;
-                default: ch = '?'; break;
-            }
-            gotoxy(x+1, y+1);
-            putch(ch);
-        }
-    }
-}
-
-
-void afficherTmp_W(int X, int Y, int dMax, int* table, int seed) {
-    clrscr();
-    char elem1[255], elem2[255], elem3[255], elem4[255];
-    int x = X - dMax;
-    
-    snprintf(elem1, 255, "X = %d", X);
-    snprintf(elem2, 255, "dMax = %d", dMax);
-    snprintf(elem3, 255, "x = %d", x);
-    snprintf(elem4, 255, "Y = %d", Y);
-    
-    gotoxy(1, 1);
-    cputs(elem1);
-    gotoxy(1, 2);
-    cputs(elem4);
-    gotoxy(1, 3);
-    cputs(elem2);
-    gotoxy(1, 4);
-    cputs(elem3);	
-    return; // version windows a completer
-}
-
-#endif
