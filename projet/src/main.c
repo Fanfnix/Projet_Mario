@@ -45,7 +45,7 @@ int main() {
     endwin();
 
     struct Score ** liste_score = recupHiscores();
-    // affichageHiscores(liste_score);
+    affichageHiscores(liste_score);
 
     return 0;
 }
