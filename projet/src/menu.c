@@ -69,35 +69,35 @@ int actionMenuPrincipal(WINDOW * menu) {
 struct Score * recupScore(char * str) {
     struct Score * struct_score = malloc(sizeof(struct Score));
     if (struct_score == NULL) return NULL;
-    char tmp_str[255]; strcpy(tmp_str, str);
 
-    char * elem = strtok(tmp_str, ", \n");
-    int i = 0;
-    while (elem != NULL) {
-        printf("ELEM : -%s-\n", elem);
-        if (i == 0) struct_score->id = atoi(elem);
-        if (i == 1) strcpy(struct_score->pseudo, elem);
-        if (i == 2) struct_score->score = atoi(elem);
-        elem = strtok(NULL, ", \n");
-        i++;
+    char * elem[3];
+    elem[0] = strtok(str, ", \n");
+    for (int i = 1; i < 3; i++) {
+        elem[i] = strtok(NULL, ", \n");
     }
+    struct_score->id = atoi(elem[0]);
+    strcpy(struct_score->pseudo, elem[1]);
+    struct_score->score = atoi(elem[2]);
 
     return struct_score;
 }
 
 
 struct Score ** recupHiscores() {
-    struct Score ** liste_score = malloc(10 * sizeof(struct Score *));
+    struct Score ** liste_score = malloc(10 * sizeof(struct Score*));
     for (int i = 0; i < 10; i++) liste_score[i] = NULL;
 
     char chemin[] = "data/hi_scores.txt";  // Le chemin est à calculer depuis l'éxécutable.
     FILE * file = fopen(chemin, "r");
-    char line[50];
+    char * line;
     for (int i = 0; i < 10; i++) {
-        fgets(line, 50, file);
-        printf("LINE : -%s-\n", line);
-        liste_score[i] = recupScore(line);
+        line = fgets(line, 50, file);
+        if (line == NULL) break;
+        else {
+            liste_score[i] = recupScore(line);
+        }
     }
+
     fclose(file);
 
     return liste_score;
@@ -105,9 +105,9 @@ struct Score ** recupHiscores() {
 
 
 void affichageHiscores(struct Score ** liste_score) {
-    for (int j = 0; j < 10; j++) {
-        if (liste_score[j] != NULL) {
-            printf("ID = %d | PSEUDO = %s | SCORE = %d\n", liste_score[j]->id, liste_score[j]->pseudo, liste_score[j]->score);
+    for (int i = 0; i < 10; i++) {
+        if (liste_score[i] != NULL) {
+            printf("ID = %d | PSEUDO = %s | SCORE = %d\n", liste_score[i]->id, liste_score[i]->pseudo, liste_score[i]->score);
         } else break;
     }
 }

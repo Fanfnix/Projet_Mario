@@ -19,7 +19,7 @@
 
 struct Score {
     int id;
-    char * pseudo;
+    char pseudo[10];
     int score;
 };
 
