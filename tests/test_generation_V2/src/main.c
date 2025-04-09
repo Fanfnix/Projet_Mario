@@ -95,7 +95,7 @@ int main() {
     #elif _WIN32
     if (kbhit()) while (getch() != 'k');
     #endif
-
+    while(1);
     // Libération de la mémoire : niveau et table aléatoire
     libMemMap(niv);
     free(table);

@@ -85,26 +85,26 @@ void wborder_perso(WINDOW *win, char gauche, char droit, char haut, char bas, ch
     #elif _WIN32
     if(win == NULL) return;
     // Bar haut
-    char bar_haut[255] = "";
-    for (int i = 0; i < win->width; i++) {
+    char bar_haut[255] = {'\0'};
+    for (int i = 0; i < win->width+1; i++) {
         if (i == 0) strcat(bar_haut, &haut_g);
-        else if (i == (win->width-1)) strcat(bar_haut, &haut_d);
+        else if (i == (win->width)) strcat(bar_haut, &haut_d);
         else strcat(bar_haut, &haut);
     }
     mvwaddstr_perso(win, 0, 0, bar_haut);
     // Cotes
-    for (int j = 1; j < win->height-2; j++) {
+    for (int j = 1; j < win->height-1; j++) {
         mvwaddch_perso(win, j, 0, gauche);
         mvwaddch_perso(win, j, win->width, droit);
     }
     // Bar bas
-    char bar_bas[255] = "";
-    for (int i = 0; i < win->width; i++) {
+    char bar_bas[255] = {'0'};
+    for (int i = 0; i < win->width+1; i++) {
         if (i == 0) strcat(bar_bas, &bas_g);
-        else if (i == (win->width-1)) strcat(bar_bas, &bas_d);
+        else if (i == (win->width)) strcat(bar_bas, &bas_d);
         else strcat(bar_bas, &bas);
     }
-    mvwaddstr_perso(win, win->height, 0, bar_bas);
+    mvwaddstr_perso(win, win->height-1, 0, bar_bas);
     #endif
 }
 
