@@ -195,18 +195,24 @@ void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_
 
 void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed) {
     wborder_perso(tmp, '|', '|', '-', '-', '+', '+', '+', '+');
-    char elem1[255], elem2[255], elem3[255], elem4[255];
+    char elem[255] = "";
     int x = X - dMax;
     
-    snprintf(elem1, 255, "X = %d", X);
-    snprintf(elem2, 255, "dMax = %d", dMax);
-    snprintf(elem3, 255, "x = %d", x);
-    snprintf(elem4, 255, "Y = %d", Y);
-    
-    mvwaddstr_perso(tmp, 1, 1, elem1);
-    mvwaddstr_perso(tmp, 2, 1, elem4);
-    mvwaddstr_perso(tmp, 3, 1, elem2);
-    mvwaddstr_perso(tmp, 4, 1, elem3);
+    snprintf(elem, 255, "X = %d", X);
+    mvwaddstr_perso(tmp, 1, 1, elem);
+    strcpy(elem, "");
+
+    snprintf(elem, 255, "dMax = %d", dMax);
+    mvwaddstr_perso(tmp, 2, 1, elem);
+    strcpy(elem, "");
+
+    snprintf(elem, 255, "x = %d", x);
+    mvwaddstr_perso(tmp, 3, 1, elem);
+    strcpy(elem, "");
+
+    snprintf(elem, 255, "Y = %d", Y);
+    mvwaddstr_perso(tmp, 4, 1, elem);
+    strcpy(elem, "");
 	
     wrefresh_perso(tmp);
 }
