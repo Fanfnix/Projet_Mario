@@ -57,7 +57,7 @@ int main() {
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return EXIT_FAILURE;
     }
-    afficherTmp(tmp, 0, 0, 0, table, seed);
+    //afficherTmp(tmp, 0, 0, 0, table, seed);
 
     // Setup dimension carte
     int height_carte = height_fenetre_jeu / TY;
