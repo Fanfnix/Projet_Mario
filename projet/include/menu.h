@@ -28,6 +28,6 @@ void affichageControle(WINDOW * controle);
 int actionMenuPrincipal(WINDOW * menu);
 
 struct Score ** recupHiscores();
-void affichageHiscores(struct Score ** liste_score);
+void affichageHiscores(WINDOW * win, struct Score ** liste_score);
 
 #endif
