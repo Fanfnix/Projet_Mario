@@ -25,8 +25,8 @@ void affichageRetromario(WINDOW * logo) {
 void affichageControle(WINDOW * controle) {
     wborder(controle, '|', '|', '-', '-', '+', '+', '+', '+');
 
-    mvwaddstr(controle, 2, 3, "> SAUTER : Z");
-    mvwaddstr(controle, 4, 3, "> GAUCHE : Q");
+    mvwaddstr(controle, 2, 3, "> SAUTER / ^ : Z");
+    mvwaddstr(controle, 4, 3, "> GAUCHE / v : Q");
     mvwaddstr(controle, 6, 3, "> DROITE : D");
     mvwaddstr(controle, 8, 3, "> PAUSE :  P");
 

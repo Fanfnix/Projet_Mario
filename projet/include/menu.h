@@ -14,8 +14,8 @@
 #define WIDTH_CONTROLE 20
 #define HEIGHT_CONTROLE 9
 
-#define WIDTH_MENU 70
-#define HEIGHT_MENU 19
+#define WIDTH_MENU 30
+#define HEIGHT_MENU 53
 
 struct Score {
     int id;
