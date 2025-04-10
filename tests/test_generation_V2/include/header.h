@@ -12,7 +12,7 @@
 
 #elif _WIN32
 #include <conio.h>
-
+#include <windows.h>
 typedef struct WINDOW {
     int xo;
     int yo;

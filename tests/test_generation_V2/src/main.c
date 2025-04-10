@@ -43,6 +43,7 @@ int main() {
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return EXIT_FAILURE;
     }
+    system("cls");
 	wborder_perso(jeu, '|', '|', '-', '-', '+', '+', '+', '+');
     #if __linux__
 	wrefresh_perso(jeu);
@@ -57,7 +58,7 @@ int main() {
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return EXIT_FAILURE;
     }
-    //afficherTmp(tmp, 0, 0, 0, table, seed);
+    afficherTmp(tmp, 0, 0, 0, table, seed);
 
     // Setup dimension carte
     int height_carte = height_fenetre_jeu / TY;
@@ -93,9 +94,15 @@ int main() {
     #if __linux__
     while (wgetch(jeu) != 'k');
     #elif _WIN32
-    if (kbhit()) while (getch() != 'k');
+    while(1) {
+        if (kbhit()) {
+            char c = getch();
+            if (c == 'k') break;
+        }
+        // Affichage de la carte
+        afficherMap(jeu, niv, height_carte, width_carte);
+    }
     #endif
-    while(1);
     // Libération de la mémoire : niveau et table aléatoire
     libMemMap(niv);
     free(table);

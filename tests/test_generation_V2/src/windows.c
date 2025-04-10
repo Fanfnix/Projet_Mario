@@ -101,10 +101,11 @@ void wborder_perso(WINDOW *win, char gauche, char droit, char haut, char bas, ch
     // Bar bas
     char bar_bas[255] = {'0'};
     for (int i = 0; i < win->width+1; i++) {
-        if (i == 0) strcat(bar_bas, &bas_g);
-        else if (i == (win->width)) strcat(bar_bas, &bas_d);
-        else strcat(bar_bas, &bas);
+        if (i == 0) bar_bas[i] = bas_g;
+        else if (i == (win->width)) bar_bas[i] = bas_d;
+        else bar_bas[i] = bas;
     }
+    bar_bas[win->width+1] = '\0';
     mvwaddstr_perso(win, win->height-1, 0, bar_bas);
     #endif
 }
