@@ -43,9 +43,9 @@ int main() {
     menu = newwin(height_fenetre_menu, width_fenetre_menu, starty_fenetre_menu, startx_fenetre_menu);
 
     height_fenetre_eloise = 30;
-    width_fenetre_eloise = 130;
-    startx_fenetre_eloise = 45;
-    starty_fenetre_eloise = 11;
+    width_fenetre_eloise = 120;
+    startx_fenetre_eloise = (COLS - width_fenetre_eloise) / 2;
+    starty_fenetre_eloise = (LINES - height_fenetre_eloise) / 2;
 
     eloise = newwin(height_fenetre_eloise, width_fenetre_eloise, starty_fenetre_eloise, startx_fenetre_eloise);
     wborder(eloise, '|', '|', '-', '-', '+', '+', '+', '+');
