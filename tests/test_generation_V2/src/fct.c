@@ -167,7 +167,7 @@ void afficherMap_simp(WINDOW* fenetre, struct Map* niv, int height_carte, int wi
                 case 4: ch = '$'; break;
                 default: ch = '?'; break;
             }
-            mvwaddch_perso(fenetre, y + 1, x + 1, ch);
+            mvwaddch(fenetre, y + 1, x + 1, ch);
         }
     }
 }
@@ -186,7 +186,7 @@ void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_
                     case 4: if (!i) strcpy(str, "($)"); else strcpy(str, "   "); break;
                     default: strcpy(str, "???"); break;
                 }
-                mvwaddstr_perso(fenetre, TY*y+i+1, TX*x+1, str);
+                mvwaddstr(fenetre, TY*y+i+1, TX*x+1, str);
             }
         }
     }
@@ -194,25 +194,25 @@ void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_
 
 
 void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed) {
-    wborder_perso(tmp, '|', '|', '-', '-', '+', '+', '+', '+');
+    wborder(tmp, '|', '|', '-', '-', '+', '+', '+', '+');
     char elem[255] = "";
     int x = X - dMax;
     
     snprintf(elem, 255, "X = %d", X);
-    mvwaddstr_perso(tmp, 1, 1, elem);
+    mvwaddstr(tmp, 1, 1, elem);
     strcpy(elem, "");
 
     snprintf(elem, 255, "dMax = %d", dMax);
-    mvwaddstr_perso(tmp, 2, 1, elem);
+    mvwaddstr(tmp, 2, 1, elem);
     strcpy(elem, "");
 
     snprintf(elem, 255, "x = %d", x);
-    mvwaddstr_perso(tmp, 3, 1, elem);
+    mvwaddstr(tmp, 3, 1, elem);
     strcpy(elem, "");
 
     snprintf(elem, 255, "Y = %d", Y);
-    mvwaddstr_perso(tmp, 4, 1, elem);
+    mvwaddstr(tmp, 4, 1, elem);
     strcpy(elem, "");
 	
-    wrefresh_perso(tmp);
+    wrefresh(tmp);
 }

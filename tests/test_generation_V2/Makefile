@@ -14,7 +14,7 @@ OBJFILES = $(patsubst %.c, %.o, $(SRCFILES))
 
 all: $(EXEC)
 
-genere: $(OBJFILES)
+$(EXEC): $(OBJFILES)
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 $(SRCDIR)/%.o: $(SRCDIR)/%.c

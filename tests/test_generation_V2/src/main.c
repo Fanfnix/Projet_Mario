@@ -13,48 +13,38 @@ int main() {
     WINDOW * jeu;
     WINDOW * tmp;
 
-    #if __linux__
-
     initscr();  // Met la console en mode "ncurses"
     curs_set(0);  // Cache le curseur dans la console
     noecho();
     nodelay(stdscr, true);
 
-    #endif
-
     // Setup dimension fenêtre tmp
     int height_fenetre_tmp = 6;
-    int width_fenetre_tmp = 150;  // COLS renvoie la largeur de la console en mode "ncurses"
+    int width_fenetre_tmp = COLS;  // COLS renvoie la largeur de la console en mode "ncurses"
     int startx_fenetre_tmp = 0;
     int starty_fenetre_tmp = 0;
 
     // Setup dimension fenêtre de jeu
     int height_fenetre_jeu = 30;
-    int width_fenetre_jeu = 150;
+    int width_fenetre_jeu = COLS;
     int startx_fenetre_jeu = 0;
     int starty_fenetre_jeu = starty_fenetre_tmp + height_fenetre_tmp;
 
     // Creer fenetre de jeu
-    jeu = newwin_perso(height_fenetre_jeu + 2, width_fenetre_jeu, starty_fenetre_jeu, startx_fenetre_jeu);
+    jeu = newwin(height_fenetre_jeu + 2, width_fenetre_jeu, starty_fenetre_jeu, startx_fenetre_jeu);
     if (!jeu) {
-        #if __linux__
         endwin();  // Sort la console du mode "ncurses"
-        #endif
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return EXIT_FAILURE;
     }
     system("cls");
-	wborder_perso(jeu, '|', '|', '-', '-', '+', '+', '+', '+');
-    #if __linux__
-	wrefresh_perso(jeu);
-    #endif
+	wborder(jeu, '|', '|', '-', '-', '+', '+', '+', '+');
+	wrefresh(jeu);
 
     // Creer fenetre tmp
-    tmp = newwin_perso(height_fenetre_tmp, width_fenetre_tmp, starty_fenetre_tmp, startx_fenetre_tmp);
+    tmp = newwin(height_fenetre_tmp, width_fenetre_tmp, starty_fenetre_tmp, startx_fenetre_tmp);
     if (!tmp) {
-        #if __linux__
         endwin();  // Sort la console du mode "ncurses"
-        #endif
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return EXIT_FAILURE;
     }
@@ -74,9 +64,7 @@ int main() {
 
     // Vérification de la création du niveau
     if (!niv) {
-        #if __linux__
         endwin();  // Sort la console du mode "ncurses"
-        #endif
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return EXIT_FAILURE;
     }
@@ -91,26 +79,14 @@ int main() {
     // afficherMap_simp(jeu, niv, height_carte, width_carte);
     afficherMap(jeu, niv, height_carte, width_carte);
 
-    #if __linux__
     while (wgetch(jeu) != 'k');
-    #elif _WIN32
-    while(1) {
-        if (kbhit()) {
-            char c = getch();
-            if (c == 'k') break;
-        }
-        // Affichage de la carte
-        afficherMap(jeu, niv, height_carte, width_carte);
-    }
-    #endif
+
     // Libération de la mémoire : niveau et table aléatoire
     libMemMap(niv);
     free(table);
     table = NULL;
 
-    #if __linux__
     endwin();  // Sort la console du mode "ncurses"
-    #endif
 
     return 0;
 }
