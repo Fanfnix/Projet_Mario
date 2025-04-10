@@ -87,10 +87,11 @@ void wborder_perso(WINDOW *win, char gauche, char droit, char haut, char bas, ch
     // Bar haut
     char bar_haut[255] = {'\0'};
     for (int i = 0; i < win->width+1; i++) {
-        if (i == 0) strcat(bar_haut, &haut_g);
-        else if (i == (win->width)) strcat(bar_haut, &haut_d);
-        else strcat(bar_haut, &haut);
+        if (i == 0) bar_haut[i] = haut_g;
+        else if (i == (win->width)) bar_haut[i] = haut_d;
+        else bar_haut[i] = haut;
     }
+    bar_haut[win->width+1] = '\0';
     mvwaddstr_perso(win, 0, 0, bar_haut);
     // Cotes
     for (int j = 1; j < win->height-1; j++) {

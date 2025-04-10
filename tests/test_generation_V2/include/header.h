@@ -11,7 +11,7 @@
 #include <ncurses.h>
 
 #elif _WIN32
-
+#include <conio.h>
 
 typedef struct WINDOW {
     int xo;
