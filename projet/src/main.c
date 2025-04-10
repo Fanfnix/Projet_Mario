@@ -24,7 +24,7 @@ int main() {
     startx_fenetre_logo = (COLS - width_fenetre_logo) / 2;
     starty_fenetre_logo = 1;
 
-    logo = newwin_perso(height_fenetre_logo, width_fenetre_logo, starty_fenetre_logo, startx_fenetre_logo);
+    logo = newwin(height_fenetre_logo, width_fenetre_logo, starty_fenetre_logo, startx_fenetre_logo);
     affichageRetromario(logo);
 
     height_fenetre_controle = HEIGHT_CONTROLE + 2;
@@ -32,7 +32,7 @@ int main() {
     startx_fenetre_controle = COLS - width_fenetre_controle - 2;
     starty_fenetre_controle = (LINES - height_fenetre_controle) / 2;
 
-    controle = newwin_perso(height_fenetre_controle, width_fenetre_controle, starty_fenetre_controle, startx_fenetre_controle);
+    controle = newwin(height_fenetre_controle, width_fenetre_controle, starty_fenetre_controle, startx_fenetre_controle);
     affichageControle(controle);
 
     height_fenetre_menu = LINES - 2;
@@ -40,18 +40,18 @@ int main() {
     startx_fenetre_menu = 2;
     starty_fenetre_menu = 1;
 
-    menu = newwin_perso(height_fenetre_menu, width_fenetre_menu, starty_fenetre_menu, startx_fenetre_menu);
+    menu = newwin(height_fenetre_menu, width_fenetre_menu, starty_fenetre_menu, startx_fenetre_menu);
 
     height_fenetre_eloise = 30;
     width_fenetre_eloise = 130;
     startx_fenetre_eloise = 45;
     starty_fenetre_eloise = 11;
 
-    eloise = newwin_perso(height_fenetre_eloise, width_fenetre_eloise, starty_fenetre_eloise, startx_fenetre_eloise);
-    wborder_perso(eloise, '|', '|', '-', '-', '+', '+', '+', '+');
-    wrefresh_perso(eloise);
+    eloise = newwin(height_fenetre_eloise, width_fenetre_eloise, starty_fenetre_eloise, startx_fenetre_eloise);
+    wborder(eloise, '|', '|', '-', '-', '+', '+', '+', '+');
+    wrefresh(eloise);
 
-    // liste_score = recupHiscores();
+    liste_score = recupHiscores();
     
     int choix_principal;
     choix_principal = actionMenuPrincipal(menu);
@@ -62,12 +62,10 @@ int main() {
         case 3: break;
     }
 
-    mvwaddstr_perso(stdscr, LINES-2, 2, "Press k to leave");
+    mvwaddstr(stdscr, LINES-2, 2, "Press k to leave");
     while(getch() != 'k');
 
-    #if __linux__
     endwin();
-    #endif
-    
+        
     return 0;
 }

@@ -14,23 +14,23 @@ void affichageRetromario(WINDOW * logo) {
                     tmp[i] = ' ';
                 }
             }
-            mvwaddstr_perso(logo, y+1, 1, tmp);
+            mvwaddstr(logo, y+1, 1, tmp);
         }
         wattroff(logo, A_BOLD);
-        wrefresh_perso(logo);
+        wrefresh(logo);
         fclose(file);
     }
 }
 
 void affichageControle(WINDOW * controle) {
-    wborder_perso(controle, '|', '|', '-', '-', '+', '+', '+', '+');
+    wborder(controle, '|', '|', '-', '-', '+', '+', '+', '+');
 
-    mvwaddstr_perso(controle, 2, 3, "> SAUTER / ^ : Z");
-    mvwaddstr_perso(controle, 4, 3, "> GAUCHE / v : Q");
-    mvwaddstr_perso(controle, 6, 3, "> DROITE : D");
-    mvwaddstr_perso(controle, 8, 3, "> PAUSE :  P");
+    mvwaddstr(controle, 2, 3, "> SAUTER / ^ : Z");
+    mvwaddstr(controle, 4, 3, "> GAUCHE / v : Q");
+    mvwaddstr(controle, 6, 3, "> DROITE : D");
+    mvwaddstr(controle, 8, 3, "> PAUSE :  P");
 
-    wrefresh_perso(controle);
+    wrefresh(controle);
 }
 
 void affichageMenuPrincipal(WINDOW * menu, int choix) {
@@ -38,17 +38,17 @@ void affichageMenuPrincipal(WINDOW * menu, int choix) {
     char liste_menu[4][255] = {"LANCER UNE PARTIE", "HI-SCORES", "SAUVEGARDES", "QUITTER"};
 
     wclear(menu);
-    wborder_perso(menu, '|', '|', '-', '-', '+', '+', '+', '+');
+    wborder(menu, '|', '|', '-', '-', '+', '+', '+', '+');
     char affiche[255];
     for (int i = 0; i < taille_menu; i++) {
         if (i == choix) {
             sprintf(affiche, "> %s <", liste_menu[i]);
             wattron(menu, A_BOLD);
         } else sprintf(affiche, "  %s  ", liste_menu[i]);
-        mvwaddstr_perso(menu, 4*(i+1), (WIDTH_MENU-(strlen(liste_menu[i])+4)+1)/2, affiche);
+        mvwaddstr(menu, 4*(i+1), (WIDTH_MENU-(strlen(liste_menu[i])+4)+1)/2, affiche);
         if (i == choix) wattroff(menu, A_BOLD);
     }
-    wrefresh_perso(menu);
+    wrefresh(menu);
 }
 
 int actionMenuPrincipal(WINDOW * menu) {
@@ -109,7 +109,7 @@ void affichageHiscores(WINDOW * win, struct Score ** liste_score) {
     for (int i = 0; i < 10; i++) {
         if (liste_score[i] != NULL) {
             sprintf(text, "ID = %d | PSEUDO = %s | SCORE = %d\n", liste_score[i]->id, liste_score[i]->pseudo, liste_score[i]->score);
-            mvwaddstr_perso(win, 2+i, 2, text);
+            mvwaddstr(win, 2+i, 2, text);
         } else break;
     }
 }

@@ -7,16 +7,7 @@
 #include <math.h>
 #include <time.h>
 
-#if __linux__
-    #include <ncurses.h>
-
-#elif _WIN32
-    typedef struct WINDOW {
-        int xo, yo;
-        int LINES, COLS;
-    } WINDOW;
-
-#endif
+#include <ncurses.h>
 
 WINDOW *newwin_perso(int height, int width, int yo, int xo);
 WINDOW *derwin_perso(WINDOW *win, int height, int width, int yo, int xo);
