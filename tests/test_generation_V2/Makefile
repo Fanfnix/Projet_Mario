@@ -3,7 +3,7 @@ CFLAGS = -Wall -Iinclude/
 LDFLAGS =
 LIBS = -lm
 SRCDIR = src
-EXEC = genere
+EXEC = genere.out
 OS = $(shell uname -s)
 
 CFLAGS += $(shell pkg-config --cflags ncurses)

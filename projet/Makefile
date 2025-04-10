@@ -3,7 +3,7 @@ CFLAGS = -Wall -Iinclude/
 LDFLAGS =
 LIBS = -lm
 SRCDIR = src
-EXEC = result
+EXEC = result.out
 
 CFLAGS += $(shell pkg-config --cflags ncurses)
 LIBS += $(shell pkg-config --libs ncurses)
