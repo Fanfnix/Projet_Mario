@@ -15,7 +15,11 @@
 #define HEIGHT_CONTROLE 9
 
 #define WIDTH_MENU 30
-#define HEIGHT_MENU 53
+
+#define WIDTH_CHOIX 40
+
+#define WIDTH_ELOISE 120
+#define HEIGHT_ELOISE 30
 
 struct Score {
     int id;
@@ -23,9 +27,17 @@ struct Score {
     int score;
 };
 
+WINDOW * creerWindowLogo();
+WINDOW * creerWindowMenu();
+WINDOW * creerWindowChoix();
+WINDOW * creerWindowControle();
+WINDOW * creerWindowEloise();
+
 void affichageRetromario(WINDOW * win);
 void affichageControle(WINDOW * controle);
-int actionMenuPrincipal(WINDOW * menu);
+
+void affichageMenuPrincipal(WINDOW * menu, int choix);
+void actionMenuPrincipal(WINDOW * menu, int * id);
 
 struct Score ** recupHiscores();
 struct Score ** recupHiscores();
