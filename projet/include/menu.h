@@ -19,7 +19,7 @@
 
 struct Score {
     int id;
-    char pseudo[10];
+    char pseudo[50];
     int score;
 };
 
@@ -28,6 +28,8 @@ void affichageControle(WINDOW * controle);
 int actionMenuPrincipal(WINDOW * menu);
 
 struct Score ** recupHiscores();
+struct Score ** recupHiscores();
 void affichageHiscores(WINDOW * win, struct Score ** liste_score);
+void libererHiscores(struct Score ** liste_score);
 
 #endif

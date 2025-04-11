@@ -13,11 +13,9 @@ int main() {
 
     struct Score **liste_score;
 
-    #if __linux__
     initscr();
     curs_set(0);
     noecho();
-    #endif
 
     height_fenetre_logo = HEIGHT_LOGO + 2;
     width_fenetre_logo = WIDTH_LOGO + 2;
@@ -66,6 +64,8 @@ int main() {
     while(getch() != 'k');
 
     endwin();
+
+    libererHiscores(liste_score);
         
     return 0;
 }

@@ -70,13 +70,14 @@ struct Score * recupScore(char * str) {
     struct Score * struct_score = malloc(sizeof(struct Score));
     if (struct_score == NULL) return NULL;
 
-    char * elem[3];
+    char * elem[3] = {NULL};
     elem[0] = strtok(str, ", \n");
     for (int i = 1; i < 3; i++) {
         elem[i] = strtok(NULL, ", \n");
     }
     struct_score->id = atoi(elem[0]);
-    strcpy(struct_score->pseudo, elem[1]);
+    strncpy(struct_score->pseudo, elem[1], sizeof(struct_score->pseudo) - 1);
+    struct_score->pseudo[sizeof(struct_score->pseudo) - 1] = '\0';
     struct_score->score = atoi(elem[2]);
 
     return struct_score;
@@ -89,17 +90,16 @@ struct Score ** recupHiscores() {
 
     char chemin[] = "data/hi_scores.txt";  // Le chemin est à calculer depuis l'éxécutable.
     FILE * file = fopen(chemin, "r");
-    char * line;
-    for (int i = 0; i < 10; i++) {
-        line = fgets(line, 50, file);
-        if (line == NULL) break;
-        else {
-            liste_score[i] = recupScore(line);
-        }
+    if (file == NULL) {
+        free(liste_score);
+        return NULL;
     }
-
+    char line[50];
+    for (int i = 0; i < 10; i++) {
+        if (fgets(line, sizeof(line), file) == NULL) break;
+        liste_score[i] = recupScore(line);
+    }
     fclose(file);
-
     return liste_score;
 }
 
@@ -108,8 +108,22 @@ void affichageHiscores(WINDOW * win, struct Score ** liste_score) {
     char text[255];
     for (int i = 0; i < 10; i++) {
         if (liste_score[i] != NULL) {
-            sprintf(text, "ID = %d | PSEUDO = %s | SCORE = %d\n", liste_score[i]->id, liste_score[i]->pseudo, liste_score[i]->score);
-            mvwaddstr(win, 2+i, 2, text);
+            sprintf(text, "ID = %d | PSEUDO = %s | SCORE = %d", liste_score[i]->id, liste_score[i]->pseudo, liste_score[i]->score);
+            mvwaddstr(win, 1+i, 2, text);
         } else break;
     }
+    wrefresh(win);
+}
+
+
+void libererHiscores(struct Score ** liste_score) {
+    if (liste_score == NULL) return;
+    for (int i = 0; i < 10; i++) {
+        if (liste_score[i] != NULL) {
+            free(liste_score[i]);
+            liste_score[i] = NULL;
+        }
+    }
+    free(liste_score);
+    liste_score = NULL;
 }
