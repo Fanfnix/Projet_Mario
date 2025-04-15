@@ -37,8 +37,8 @@ WINDOW * creerWindowMenu() {
 WINDOW * creerWindowChoix() {
     int height_fenetre_choix, width_fenetre_choix, startx_fenetre_choix, starty_fenetre_choix;
     height_fenetre_choix = LINES - 2;
-    width_fenetre_choix = WIDTH_CHOIX + 2;
-    startx_fenetre_choix = WIDTH_MENU + 4;
+    width_fenetre_choix = COLS - WIDTH_MENU - 7;
+    startx_fenetre_choix = WIDTH_MENU + 6;
     starty_fenetre_choix = 1;
     WINDOW *choix = newwin(height_fenetre_choix, width_fenetre_choix, starty_fenetre_choix, startx_fenetre_choix);
     return choix;
