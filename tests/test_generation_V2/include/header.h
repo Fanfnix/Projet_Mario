@@ -25,6 +25,19 @@ struct Elem {
     int x, y;
 };
 
+typedef struct Save
+{
+    int id;
+    int seed;
+    int posx;
+    int posy;
+    int distance;
+    int kills;
+    int piece;
+    int vies;
+
+}Save;
+
 struct Map* creerMap(int L, int l);
 void libMemMap(struct Map* niv);
 
@@ -47,5 +60,13 @@ int * creerTableSeed();
 int * iterationTable(int* seed, int* table);
 int rand_nb(int seed);
 int perlin(int x, int* table, int* seed);
+
+
+// SAUVEGARDES
+Save * recupSave(char * str);
+struct Score ** recupCheckpoint();
+void affichageSauvegarde(WINDOW * win, struct Save ** sauvegardes, int choisi);
+void actionSauvegarde(WINDOW * win, struct Save ** sauvegarde, int * id);
+void libererSauvegarde(struct Save ** sauvegarde);
 
 #endif

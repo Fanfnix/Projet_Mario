@@ -133,6 +133,7 @@ void actionMenuPrincipal(WINDOW * menu, int * id) {
     }
 }
 
+// HI-SCORE
 
 struct Score * recupScore(char * str) {
     struct Score * struct_score = malloc(sizeof(struct Score));
@@ -226,4 +227,102 @@ void libererHiscores(struct Score ** liste_score) {
     }
     free(liste_score);
     liste_score = NULL;
+}
+
+//SAUVEGARDES
+
+Save * recupSave(char * str){
+
+    Save * sauvegarde = malloc(sizeof(Save));
+    if (sauvegarde == NULL) return NULL;
+    char * elem[8]= {NULL};
+    elem[0] = strtok(str, ", \n");
+    for (int i = 1; i < 8; i++)
+    {
+        elem[i] = strtok(NULL, ", \n");
+    }
+    sauvegarde->id = atoi(elem[0]);
+    sauvegarde->seed = atoi(elem[1]);
+    sauvegarde->distance = atoi(elem[2]);
+    sauvegarde->posx = atoi(elem[3]);
+    sauvegarde->posy = atoi(elem[4]);
+    sauvegarde->kills = atoi(elem[5]);
+    sauvegarde->piece = atoi(elem[6]);
+    sauvegarde->vies = atoi(elem[7]);
+
+    return sauvegarde;
+}
+
+Save ** recupCheckpoint() {
+    Save ** checkpoint = malloc(10 * sizeof(struct Save*));
+    for (int i = 0; i < 10; i++) checkpoint[i] = NULL;
+
+    char chemin[] = "data/checkpoint.txt";  // Le chemin est à calculer depuis l'éxécutable.
+    FILE * file = fopen(chemin, "r");
+    if (file == NULL) {
+        free(checkpoint);
+        return NULL;
+    }
+    char line[50];
+    for (int i = 0; i < 10; i++) {
+        if (fgets(line, sizeof(line), file) == NULL) break;
+        checkpoint[i] = recupSave(line);
+    }
+    fclose(file);
+    return checkpoint;
+}
+
+void affichageSauvegarde(WINDOW * win, struct Save ** sauvegarde, int choisi) {
+    if (choisi >= 10) {
+        endwin();
+        printf("CHOIX = %d | SIZE = 10\n", choisi);
+        return;
+    }
+    wclear(win);
+    wattron(win, A_BOLD);
+    wborder(win, '|', '|', '-', '-', '+', '+', '+', '+');
+    mvwaddstr(win, 1, (COLS - WIDTH_MENU - 68) / 2, " _____ _____ _____ _____ _____ _____ _____ _____ ____  _____ _____ ");
+    mvwaddstr(win, 2, (COLS - WIDTH_MENU - 68) / 2, "|   __|  _  |  |  |  |  |   __|   __|  _  | __  |    \\|   __|   __|");
+    mvwaddstr(win, 3, (COLS - WIDTH_MENU - 68) / 2, "|__   |     |  |  |  |  |   __|  |  |     |    -|  |  |   __|__   |");
+    mvwaddstr(win, 4, (COLS - WIDTH_MENU - 68) / 2, "|_____|__|__|_____|\\___/|_____|_____|__|__|__|__|____/|_____|_____|");
+    wattroff(win, A_BOLD);
+    char text[255];
+    for (int i = 0; i < 10; i++) {
+        if (sauvegarde[i] != NULL) {
+            WINDOW * save = derwin(win, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
+            sprintf(text, "  >>> %d. Vie :%d - Kills :%d - Pieces : %d - Distance max: %d - Pose en x/y : %d / %d - Seed de la partie : %d", i+1, sauvegarde[i]->id, sauvegarde[i]->vies, sauvegarde[i]->kills,sauvegarde[i]->piece,sauvegarde[i]->distance,sauvegarde[i]->posx,sauvegarde[i]->posy,sauvegarde[i]->seed);
+            if (i == choisi) wattron(save, A_BOLD);
+            mvwaddstr(save, 2, 2, text);
+            if (i == choisi) wattroff(save, A_BOLD);
+        } else break;
+    }
+    mvwaddstr(win, 50, 2, " 'x' to delete a save");
+    wrefresh(win);
+}
+
+void actionSauvegarde(WINDOW * win, struct Save ** sauvegarde, int * id) {
+    char pressed;
+    affichageSauvegarde(win, sauvegarde, *id);
+    while ((pressed = wgetch(win)) != 'k') {
+        if (pressed == 'z') (*id)--;
+        else if (pressed == 's') (*id)++;
+        else if (pressed == 'x') continue;  // Supprimer la sauvegarde
+        if (*id < 0) *id = 9;
+        if (*id > 9) *id = 0;
+        affichageSauvegarde(win, sauvegarde, *id);
+    }
+    wclear(win);
+    wrefresh(win);
+}
+
+void libererSauvegarde(struct Save ** sauvegarde) {
+    if (sauvegarde == NULL) return;
+    for (int i = 0; i < 10; i++) {
+        if (sauvegarde[i] != NULL) {
+            free(sauvegarde[i]);
+            sauvegarde[i] = NULL;
+        }
+    }
+    free(sauvegarde);
+    sauvegarde = NULL;
 }
