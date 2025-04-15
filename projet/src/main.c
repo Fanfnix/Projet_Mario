@@ -28,11 +28,12 @@ int main() {
     liste_score = recupHiscores();
     
     int id = 0;
+    int id_choix = 0;
     do {
         actionMenuPrincipal(menu, &id);
         switch (id) {
             case 0: break;
-            case 1: affichageHiscores(choix, liste_score); break;
+            case 1: actionHiscores(choix, liste_score, &id_choix); refresh(); break;
             case 2: break;
             case 3: break;
         }

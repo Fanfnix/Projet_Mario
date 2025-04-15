@@ -93,7 +93,7 @@ void affichageControle(WINDOW * controle) {
 void affichageMenuPrincipal(WINDOW * menu, int choix) {
     wclear(menu);
     const int taille_menu = 4;
-    char liste_menu[4][255] = {"LANCER UNE PARTIE", "HI-SCORES", "SAUVEGARDES", "QUITTER"};
+    char liste_menu[4][100] = {"LANCER UNE PARTIE", "HI-SCORES", "SAUVEGARDES", "QUITTER"};
 
     wclear(menu);
     wborder(menu, '|', '|', '-', '-', '+', '+', '+', '+');
@@ -112,10 +112,9 @@ void affichageMenuPrincipal(WINDOW * menu, int choix) {
 void actionMenuPrincipal(WINDOW * menu, int * id) {
     char pressed;
     affichageMenuPrincipal(menu, *id);
-    while ((pressed = wgetch(menu)) != 'k') {
+    while ((pressed = wgetch(menu)) != '\n') {
         if (pressed == 'z') (*id)--;
         else if (pressed == 's') (*id)++;
-        else if (pressed == '\n') break;
         if (*id < 0) *id = 3;
         if (*id > 3) *id = 0;
         affichageMenuPrincipal(menu, *id);
@@ -161,19 +160,46 @@ struct Score ** recupHiscores() {
 }
 
 
-void affichageHiscores(WINDOW * win, struct Score ** liste_score) {
+void affichageHiscores(WINDOW * win, struct Score ** liste_score, int choisi) {
+    if (choisi >= 10) {
+        endwin();
+        printf("CHOIX = %d | SIZE = 10\n", choisi);
+        return;
+    }
+    wclear(win);
+    wattron(win, A_BOLD);
     wborder(win, '|', '|', '-', '-', '+', '+', '+', '+');
-    mvwaddstr(win, 1, (WIDTH_CHOIX + 2 - 6) / 2, "SCORES");
-    mvwaddstr(win, 2, 0, "+---+-----+------------------------------+");
+    mvwaddstr(win, 1, (COLS - WIDTH_MENU - 37) / 2, " _____ _____ _____ _____ _____ _____ ");
+    mvwaddstr(win, 2, (COLS - WIDTH_MENU - 37) / 2, "|   __|     |     | __  |   __|   __|");
+    mvwaddstr(win, 3, (COLS - WIDTH_MENU - 37) / 2, "|__   |   --|  |  |    -|   __|__   |");
+    mvwaddstr(win, 4, (COLS - WIDTH_MENU - 37) / 2, "|_____|_____|_____|__|__|_____|_____|");
+    wattroff(win, A_BOLD);
     char text[255];
     for (int i = 0; i < 10; i++) {
         if (liste_score[i] != NULL) {
-            sprintf(text, "%d | %s | %d", i+1, liste_score[i]->pseudo, liste_score[i]->score);
-            mvwaddstr(win, 3+2*i, 2, text);
-            mvwaddstr(win, 4+2*i, 0, "+---+-----+------------------------------+");
+            WINDOW * score = derwin(win, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
+            sprintf(text, "  >>> %d. %s - %d", i+1, liste_score[i]->pseudo, liste_score[i]->score);
+            if (i == choisi) wattron(score, A_BOLD);
+            mvwaddstr(score, 2, 2, text);
+            if (i == choisi) wattroff(score, A_BOLD);
         } else break;
     }
     wrefresh(win);
+}
+
+
+void actionHiscores(WINDOW * win, struct Score ** liste_score, int * id) {
+    char pressed;
+    affichageHiscores(win, liste_score, *id);
+    while ((pressed = wgetch(win)) != 'k') {
+        if (pressed == 'z') (*id)--;
+        else if (pressed == 's') (*id)++;
+        else if (pressed == 'x') break;
+        if (*id < 0) *id = 9;
+        if (*id > 9) *id = 0;
+        affichageHiscores(win, liste_score, *id);
+    }
+    wclear(win);
 }
 
 

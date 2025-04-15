@@ -16,8 +16,6 @@
 
 #define WIDTH_MENU 30
 
-#define WIDTH_CHOIX 40
-
 #define WIDTH_ELOISE 120
 #define HEIGHT_ELOISE 30
 
@@ -41,7 +39,10 @@ void actionMenuPrincipal(WINDOW * menu, int * id);
 
 struct Score ** recupHiscores();
 struct Score ** recupHiscores();
-void affichageHiscores(WINDOW * win, struct Score ** liste_score);
+
+void affichageHiscores(WINDOW * win, struct Score ** liste_score, int choisi);
+void actionHiscores(WINDOW * win, struct Score ** liste_score, int * id);
+
 void libererHiscores(struct Score ** liste_score);
 
 #endif
