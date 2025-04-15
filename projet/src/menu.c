@@ -52,9 +52,13 @@ WINDOW * creerWindowEloise() {
     startx_fenetre_eloise = (COLS - width_fenetre_eloise) / 2;
     starty_fenetre_eloise = (LINES - height_fenetre_eloise) / 2;
     WINDOW *eloise = newwin(height_fenetre_eloise, width_fenetre_eloise, starty_fenetre_eloise, startx_fenetre_eloise);
+    return eloise;
+}
+
+
+void affichageEloise(WINDOW * eloise) {
     wborder(eloise, '|', '|', '-', '-', '+', '+', '+', '+');
     wrefresh(eloise);
-    return eloise;
 }
 
 
@@ -90,13 +94,21 @@ void affichageControle(WINDOW * controle) {
     wrefresh(controle);
 }
 
+void affichageGenerale(WINDOW * logo, WINDOW * controle, WINDOW * eloise) {
+    affichageRetromario(logo);
+    affichageControle(controle);
+    affichageEloise(eloise);
+}
+
 void affichageMenuPrincipal(WINDOW * menu, int choix) {
     wclear(menu);
     const int taille_menu = 4;
     char liste_menu[4][100] = {"LANCER UNE PARTIE", "HI-SCORES", "SAUVEGARDES", "QUITTER"};
 
     wclear(menu);
+    wattron(menu, A_BOLD);
     wborder(menu, '|', '|', '-', '-', '+', '+', '+', '+');
+    wattroff(menu, A_BOLD);
     char affiche[255];
     for (int i = 0; i < taille_menu; i++) {
         if (i == choix) {
@@ -176,14 +188,14 @@ void affichageHiscores(WINDOW * win, struct Score ** liste_score, int choisi) {
     wattroff(win, A_BOLD);
     char text[255];
     for (int i = 0; i < 10; i++) {
-        if (liste_score[i] != NULL) {
-            WINDOW * score = derwin(win, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
-            sprintf(text, "  >>> %d. %s - %d", i+1, liste_score[i]->pseudo, liste_score[i]->score);
-            if (i == choisi) wattron(score, A_BOLD);
-            mvwaddstr(score, 2, 2, text);
-            if (i == choisi) wattroff(score, A_BOLD);
-        } else break;
+        if (liste_score[i] != NULL) sprintf(text, "  >>> %d. %s - %d", i+1, liste_score[i]->pseudo, liste_score[i]->score);
+        else sprintf(text, "  >>> null");
+        WINDOW * score = derwin(win, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
+        if (i == choisi) wattron(score, A_BOLD);
+        mvwaddstr(score, 2, 2, text);
+        if (i == choisi) wattroff(score, A_BOLD);
     }
+    mvwaddstr(win, 50, 2, " 'x' to delete a score");
     wrefresh(win);
 }
 
@@ -194,12 +206,13 @@ void actionHiscores(WINDOW * win, struct Score ** liste_score, int * id) {
     while ((pressed = wgetch(win)) != 'k') {
         if (pressed == 'z') (*id)--;
         else if (pressed == 's') (*id)++;
-        else if (pressed == 'x') break;
+        else if (pressed == 'x') continue;  // Supprimer le score
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
         affichageHiscores(win, liste_score, *id);
     }
     wclear(win);
+    wrefresh(win);
 }
 
 

@@ -33,6 +33,9 @@ WINDOW * creerWindowEloise();
 
 void affichageRetromario(WINDOW * win);
 void affichageControle(WINDOW * controle);
+void affichageEloise(WINDOW * eloise);
+
+void affichageGenerale(WINDOW * logo, WINDOW * controle, WINDOW * eloise);
 
 void affichageMenuPrincipal(WINDOW * menu, int choix);
 void actionMenuPrincipal(WINDOW * menu, int * id);

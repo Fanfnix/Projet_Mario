@@ -16,14 +16,12 @@ int main() {
     nodelay(menu, true);
 
     logo = creerWindowLogo();
-    affichageRetromario(logo);
-
     controle = creerWindowControle();
-    affichageControle(controle);
-
+    eloise = creerWindowEloise();
     menu = creerWindowMenu();
     choix = creerWindowChoix();
-    eloise = creerWindowEloise();
+
+    affichageGenerale(logo, controle, eloise);
 
     liste_score = recupHiscores();
     
@@ -33,10 +31,11 @@ int main() {
         actionMenuPrincipal(menu, &id);
         switch (id) {
             case 0: break;
-            case 1: actionHiscores(choix, liste_score, &id_choix); refresh(); break;
+            case 1: actionHiscores(choix, liste_score, &id_choix);
             case 2: break;
             case 3: break;
         }
+        affichageGenerale(logo, controle, eloise);
     } while (id != 3);
 
     endwin();
