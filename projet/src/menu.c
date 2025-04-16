@@ -125,8 +125,8 @@ void actionMenuPrincipal(WINDOW * menu, int * id) {
     int pressed;
     affichageMenuPrincipal(menu, *id);
     while ((pressed = wgetch(menu)) != 10) {
-        if (pressed == 259) (*id)--;
-        else if (pressed == 258) (*id)++;
+        if (pressed == KEY_UP) (*id)--;
+        else if (pressed == KEY_DOWN) (*id)++;
         if (*id < 0) *id = 3;
         if (*id > 3) *id = 0;
         affichageMenuPrincipal(menu, *id);
@@ -196,18 +196,18 @@ void affichageHiscores(WINDOW * win, struct Score ** liste_score, int choisi) {
         mvwaddstr(score, 2, 2, text);
         if (i == choisi) wattroff(score, A_BOLD);
     }
-    mvwaddstr(win, 50, 2, " 'x' to delete a score");
+    mvwaddstr(win, 50, 2, " [DEL] to delete a score");
     wrefresh(win);
 }
 
 
 void actionHiscores(WINDOW * win, struct Score ** liste_score, int * id) {
-    char pressed;
+    int pressed;
     affichageHiscores(win, liste_score, *id);
-    while ((pressed = wgetch(win)) != 'k') {
-        if (pressed == 'z') (*id)--;
-        else if (pressed == 's') (*id)++;
-        else if (pressed == 'x') supprHiscores(liste_score, *id);  // Supprimer le score
+    while ((pressed = wgetch(win)) != 27) {
+        if (pressed == KEY_UP) (*id)--;
+        else if (pressed == KEY_DOWN) (*id)++;
+        else if (pressed == 8) supprHiscores(liste_score, *id);  // Supprimer le score
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
         affichageHiscores(win, liste_score, *id);
@@ -314,17 +314,17 @@ void affichageSauvegarde(WINDOW * win, Save ** liste_sauvegarde, int choisi) {
         mvwaddstr(score, 2, 2, text);
         if (i == choisi) wattroff(score, A_BOLD);
     }
-    mvwaddstr(win, 50, 2, " 'x' to delete a save");
+    mvwaddstr(win, 50, 2, " [DEL] to delete a save");
     wrefresh(win);
 }
 
 void actionSauvegarde(WINDOW * win,  Save ** liste_sauvegarde, int * id) {
-    char pressed;
+    int pressed;
     affichageSauvegarde(win, liste_sauvegarde, *id);
-    while ((pressed = wgetch(win)) != 'k') {
-        if (pressed == 'z') (*id)--;
-        else if (pressed == 's') (*id)++;
-        else if (pressed == 'x') supprSauvegarde(liste_sauvegarde, *id);  // Supprimer la sauvegarde
+    while ((pressed = wgetch(win)) != 27) {
+        if (pressed == KEY_UP) (*id)--;
+        else if (pressed == KEY_DOWN) (*id)++;
+        else if (pressed == 8) supprSauvegarde(liste_sauvegarde, *id);  // Supprimer la sauvegarde
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
         affichageSauvegarde(win, liste_sauvegarde, *id);

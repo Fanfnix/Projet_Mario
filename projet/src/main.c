@@ -29,6 +29,9 @@ int main() {
     
     system("../musique/monbeaumenu.wav");
 
+    keypad(menu, true);
+    keypad(choix, true);
+
     int id = 0;
     int id_choix = 0;
     do {
