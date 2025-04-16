@@ -305,7 +305,7 @@ void affichageSauvegarde(WINDOW * win, Save ** liste_sauvegarde, int choisi) {
     for (int i = 0; i < 10; i++) {
         if (liste_sauvegarde[i] != NULL) {
             WINDOW * save = derwin(win, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
-            sprintf(text, "  >>> %d. Vie :%d - Kills :%d - Pieces : %d - Distance max: %d - Pose en x/y : %d / %d - Seed de la partie : %d",liste_sauvegarde[i]->id, liste_sauvegarde[i]->vies, liste_sauvegarde[i]->kills,liste_sauvegarde[i]->piece,liste_sauvegarde[i]->distance,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->seed);
+            sprintf(text, "  >>> %d. Seed :%d - Distance :%d - Pose en x/y : %d / %d - kills : %d - Pieces : %d - Vies : %d",liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->kills,liste_sauvegarde[i]->piece,liste_sauvegarde[i]->vies);
             if (i == choisi) wattron(save, A_BOLD);
             mvwaddstr(save, 2, 2, text);
             if (i == choisi) wattroff(save, A_BOLD);
@@ -343,6 +343,7 @@ void supprSauvegarde(Save **liste_sauvegarde, int id){
     for (int i = id + 1; i < 10; i++)
     {
         liste_sauvegarde[i-1]= liste_sauvegarde[i];
+        liste_sauvegarde[i-1]->id--;
         if (liste_sauvegarde[i-1] == NULL) break;
     }   
 }
