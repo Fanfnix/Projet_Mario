@@ -9,6 +9,7 @@ int main() {
     WINDOW * eloise;
 
     struct Score **liste_score;
+    Save **sauvegarde;
 
     initscr();
     curs_set(0);
@@ -24,7 +25,8 @@ int main() {
     affichageGenerale(logo, controle, eloise);
 
     liste_score = recupHiscores();
-    
+    sauvegarde = recupCheckpoint();
+
     int id = 0;
     int id_choix = 0;
     do {
@@ -32,7 +34,7 @@ int main() {
         switch (id) {
             case 0: break;
             case 1: actionHiscores(choix, liste_score, &id_choix);
-            case 2: break;
+            case 2: actionSauvegarde(choix, sauvegarde, &id_choix);
             case 3: break;
         }
         affichageGenerale(logo, controle, eloise);
@@ -41,6 +43,7 @@ int main() {
     endwin();
 
     libererHiscores(liste_score);
+    libererSauvegarde(sauvegarde);
         
     return 0;
 }
