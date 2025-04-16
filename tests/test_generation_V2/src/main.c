@@ -10,8 +10,9 @@ int main() {
     int seed = (16807 + rand() % (2147483646 - 16807)) / VARIANCE * VARIANCE;
     int * table = creerTableSeed();
 
-    WINDOW * jeu;
     WINDOW * tmp;
+    WINDOW * jeu;
+    WINDOW * mini_jeu;
 
     initscr();  // Met la console en mode "ncurses"
     curs_set(0);  // Cache le curseur dans la console
@@ -37,7 +38,6 @@ int main() {
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return EXIT_FAILURE;
     }
-    system("cls");
 	wborder(jeu, '|', '|', '-', '-', '+', '+', '+', '+');
 	wrefresh(jeu);
 
@@ -59,6 +59,21 @@ int main() {
     int height_gen = height_carte;
     int width_gen = nb_chunk * DISTANCE;
 
+    // Setup dimension fenêtre mini_jeu
+    int height_fenetre_mini_jeu = height_gen;
+    int width_fenetre_mini_jeu = COLS;
+    int startx_fenetre_mini_jeu = 0;
+    int starty_fenetre_mini_jeu = starty_fenetre_jeu + height_fenetre_jeu + 2;
+
+    mini_jeu = newwin(height_fenetre_mini_jeu + 2, width_fenetre_mini_jeu, starty_fenetre_mini_jeu, startx_fenetre_mini_jeu);
+    if (!mini_jeu) {
+        endwin();  // Sort la console du mode "ncurses"
+        fprintf(stderr, "Erreur d'allocation mémoire\n");
+        return EXIT_FAILURE;
+    }
+	wborder(mini_jeu, '|', '|', '-', '-', '+', '+', '+', '+');
+	wrefresh(mini_jeu);
+
     // Création d'un niveau vide
     struct Map * niv = creerMap(height_gen, width_gen);
 
@@ -76,7 +91,8 @@ int main() {
         else genererChunk(niv, i, table, &seed);
     }
 
-    // afficherMap_simp(jeu, niv, height_carte, width_carte);
+    afficherMap_simp(mini_jeu, niv, height_gen, width_gen);
+    wrefresh(mini_jeu);
     afficherMap(jeu, niv, height_carte, width_carte);
 
     while (wgetch(jeu) != 'k');

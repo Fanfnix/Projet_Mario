@@ -50,7 +50,7 @@ int main() {
     initscr();
 
     // Modifiiez les valeurs de a_teste pour tester (les valeurs a entrer sont au début du programme)
-    struct Elem a_teste = {"plante", 4, 3, 6};
+    struct Elem a_teste = {"tuyau", 1, 9, 4};
     affichage(a_teste.nom, a_teste.nb_frame, a_teste.width, a_teste.height);
 
     printw("\n>>> Press any to quit :");

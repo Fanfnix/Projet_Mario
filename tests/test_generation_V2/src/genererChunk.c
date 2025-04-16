@@ -2,10 +2,13 @@
 
 void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
     // Variables >>>
+    int CHO = id_chunk * DISTANCE;
     int ymax;
+    int ydeb = 0, yfin = 0;
     int startx_plateforme, starty_plateforme = 0, finishy_plateforme = 0, len_plateforme, mod;
     int x_mystery, y_mystery, genere_mystery = 0;
     int startx_piece, x_piece = 0, y_piece = 0, nb_piece, compteur_piece = 0;
+    int x_tuyaux, y_tuyaux;
     // <<< Variables
     // Aléatoire >>>
     int plateforme = table[0] % 3 == 1;
@@ -29,8 +32,10 @@ void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
     }
     // <<< Piece
     // Terrain >>>
-    for (int x = id_chunk*DISTANCE; x < DISTANCE*(id_chunk+1); x++) {
+    for (int x = CHO; x < CHO + DISTANCE; x++) {
         ymax = perlin(x, table, seed);
+        if (x == CHO) ydeb = ymax;
+        if (x == CHO + DISTANCE - 1) yfin = ymax;
         if (x % DISTANCE == 0) {
             for (int y = niv->height-ymax; y < niv->height; y++) niv->carte[y][x] = 2;
         } else {
@@ -44,7 +49,7 @@ void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
         }
         // <<< Plateforme
         // Piece >>>
-        if (piece && x%DISTANCE >= startx_piece && compteur_piece < nb_piece) {
+        if (piece && x % DISTANCE >= startx_piece && compteur_piece < nb_piece) {
             x_piece = x;
             y_piece = niv->height - ymax - 1;
             if (niv->carte[y_piece][x_piece] == 0) niv->carte[y_piece][x_piece] = 4;
@@ -61,11 +66,11 @@ void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
             starty_plateforme -= H_PLATEFORME;
         }
         if (starty_plateforme < 0) starty_plateforme = 0;
-        for (int x = id_chunk*DISTANCE+startx_plateforme; x < id_chunk*DISTANCE+startx_plateforme+len_plateforme; x++) niv->carte[starty_plateforme][x] = 1;
+        for (int x = CHO + startx_plateforme; x < CHO + startx_plateforme + len_plateforme; x++) niv->carte[starty_plateforme][x] = 1;
         for (int i = startx_plateforme; i < startx_plateforme+len_plateforme; i++) {
             // Mystery >>>
             if (!genere_mystery && table[i] % 5 == 1) {
-                x_mystery = id_chunk * DISTANCE + i;
+                x_mystery = CHO + i;
                 y_mystery = starty_plateforme;
                 niv->carte[y_mystery][x_mystery] = 3;
                 genere_mystery = 1;
@@ -73,11 +78,22 @@ void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
             // <<< Mystery
             // Piece >>>
             if (genere_piece_on_plateforme) {
-                x_piece = id_chunk * DISTANCE + i;
+                x_piece = CHO + i;
                 y_piece = starty_plateforme - 1;
                 niv->carte[y_piece][x_piece] = 4;
             }
             // <<< Piece
+        }
+    } else {
+        if (ydeb == yfin && *seed != 0) {
+            x_tuyaux = CHO + abs(table[0] % (DISTANCE - 3));
+            y_tuyaux = niv->height - ydeb - 1;
+            niv->carte[y_tuyaux][x_tuyaux] = 5;
+            niv->carte[y_tuyaux][x_tuyaux+1] = 6;
+            niv->carte[y_tuyaux][x_tuyaux+2] = 6;
+            niv->carte[y_tuyaux-1][x_tuyaux] = 6;
+            niv->carte[y_tuyaux-1][x_tuyaux+1] = 6;
+            niv->carte[y_tuyaux-1][x_tuyaux+2] = 6;
         }
     }
     // <<< Plateforme

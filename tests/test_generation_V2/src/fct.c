@@ -165,10 +165,27 @@ void afficherMap_simp(WINDOW* fenetre, struct Map* niv, int height_carte, int wi
                 case 2: ch = 'O'; break;
                 case 3: ch = '&'; break;
                 case 4: ch = '$'; break;
+                case 5: ch = 'H'; break;
                 default: ch = '?'; break;
             }
             mvwaddch(fenetre, y + 1, x + 1, ch);
         }
+    }
+}
+
+
+void affichageTuyau(WINDOW * win, int Y, int X) {
+    char chemin[255] = "../../design/tuyau/tuyau1.txt";
+    FILE * file = fopen(chemin, "r");
+    for (int j = 0; j < 4; j++) {
+        char tmp[255];
+        fgets(tmp, 10, file);
+        for (int k = 0; k < strlen(tmp); k++) {
+            // if (tmp[k] == '0') {
+            //     tmp[k] = ' ';
+            // }
+        }
+        mvwaddstr(win, Y+j, X, tmp);
     }
 }
 
@@ -180,10 +197,11 @@ void afficherMap(WINDOW* fenetre, struct Map * niv, int height_carte, int width_
             for (int x = 0; x < width_carte; x++) {
                 switch (niv->carte[y][x]) {
                     case 0: strcpy(str, "   "); break;
-                    case 1: strcpy(str, "###"); break;
-                    case 2: strcpy(str, "OOO"); break;
+                    case 1: case 2: strcpy(str, "###"); break;
                     case 3: if (!i) strcpy(str, "==="); else strcpy(str, "=?="); break;
                     case 4: if (!i) strcpy(str, "($)"); else strcpy(str, "   "); break;
+                    case 5: if (!i) affichageTuyau(fenetre, TY*(y-1)+1, TX*x+1); break;
+                    case 6: strcpy(str, ""); break;
                     default: strcpy(str, "???"); break;
                 }
                 mvwaddstr(fenetre, TY*y+i+1, TX*x+1, str);

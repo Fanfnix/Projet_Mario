@@ -30,6 +30,8 @@ struct Elem {
 struct Map* creerMap(int L, int l);
 void libMemMap(struct Map* niv);
 
+void affichageTuyau(WINDOW * win, int Y, int X);
+
 void afficherMap(WINDOW * fenetre, struct Map * niv, int height_carte, int width_carte);
 void afficherMap_simp(WINDOW* fenetre, struct Map* niv, int height_carte, int width_carte);
 void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed);
