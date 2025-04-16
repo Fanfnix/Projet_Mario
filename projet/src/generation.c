@@ -183,7 +183,7 @@ void lancerPartie(){
     if (!jeu) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
-        return EXIT_FAILURE;
+        return;
     }
 	wborder(jeu, '|', '|', '-', '-', '+', '+', '+', '+');
 	wrefresh(jeu);
@@ -193,7 +193,7 @@ void lancerPartie(){
     if (!tmp) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
-        return EXIT_FAILURE;
+        return;
     }
     afficherTmp(tmp, 0, 0, 0, table, seed);
 
@@ -216,7 +216,7 @@ void lancerPartie(){
     if (!mini_jeu) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
-        return EXIT_FAILURE;
+        return;
     }
 	wborder(mini_jeu, '|', '|', '-', '-', '+', '+', '+', '+');
 	wrefresh(mini_jeu);
@@ -228,7 +228,7 @@ void lancerPartie(){
     if (!niv) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
-        return EXIT_FAILURE;
+        return;
     }
 
     // Ajout de la génération de base
