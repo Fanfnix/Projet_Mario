@@ -25,6 +25,19 @@ struct Score {
     int score;
 };
 
+typedef struct Save
+{
+    int id;
+    int seed;
+    int posx;
+    int posy;
+    int distance;
+    int kills;
+    int piece;
+    int vies;
+
+}Save;
+
 WINDOW * creerWindowLogo();
 WINDOW * creerWindowMenu();
 WINDOW * creerWindowChoix();
@@ -47,5 +60,12 @@ void affichageHiscores(WINDOW * win, struct Score ** liste_score, int choisi);
 void actionHiscores(WINDOW * win, struct Score ** liste_score, int * id);
 
 void libererHiscores(struct Score ** liste_score);
+
+// SAUVEGARDES
+Save * recupSave(char * str);
+struct Score ** recupCheckpoint();
+void affichageSauvegarde(WINDOW * win, struct Save ** sauvegardes, int choisi);
+void actionSauvegarde(WINDOW * win, struct Save ** sauvegarde, int * id);
+void libererSauvegarde(struct Save ** sauvegarde);
 
 #endif
