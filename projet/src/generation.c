@@ -250,9 +250,12 @@ void lancerPartie(){
     table = NULL;
 
     wclear(jeu);
+    wrefresh(jeu);
     delwin(jeu);
     wclear(tmp);
+    wrefresh(tmp);
     delwin(tmp);
     wclear(mini_jeu);
+    wrefresh(mini_jeu);
     delwin(mini_jeu);
 }
