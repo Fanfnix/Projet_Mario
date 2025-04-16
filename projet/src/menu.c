@@ -207,7 +207,7 @@ void actionHiscores(WINDOW * win, struct Score ** liste_score, int * id) {
     while ((pressed = wgetch(win)) != 'k') {
         if (pressed == 'z') (*id)--;
         else if (pressed == 's') (*id)++;
-        else if (pressed == 'x') continue;  // Supprimer le score
+        else if (pressed == 'x') supprHiscores(liste_score, *id);  // Supprimer le score
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
         affichageHiscores(win, liste_score, *id);
@@ -216,7 +216,7 @@ void actionHiscores(WINDOW * win, struct Score ** liste_score, int * id) {
     wrefresh(win);
 }
 
-void supprHiscores(struct Score ** liste_score, int * id){
+void supprHiscores(struct Score ** liste_score, int id){
     if (liste_score == NULL)
     {
         printf("Pas de score a supprimer");
@@ -321,7 +321,7 @@ void actionSauvegarde(WINDOW * win,  Save ** liste_sauvegarde, int * id) {
     while ((pressed = wgetch(win)) != 'k') {
         if (pressed == 'z') (*id)--;
         else if (pressed == 's') (*id)++;
-        else if (pressed == 'x') continue;  // Supprimer la sauvegarde
+        else if (pressed == 'x') supprSauvegarde(liste_sauvegarde, *id);  // Supprimer la sauvegarde
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
         affichageSauvegarde(win, liste_sauvegarde, *id);
@@ -330,7 +330,7 @@ void actionSauvegarde(WINDOW * win,  Save ** liste_sauvegarde, int * id) {
     wrefresh(win);
 }
 
-void supprSauvegarde(Save **liste_sauvegarde, int * id){
+void supprSauvegarde(Save **liste_sauvegarde, int id){
     
     if (liste_sauvegarde == NULL)
     {
