@@ -122,11 +122,11 @@ void affichageMenuPrincipal(WINDOW * menu, int choix) {
 }
 
 void actionMenuPrincipal(WINDOW * menu, int * id) {
-    char pressed;
+    int pressed;
     affichageMenuPrincipal(menu, *id);
-    while ((pressed = wgetch(menu)) != '\n') {
-        if (pressed == 'z') (*id)--;
-        else if (pressed == 's') (*id)++;
+    while ((pressed = wgetch(menu)) != 10) {
+        if (pressed == 259) (*id)--;
+        else if (pressed == 258) (*id)++;
         if (*id < 0) *id = 3;
         if (*id > 3) *id = 0;
         affichageMenuPrincipal(menu, *id);
