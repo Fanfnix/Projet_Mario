@@ -34,7 +34,7 @@ int main() {
     do {
         actionMenuPrincipal(menu, &id);
         switch (id) {
-            case 0: break;
+            case 0: lancerPartie(); break;
             case 1: actionHiscores(choix, liste_score, &id_choix); break;
             case 2: actionSauvegarde(choix, sauvegarde, &id_choix); break;
             case 3: break;

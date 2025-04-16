@@ -29,4 +29,6 @@ void libMemMap(struct Map* niv);
 
 void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed);
 
+void lancerPartie();
+
 #endif
