@@ -343,8 +343,8 @@ void supprSauvegarde(Save **liste_sauvegarde, int id){
     for (int i = id + 1; i < 10; i++)
     {
         liste_sauvegarde[i-1]= liste_sauvegarde[i];
-        liste_sauvegarde[i-1]->id--;
         if (liste_sauvegarde[i-1] == NULL) break;
+        liste_sauvegarde[i-1]->id--;
     }   
 }
 
