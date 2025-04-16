@@ -216,6 +216,21 @@ void actionHiscores(WINDOW * win, struct Score ** liste_score, int * id) {
     wrefresh(win);
 }
 
+void supprHiscores(struct Score ** liste_score, int * id){
+    if (liste_score == NULL)
+    {
+        printf("Pas de score a supprimer");
+        return;
+    }
+    
+    free(liste_score[id]);
+    liste_score[id]= NULL;
+    for (int i = id + 1; i < 10; i++)
+    {
+        liste_score[i-1]= liste_score[i];
+        if (liste_score[i-1] == NULL) break;
+    } 
+}
 
 void libererHiscores(struct Score ** liste_score) {
     if (liste_score == NULL) return;
@@ -272,7 +287,7 @@ Save ** recupCheckpoint() {
     return liste_sauvegarde;
 }
 
-void affichageSauvegarde(WINDOW * win, struct Save ** liste_sauvegarde, int choisi) {
+void affichageSauvegarde(WINDOW * win, Save ** liste_sauvegarde, int choisi) {
     if (choisi >= 10) {
         endwin();
         printf("CHOIX = %d | SIZE = 10\n", choisi);
@@ -300,7 +315,7 @@ void affichageSauvegarde(WINDOW * win, struct Save ** liste_sauvegarde, int choi
     wrefresh(win);
 }
 
-void actionSauvegarde(WINDOW * win, struct Save ** liste_sauvegarde, int * id) {
+void actionSauvegarde(WINDOW * win,  Save ** liste_sauvegarde, int * id) {
     char pressed;
     affichageSauvegarde(win, liste_sauvegarde, *id);
     while ((pressed = wgetch(win)) != 'k') {
@@ -315,7 +330,24 @@ void actionSauvegarde(WINDOW * win, struct Save ** liste_sauvegarde, int * id) {
     wrefresh(win);
 }
 
-void libererSauvegarde(struct Save ** liste_sauvegarde) {
+void supprSauvegarde(Save **liste_sauvegarde, int * id){
+    
+    if (liste_sauvegarde == NULL)
+    {
+        printf("Pas de sauvegarde a supprimer");
+        return;
+    }
+    
+    free(liste_sauvegarde[id]);
+    liste_sauvegarde[id]= NULL;
+    for (int i = id + 1; i < 10; i++)
+    {
+        liste_sauvegarde[i-1]= liste_sauvegarde[i];
+        if (liste_sauvegarde[i-1] == NULL) break;
+    }   
+}
+
+void libererSauvegarde(Save ** liste_sauvegarde) {
     if (liste_sauvegarde == NULL) return;
     for (int i = 0; i < 10; i++) {
         if (liste_sauvegarde[i] != NULL) {

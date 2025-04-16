@@ -58,14 +58,16 @@ struct Score ** recupHiscores();
 
 void affichageHiscores(WINDOW * win, struct Score ** liste_score, int choisi);
 void actionHiscores(WINDOW * win, struct Score ** liste_score, int * id);
-
+void supprHiscores(struct Score ** liste_score, int * id);
 void libererHiscores(struct Score ** liste_score);
 
 // SAUVEGARDES
 Save * recupSave(char * str);
 Save ** recupCheckpoint();
-void affichageSauvegarde(WINDOW * win, struct Save ** liste_sauvegarde, int choisi);
-void actionSauvegarde(WINDOW * win, struct Save ** liste_sauvegarde, int * id);
-void libererSauvegarde(struct Save ** liste_sauvegarde);
+void affichageSauvegarde(WINDOW * win, Save ** liste_sauvegarde, int choisi);
+void actionSauvegarde(WINDOW * win, Save ** liste_sauvegarde, int * id);
+void supprSauvegarde(Save ** liste_sauvegarde, int * id);
+void libererSauvegarde(Save ** liste_sauvegarde);
+
 
 #endif
