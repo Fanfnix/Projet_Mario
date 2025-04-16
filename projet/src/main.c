@@ -33,8 +33,8 @@ int main() {
         actionMenuPrincipal(menu, &id);
         switch (id) {
             case 0: break;
-            case 1: actionHiscores(choix, liste_score, &id_choix);
-            case 2: actionSauvegarde(choix, sauvegarde, &id_choix);
+            case 1: actionHiscores(choix, liste_score, &id_choix); break;
+            case 2: actionSauvegarde(choix, sauvegarde, &id_choix); break;
             case 3: break;
         }
         affichageGenerale(logo, controle, eloise);
