@@ -290,7 +290,7 @@ void affichageSauvegarde(WINDOW * win, struct Save ** sauvegarde, int choisi) {
     for (int i = 0; i < 10; i++) {
         if (sauvegarde[i] != NULL) {
             WINDOW * save = derwin(win, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
-            sprintf(text, "  >>> %d. Vie :%d - Kills :%d - Pieces : %d - Distance max: %d - Pose en x/y : %d / %d - Seed de la partie : %d", i+1, sauvegarde[i]->id, sauvegarde[i]->vies, sauvegarde[i]->kills,sauvegarde[i]->piece,sauvegarde[i]->distance,sauvegarde[i]->posx,sauvegarde[i]->posy,sauvegarde[i]->seed);
+            sprintf(text, "  >>> %d. Vie :%d - Kills :%d - Pieces : %d - Distance max: %d - Pose en x/y : %d / %d - Seed de la partie : %d",sauvegarde[i]->id, sauvegarde[i]->vies, sauvegarde[i]->kills,sauvegarde[i]->piece,sauvegarde[i]->distance,sauvegarde[i]->posx,sauvegarde[i]->posy,sauvegarde[i]->seed);
             if (i == choisi) wattron(save, A_BOLD);
             mvwaddstr(save, 2, 2, text);
             if (i == choisi) wattroff(save, A_BOLD);
