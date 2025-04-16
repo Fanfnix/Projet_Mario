@@ -16,8 +16,8 @@ void mvwaddch_perso(WINDOW *win, int y, int x, char ch);
 void wborder_perso(WINDOW *win, char gauche, char droit, char haut, char bas, char haut_g, char haut_d, char bas_g, char bas_d);
 void wrefresh_perso(WINDOW *win);
 
-// #include "generation.h"
-// #include "affichage.h"
+#include "generation.h"
+#include "affichage.h"
 #include "menu.h"
 
 #endif
