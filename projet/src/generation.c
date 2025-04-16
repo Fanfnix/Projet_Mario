@@ -248,4 +248,11 @@ void lancerPartie(){
     libMemMap(niv);
     free(table);
     table = NULL;
+
+    wclear(jeu);
+    delwin(jeu);
+    wclear(tmp);
+    delwin(tmp);
+    wclear(mini_jeu);
+    delwin(mini_jeu);
 }
