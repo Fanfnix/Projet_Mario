@@ -307,10 +307,12 @@ void affichageSauvegarde(WINDOW * win, Save ** liste_sauvegarde, int choisi) {
         if (liste_sauvegarde[i] != NULL) {
             WINDOW * save = derwin(win, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
             sprintf(text, "  >>> %d. Seed :%d - Distance :%d - Pose en x/y : %d / %d - kills : %d - Pieces : %d - Vies : %d",liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->kills,liste_sauvegarde[i]->piece,liste_sauvegarde[i]->vies);
-            if (i == choisi) wattron(save, A_BOLD);
-            mvwaddstr(save, 2, 2, text);
-            if (i == choisi) wattroff(save, A_BOLD);
-        } else break;
+        }
+        else sprintf(text, "  >>> null");
+        WINDOW * score = derwin(win, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
+        if (i == choisi) wattron(score, A_BOLD);
+        mvwaddstr(score, 2, 2, text);
+        if (i == choisi) wattroff(score, A_BOLD);
     }
     mvwaddstr(win, 50, 2, " 'x' to delete a save");
     wrefresh(win);
