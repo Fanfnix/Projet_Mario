@@ -30,6 +30,7 @@ WINDOW * creerWindowMenu() {
     startx_fenetre_menu = 2;
     starty_fenetre_menu = 1;
     WINDOW *menu = newwin(height_fenetre_menu, width_fenetre_menu, starty_fenetre_menu, startx_fenetre_menu);
+    keypad(menu, true);
     return menu;
 }
 
@@ -41,6 +42,7 @@ WINDOW * creerWindowChoix() {
     startx_fenetre_choix = WIDTH_MENU + 6;
     starty_fenetre_choix = 1;
     WINDOW *choix = newwin(height_fenetre_choix, width_fenetre_choix, starty_fenetre_choix, startx_fenetre_choix);
+    keypad(choix, true);
     return choix;
 }
 
@@ -361,4 +363,21 @@ void libererSauvegarde(Save ** liste_sauvegarde) {
     }
     free(liste_sauvegarde);
     liste_sauvegarde = NULL;
+}
+
+void nettoyerMenu(WINDOW * logo, WINDOW * menu, WINDOW * choix, WINDOW * controle, WINDOW * eloise) {
+    wclear(logo);
+    wrefresh(logo);
+
+    wclear(menu);
+    wrefresh(menu);
+
+    wclear(choix);
+    wrefresh(choix);
+
+    wclear(controle);
+    wrefresh(controle);
+
+    wclear(eloise);
+    wrefresh(eloise);
 }

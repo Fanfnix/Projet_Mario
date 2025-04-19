@@ -14,7 +14,7 @@ int main() {
     initscr();
     curs_set(0);
     noecho();
-    nodelay(menu, true);
+    set_escdelay(25);
 
     logo = creerWindowLogo();
     controle = creerWindowControle();
@@ -27,23 +27,21 @@ int main() {
     liste_score = recupHiscores();
     sauvegarde = recupCheckpoint();
     
-    system("../musique/monbeaumenu.wav");
-
-    keypad(menu, true);
-    keypad(choix, true);
+    system("./../musique/monbeaumenu.wav");
 
     int id = 0;
     int id_choix = 0;
+    int run = 1;
     do {
         actionMenuPrincipal(menu, &id);
         switch (id) {
-            case 0: lancerPartie(); break;
+            case 0: nettoyerMenu(logo, menu, choix, controle, eloise); lancerPartie(); break;
             case 1: actionHiscores(choix, liste_score, &id_choix); break;
             case 2: actionSauvegarde(choix, sauvegarde, &id_choix); break;
-            case 3: break;
+            case 3: run = 0; break;
         }
         affichageGenerale(logo, controle, eloise);
-    } while (id != 3);
+    } while (run);
 
     endwin();
 

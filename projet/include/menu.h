@@ -69,5 +69,6 @@ void actionSauvegarde(WINDOW * win, Save ** liste_sauvegarde, int * id);
 void supprSauvegarde(Save ** liste_sauvegarde, int id);
 void libererSauvegarde(Save ** liste_sauvegarde);
 
+void nettoyerMenu(WINDOW * logo, WINDOW * menu, WINDOW * choix, WINDOW * controle, WINDOW * eloise);
 
 #endif
