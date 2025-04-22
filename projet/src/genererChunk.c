@@ -1,8 +1,14 @@
 #include "../include/header.h"
 
-void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
-    // Variables >>>
+void genererChunk(struct Map * niv, int id_chunk, int * table, int * seed) {
     int CHO = id_chunk * DISTANCE;
+    if (table == NULL && seed == NULL) {
+        for (int x = CHO; x < CHO + DISTANCE; x++) {
+            for (int y = niv->height-Y_MIN; y < niv->height; y++) niv->carte[y][x] = 1;
+        }
+        return;
+    }
+    // Variables >>>
     int ymax;
     int ydeb = 0, yfin = 0;
     int startx_plateforme, starty_plateforme = 0, finishy_plateforme = 0, len_plateforme, mod;
@@ -11,8 +17,9 @@ void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
     int x_tuyaux, y_tuyaux;
     // <<< Variables
     // Aléatoire >>>
-    int plateforme = table[0] % 3 == 1;
-    int piece = table[0] % 2;
+    int plateforme = (table[0] % 3) == 1;
+    int piece = (table[0] % 2) == 1;
+    int tuyau = ((table[0] / 10) % 3) == 0 || ((table[0] / 10) % 3) == 1;
     // <<< Aléatoire
     // Plateforme >>>
     if (plateforme) {
@@ -84,8 +91,10 @@ void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
             }
             // <<< Piece
         }
+    // <<< Plateforme
     } else {
-        if (ydeb == yfin && *seed != 0) {
+        // Tuyau >>>
+        if (ydeb == yfin && tuyau) {
             x_tuyaux = CHO + abs(table[0] % (DISTANCE - 3));
             y_tuyaux = niv->height - ydeb - 1;
             niv->carte[y_tuyaux][x_tuyaux] = 5;
@@ -95,6 +104,6 @@ void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed) {
             niv->carte[y_tuyaux-1][x_tuyaux+1] = 6;
             niv->carte[y_tuyaux-1][x_tuyaux+2] = 6;
         }
+        // <<< Tuyau
     }
-    // <<< Plateforme
 }

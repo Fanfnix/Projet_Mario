@@ -4,9 +4,12 @@ void lancerPartie(){
     
     // Initialisation aléatoire
     srand(time(NULL));
-    int seed = (16807 + rand() % (2147483646 - 16807)) / VARIANCE * VARIANCE;
+    int min_seed = 16807;
+    int max_seed = 2147483646;
+    int seed = ((rand() % (max_seed - min_seed + 1)) + min_seed) / VARIANCE * VARIANCE;  // Le "/ VARIANCE * VARIANCE" est pour s'assurer que la premiere generation sera à Y_MIN pour le raccordement
     int * table = creerTableSeed();
 
+    // Creation des fenetre
     WINDOW * tmp;
     WINDOW * jeu;
     WINDOW * mini_jeu;
@@ -78,16 +81,31 @@ void lancerPartie(){
 
     // Ajout de la génération de base
     for (int i = 0; i < nb_chunk; i++) {
-        int tmp_seed = 0;
-        if (i < 3) genererChunk(niv, i, table, &tmp_seed);
+        if (i < 3) genererChunk(niv, i, NULL, NULL);
         else genererChunk(niv, i, table, &seed);
     }
 
-    afficherMap_simp(mini_jeu, niv, height_gen, width_gen);
-    wrefresh(mini_jeu);
-    afficherMap(jeu, niv, height_carte, width_carte);
+    nodelay(jeu, true);
 
-    while (wgetch(jeu) != 'k');
+    double begin, timediff, fps, supp;
+    char txt_fps[255] = "\0";
+    while (wgetch(jeu) != 'k') {
+        begin = (double)clock() / CLOCKS_PER_SEC;
+        // CODE >>>
+
+        afficherMap_simp(mini_jeu, niv, height_gen, width_gen);
+        wrefresh(mini_jeu);
+        afficherMap(jeu, niv, height_carte, width_carte);
+
+        // <<< CODE
+        timediff = ((double)clock()) / CLOCKS_PER_SEC - begin;
+        supp = 1.0f / 60.0f - timediff;
+        if (supp > 0) usleep(1000000 * supp);
+        fps = 1.0f / (timediff + supp);
+        snprintf(txt_fps, 254, "FPS : %.1lf", fps);
+        mvwaddstr(jeu, 1, 1, txt_fps);
+        wrefresh(jeu);
+    }
 
     // Libération de la mémoire : niveau et table aléatoire
     libMemMap(niv);

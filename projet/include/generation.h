@@ -20,14 +20,14 @@ struct Elem {
 };
 
 int * creerTableSeed();
-int * iterationTable(int* seed, int* table);
+int * iterationTable(int * seed, int * table);
 int rand_nb(int seed);
-int perlin(int x, int* table, int* seed);
+int perlin(int x, int * table, int * seed);
 
 struct Map* creerMap(int L, int l);
 void libMemMap(struct Map* niv);
 
-void genererChunk(struct Map* niv, int id_chunk, int* table, int* seed);
+void genererChunk(struct Map * niv, int id_chunk, int * table, int * seed);
 
 void lancerPartie();
 

@@ -37,12 +37,12 @@ int convInt(float y) {
 
 // Pour les iterations de la seed
 int f(int x) {
-    return (int)((x * x) / 100);
+    return rand_r(&x);
 }
 
 
-void iterationSeed(int* seed) {
-    *seed = f(*seed);
+int iterationSeed(int * seed) {
+    return f(*seed);
 }
 
 /* Table aléatoire */
@@ -54,10 +54,10 @@ int * creerTableSeed() {
 }
 
 
-int * iterationTable(int* seed, int* table) {
+int * iterationTable(int * seed, int * table) {
     for (int i = 0; i < DISTANCE; i++) {
         table[i] = *seed;
-        iterationSeed(seed);
+        *seed = iterationSeed(seed);
     }
     return table;
 }
@@ -76,7 +76,7 @@ float interpolate(int y_prec, int y_suiv, int x) {
 
 
 // Génére le relief
-int perlin(int x, int* table, int* seed) {
+int perlin(int x, int * table, int * seed) {
     /* #######################################################
         perlin(int x, int * table, int * seed)
 
@@ -105,7 +105,8 @@ int perlin(int x, int* table, int* seed) {
     }
     else {
         int y_prec = (abs(table[0]) % VARIANCE) + Y_MIN;
-        int y_suiv = (abs(f(table[DISTANCE-1])) % VARIANCE) + Y_MIN;
+        int copy_suiv = table[DISTANCE-1];
+        int y_suiv = (abs(f(copy_suiv)) % VARIANCE) + Y_MIN;
 
         int y = convInt(interpolate(y_prec, y_suiv, x));
 

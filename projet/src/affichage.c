@@ -74,6 +74,10 @@ void afficherTmp(WINDOW* tmp, int X, int Y, int dMax, int* table, int seed) {
     snprintf(elem, 255, "Y = %d", Y);
     mvwaddstr(tmp, 4, 1, elem);
     strcpy(elem, "");
+
+    snprintf(elem, 255, "SEED = %d", seed);
+    mvwaddstr(tmp, 1, 50, elem);
+    strcpy(elem, "");
 	
     wrefresh(tmp);
 }
