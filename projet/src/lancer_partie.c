@@ -87,22 +87,31 @@ void lancerPartie(){
 
     nodelay(jeu, true);
 
-    double begin, timediff, fps, supp;
+    clock_t begin, end;
+    float fps, timediff, supp;
+    int nb_frames = 0;
+    int tot_sec = 0;
     char txt_fps[255] = "\0";
     while (wgetch(jeu) != 'k') {
-        begin = (double)clock() / CLOCKS_PER_SEC;
+        begin = clock();
         // CODE >>>
 
         afficherMap_simp(mini_jeu, niv, height_gen, width_gen);
-        wrefresh(mini_jeu);
         afficherMap(jeu, niv, height_carte, width_carte);
 
         // <<< CODE
-        timediff = ((double)clock()) / CLOCKS_PER_SEC - begin;
-        supp = 1.0f / 60.0f - timediff;
-        if (supp > 0) usleep(1000000 * supp);
+        end = clock();
+        timediff = (float)(end - begin) / CLOCKS_PER_SEC;
+        supp = 0.01667f - timediff;
+        if (supp > 0.0f) usleep(1000000 * supp);
         fps = 1.0f / (timediff + supp);
-        snprintf(txt_fps, 254, "FPS : %.1lf", fps);
+        nb_frames++;
+        if (nb_frames >= 61) {
+            nb_frames = 0;
+            tot_sec++;
+        }
+        txt_fps[0] = '\0';
+        snprintf(txt_fps, 254, "FPS : %.1lf | NB_FRAMES : %d | TOT_SEC : %d", fps, nb_frames, tot_sec);
         mvwaddstr(jeu, 1, 1, txt_fps);
         wrefresh(jeu);
     }

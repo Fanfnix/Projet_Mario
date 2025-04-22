@@ -16,6 +16,7 @@ void afficherMap_simp(WINDOW* fenetre, struct Map* niv, int height_carte, int wi
             mvwaddch(fenetre, y + 1, x + 1, ch);
         }
     }
+    wrefresh(fenetre);
 }
 
 
@@ -32,6 +33,7 @@ void affichageTuyau(WINDOW * win, int Y, int X) {
         }
         mvwaddstr(win, Y+j, X, tmp);
     }
+    fclose(file);
 }
 
 
