@@ -38,37 +38,39 @@ typedef struct Save
 
 }Save;
 
-WINDOW * creerWindowLogo();
-WINDOW * creerWindowMenu();
-WINDOW * creerWindowChoix();
-WINDOW * creerWindowControle();
-WINDOW * creerWindowEloise();
+WIN * creerFenetre(WINDOW * fenetre, int width, int height);
 
-void affichageRetromario(WINDOW * win);
-void affichageControle(WINDOW * controle);
-void affichageEloise(WINDOW * eloise);
+WIN * creerWindowLogo();
+WIN * creerWindowMenu();
+WIN * creerWindowChoix();
+WIN * creerWindowControle();
+WIN * creerWindowEloise();
 
-void affichageGenerale(WINDOW * logo, WINDOW * controle, WINDOW * eloise);
+void affichageRetromario(WIN * win);
+void affichageControle(WIN * controle);
+void affichageEloise(WIN * eloise);
 
-void affichageMenuPrincipal(WINDOW * menu, int choix);
-void actionMenuPrincipal(WINDOW * menu, int * id);
+void affichageGenerale(WIN * logo, WIN * controle, WIN * eloise);
+
+void affichageMenuPrincipal(WIN * menu, int choix);
+void actionMenuPrincipal(WIN * menu, int * id);
 
 struct Score ** recupHiscores();
 struct Score ** recupHiscores();
 
-void affichageHiscores(WINDOW * win, struct Score ** liste_score, int choisi);
-void actionHiscores(WINDOW * win, struct Score ** liste_score, int * id);
+void affichageHiscores(WIN * win, struct Score ** liste_score, int choisi);
+void actionHiscores(WIN * win, struct Score ** liste_score, int * id);
 void supprHiscores(struct Score ** liste_score, int id);
 void libererHiscores(struct Score ** liste_score);
 
 // SAUVEGARDES
 Save * recupSave(char * str);
 Save ** recupCheckpoint();
-void affichageSauvegarde(WINDOW * win, Save ** liste_sauvegarde, int choisi);
-void actionSauvegarde(WINDOW * win, Save ** liste_sauvegarde, int * id);
+void affichageSauvegarde(WIN * win, Save ** liste_sauvegarde, int choisi);
+void actionSauvegarde(WIN * win, Save ** liste_sauvegarde, int * id);
 void supprSauvegarde(Save ** liste_sauvegarde, int id);
 void libererSauvegarde(Save ** liste_sauvegarde);
 
-void nettoyerMenu(WINDOW * logo, WINDOW * menu, WINDOW * choix, WINDOW * controle, WINDOW * eloise);
+void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * eloise);
 
 #endif

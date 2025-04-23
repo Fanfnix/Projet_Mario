@@ -2,14 +2,14 @@
 
 int main() {
 
-    WINDOW * logo;
-    WINDOW * menu;
-    WINDOW * choix;
-    WINDOW * controle;
-    WINDOW * eloise;
+    WIN * logo;
+    WIN * menu;
+    WIN * choix;
+    WIN * controle;
+    WIN * eloise;
 
-    struct Score **liste_score;
-    Save **sauvegarde;
+    struct Score ** liste_score;
+    Save ** sauvegarde;
 
     initscr();
     curs_set(0);
@@ -27,7 +27,7 @@ int main() {
     liste_score = recupHiscores();
     sauvegarde = recupCheckpoint();
     
-    system("./../musique/monbeaumenu.wav");
+    // system("./../musique/monbeaumenu.wav");
 
     int id = 0;
     int id_choix = 0;
