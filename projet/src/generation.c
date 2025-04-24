@@ -25,7 +25,7 @@ int convInt(float y) {
     if (y > res / 100 + 0.5) {
         res = res / 100 + 1;
     } else {
-        res =  res / 100;
+        res = res / 100;
     }
     return res;
 }
@@ -124,13 +124,11 @@ struct Map * creerMap(int height, int width) {
     width = (width / DISTANCE + 2) * DISTANCE;
     niv->height = height;
     niv->width = width;
-    
     niv->carte = malloc(niv->height * sizeof(int *));
     if (!niv->carte) {
         free(niv);
         return NULL;
     }
-    
     for (int y = 0; y < niv->height; y++) {
         niv->carte[y] = malloc(niv->width * sizeof(int));
         if (!niv->carte[y]) {
@@ -141,16 +139,68 @@ struct Map * creerMap(int height, int width) {
         }
         for (int x = 0; x < niv->width; x++) niv->carte[y][x] = 0;
     }
+    niv->liste_goomba = malloc(T_LISTE_GOOMBA * sizeof(struct Goomba *));
+    if (niv->liste_goomba == NULL) {
+        for (int y = 0; y < niv->height; y++) free(niv->carte[y]);
+        free(niv->carte);
+        free(niv);
+        return NULL;
+    }
     return niv;
 }
 
 
 // Libère la Map
-void libMemMap(struct Map* niv) {
+void libMemMap(struct Map * niv) {
     if (!niv) return;
     for (int y = 0; y < niv->height; y++) {
         free(niv->carte[y]);
     }
     free(niv->carte);
     free(niv);
+}
+
+
+/* === GOOMBA === */
+
+// Creer Goomba
+struct Goomba * creerGoomba(int id, float x, float y, float speed) {
+    struct Goomba * machin = malloc(sizeof(struct Goomba));
+    if (machin == NULL) return NULL;
+    machin->id = id;
+    machin->X = convInt(x);
+    machin->Y = convInt(y);
+    machin->x = x;
+    machin->y = y;
+    machin->speed = speed;
+    return machin;
+}
+
+// Ajouter un goomba à la liste
+int ajouterGoomba(struct Goomba ** liste_goomba, struct Goomba * machin) {
+    if (liste_goomba == NULL || machin == NULL) return 0;
+    for (int i = 0; i < T_LISTE_GOOMBA; i++) {
+        if (liste_goomba[i] == NULL) {
+            liste_goomba[i] = machin;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+// Supprimer un goomba de la liste
+int supprimerGoomba(struct Goomba ** liste_goomba, int id) {
+    if (liste_goomba == NULL) return 0;
+    for (int i = 0; i < T_LISTE_GOOMBA; i++) {
+        if (liste_goomba[i] != NULL) if (liste_goomba[i]->id == id) {
+            free(liste_goomba[i]);
+            liste_goomba[i] == NULL;
+            for (int j = i+1; j < T_LISTE_GOOMBA; j++) {
+                liste_goomba[j-1] = liste_goomba[j];
+                if (liste_goomba[j-1] == NULL) break;
+            }
+            return 1;
+        }
+    }
+    return 0;
 }

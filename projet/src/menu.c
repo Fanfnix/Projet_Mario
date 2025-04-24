@@ -246,7 +246,7 @@ void supprHiscores(struct Score ** liste_score, int id){
     {
         liste_score[i-1]= liste_score[i];
         if (liste_score[i-1] == NULL) break;
-        liste_score[i-1]->id --;
+        liste_score[i-1]->id--;
     } 
 }
 

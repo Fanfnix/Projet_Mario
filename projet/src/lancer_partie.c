@@ -1,6 +1,8 @@
 #include "../include/header.h"
 
 void lancerPartie(){
+
+    int max_fps = 30;
     
     // Initialisation aléatoire
     srand(time(NULL));
@@ -105,11 +107,11 @@ void lancerPartie(){
         // <<< CODE
         end = clock();
         timediff = (float)(end - begin) / CLOCKS_PER_SEC;
-        supp = 0.01667f - timediff;
+        supp = (1.0f / max_fps) - timediff;
         if (supp > 0.0f) usleep(1000000 * supp);
         fps = 1.0f / (timediff + supp);
         nb_frames++;
-        if (nb_frames >= 61) {
+        if (nb_frames >= max_fps+1) {
             nb_frames = 0;
             tot_sec++;
         }

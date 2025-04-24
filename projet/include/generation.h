@@ -7,16 +7,19 @@
 
 #define H_PLATEFORME 4  // Hauteur plateformes
 
-struct Map {
-    int height, width;
-    int** carte;
+struct Goomba {
+    int id;
+    int X, Y;
+    float x, y;
+    float speed;
 };
 
-struct Elem {
-    char nom[20];
-    int nb_frames;
+#define T_LISTE_GOOMBA 50
+
+struct Map {
     int height, width;
-    int x, y;
+    int ** carte;
+    struct Goomba ** liste_goomba;
 };
 
 int * creerTableSeed();
@@ -26,6 +29,10 @@ int perlin(int x, int * table, int * seed);
 
 struct Map* creerMap(int L, int l);
 void libMemMap(struct Map* niv);
+
+struct Goomba * creerGoomba(int id, float x, float y, float speed);
+int ajouterGoomba(struct Goomba ** liste_goomba, struct Goomba * machin);
+int supprimerGoomba(struct Goomba ** liste_goomba, int id);
 
 void genererChunk(struct Map * niv, int id_chunk, int * table, int * seed);
 
