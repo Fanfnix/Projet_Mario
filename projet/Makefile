@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -g -Wall -Iinclude/
-LDFLAGS =
+LDFLAGS = -g
 LIBS = -lm
 SRCDIR = src
 EXEC = result.out

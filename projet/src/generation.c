@@ -117,28 +117,60 @@ int perlin(int x, int * table, int * seed) {
 
 /* === MAP === */
 
-// Creer la Map
-struct Map * creerMap(int height, int width) {
-    struct Map * niv = malloc(sizeof(struct Map));
-    if (!niv) {return NULL;}
-    width = (width / DISTANCE + 2) * DISTANCE;
-    niv->height = height;
-    niv->width = width;
-    niv->carte = malloc(niv->height * sizeof(int *));
-    if (!niv->carte) {
-        free(niv);
+// Creer un chunk
+struct Chunk * creerChunk(int id, int height) {
+    struct Chunk * piece = malloc(sizeof(struct Chunk));
+    if (piece == NULL) return NULL;
+    piece->id = id;
+    piece->height = height;
+    piece->area = malloc(height * sizeof(int *));
+    if (piece->area == NULL) {
+        free(piece);
         return NULL;
     }
-    for (int y = 0; y < niv->height; y++) {
-        niv->carte[y] = malloc(niv->width * sizeof(int));
-        if (!niv->carte[y]) {
-            for (int j = 0; j < y; j++) free(niv->carte[j]);
-            free(niv->carte);
-            free(niv);
-            return NULL;
-        }
-        for (int x = 0; x < niv->width; x++) niv->carte[y][x] = 0;
+    for (int y = 0; y < height; y++) {
+        piece->area[y] = malloc(DISTANCE * sizeof(int));
+        if (piece->area[y] != NULL) for (int x = 0; x < DISTANCE; x++) piece->area[y][x] = 0;
     }
+    return piece;
+}
+
+
+// Libère un chunk
+void libMemChunk(struct Chunk * piece) {
+    if (piece == NULL) return;
+    for (int y = 0; y < piece->height; y++) {
+        free(piece->area[y]);
+        piece->area[y] = NULL;
+    }
+    free(piece->area);
+    piece->area = NULL;
+    free(piece);
+    piece = NULL;
+}
+
+
+// Ajoute le chunk a la carte
+void ajouterChunk(struct Map * niv, struct Chunk * piece) {
+    if (niv == NULL || piece == NULL) return;
+    for (int i = 0; i < niv->nb_chunks; i++) {
+        if (niv->carte[i] == NULL) {
+            niv->carte[i] = piece;
+            // printf("Ajout : i = %d / %p\n", i, niv->carte[i]);
+            return;
+        }
+    }
+}
+
+
+// Creer la Map
+struct Map * creerMap(int height, int nb_chunks) {
+    struct Map * niv = malloc(sizeof(struct Map));
+    if (niv == NULL) return NULL;
+    niv->height = height;
+    niv->nb_chunks = nb_chunks;
+    niv->carte = malloc(niv->nb_chunks * sizeof(struct Chunk *));
+    if (niv->carte != NULL) for (int i = 0; i < niv->nb_chunks; i++) niv->carte[i] = NULL;
     niv->liste_goomba = malloc(T_LISTE_GOOMBA * sizeof(struct Goomba *));
     if (niv->liste_goomba == NULL) {
         for (int y = 0; y < niv->height; y++) free(niv->carte[y]);
@@ -153,9 +185,9 @@ struct Map * creerMap(int height, int width) {
 
 // Libère la Map
 void libMemMap(struct Map * niv) {
-    if (!niv) return;
-    for (int y = 0; y < niv->height; y++) {
-        free(niv->carte[y]);
+    if (niv == NULL) return;
+    for (int i = 0; i < niv->nb_chunks; i++) {
+        libMemChunk(niv->carte[i]);
     }
     free(niv->carte);
     free(niv);

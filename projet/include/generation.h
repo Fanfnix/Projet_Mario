@@ -16,9 +16,16 @@ struct Goomba {
 
 #define T_LISTE_GOOMBA 50
 
+struct Chunk {
+    int id;
+    int height;
+    int ** area;
+};
+
 struct Map {
-    int height, width;
-    int ** carte;
+    int height;
+    int nb_chunks;
+    struct Chunk ** carte;
     struct Goomba ** liste_goomba;
 };
 
@@ -27,15 +34,17 @@ int * iterationTable(int * seed, int * table);
 int rand_nb(int seed);
 int perlin(int x, int * table, int * seed);
 
-struct Map* creerMap(int L, int l);
-void libMemMap(struct Map* niv);
+struct Chunk * creerChunk(int id, int height);
+void libMemChunk(struct Chunk * piece);
+void ajouterChunk(struct Map * niv, struct Chunk * piece);
+
+struct Map * creerMap(int height, int nb_chunks);
+void libMemMap(struct Map * niv);
 
 struct Goomba * creerGoomba(int id, float x, float y, float speed);
 int ajouterGoomba(struct Goomba ** liste_goomba, struct Goomba * machin);
 int supprimerGoomba(struct Goomba ** liste_goomba, int id);
 
-void genererChunk(struct Map * niv, int id_chunk, int * table, int * seed);
-
-void lancerPartie();
+struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * seed);
 
 #endif

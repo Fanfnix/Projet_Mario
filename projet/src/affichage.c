@@ -1,38 +1,49 @@
 #include "../include/header.h"
 
-void afficherMap_simp(WIN * fenetre, struct Map* niv, int height_carte, int width_carte) {
+void afficherMap_simp(WIN * fenetre, struct Map * niv) {
     char ch;
-    for (int y = 0; y < height_carte; y++) {
-        for (int x = 0; x < width_carte; x++) {
-            switch (niv->carte[y][x]) {
-                case 0: ch = ' '; break;
-                case 1: ch = '#'; break;
-                case 2: ch = 'O'; break;
-                case 3: ch = '&'; break;
-                case 4: ch = '$'; break;
-                case 5: ch = 'H'; break;
-                default: ch = '?'; break;
+    for (int i = 0; i < niv->nb_chunks; i++) {
+        for (int y = 0; y < niv->height; y++) {
+            for (int x = 0; x < DISTANCE; x++) {
+                switch (niv->carte[i]->area[y][x]) {
+                    case 0: ch = ' '; break;
+                    case 1: ch = '#'; break;
+                    case 2: ch = 'O'; break;
+                    case 3: ch = '&'; break;
+                    case 4: ch = '$'; break;
+                    case 5: ch = 'H'; break;
+                    default: ch = '?'; break;
+                }
+                mvwaddch(fenetre->fenetre, y + 1, i*DISTANCE + x + 1, ch);
             }
-            mvwaddch(fenetre->fenetre, y + 1, x + 1, ch);
         }
     }
     wrefresh(fenetre->fenetre);
 }
 
 
-void affichageTuyau(WIN * win, int Y, int X) {
+int convX(int x) {
+    return TX * x + 1;
+}
+
+int convY(int y) {
+    return TY * y + 1;
+}
+
+
+void affichageTuyau(WIN * win, int y, int x) {
     char chemin[255] = "../design/tuyau/tuyau1.txt";
     char tmp[255];
     FILE * file = fopen(chemin, "r");
-    for (int j = 0; j < 4; j++) {
+    for (int j = 3; j >= 0; j--) {
         fgets(tmp, 10, file);
-        if ((win->width-1-X) < strlen(tmp)) tmp[(win->width-1-X)] = '\0';
+        if ((win->width-1-x) < strlen(tmp)) tmp[(win->width-1-x)] = '\0';
         for (int k = 0; k < strlen(tmp); k++) {
             if (tmp[k] == '0') {
                 tmp[k] = ' ';
             }
         }
-        mvwaddstr(win->fenetre, Y+j, X, tmp);
+        mvwaddstr(win->fenetre, y+j, x, tmp);
     }
     fclose(file);
 }
@@ -43,51 +54,56 @@ void affichageGoomba(WIN * win, struct Goomba * machin) {
     char chemin[255] = "../design/goomba/goomba1.txt";
     char tmp[255];
     FILE * file = fopen(chemin, "r");
-    for (int j = 0; j < 2; j++) {
+    for (int j = 2; j >= 0; j--) {
         fgets(tmp, 4, file);
         for (int k = 0; k < strlen(tmp); k++) {
             if (tmp[k] == '0') {
                 tmp[k] = ' ';
             }
         }
-        mvwaddstr(win->fenetre, TY*(machin->Y)+j-1, TX*(machin->X)+1, tmp);
+        mvwaddstr(win->fenetre, convY(machin->Y)+j, convX(machin->X), tmp);
     }
     fclose(file);
 }
 
 
-void afficherMap(WIN * fenetre, struct Map * niv, int height_carte, int width_carte) {
+void afficherMap(WIN * fenetre, struct Map * niv) {
+    if (niv == NULL || fenetre == NULL) return;
     char txt[255];
-    for (int y = 0; y < height_carte; y++) {
-        for (int i = 0; i < 2; i++) {
-            for (int x = 0; x < width_carte; x++) {
-                switch (niv->carte[y][x]) {
+    for (int i = 0; i < niv->nb_chunks; i++) {
+        for (int y = 0; y < niv->height; y++) {
+            for (int x = 0; x < DISTANCE; x++) {
+                switch (niv->carte[i]->area[y][x]) {
                     case 0:
-                        mvwaddstr(fenetre->fenetre, TY*y+i+1, TX*x+1, "   ");
+                        mvwaddstr(fenetre->fenetre, convY(y), convX(x+i*DISTANCE), "   ");
+                        mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x+i*DISTANCE), "   ");
                         break;
                     case 1: case 2:
-                        mvwaddstr(fenetre->fenetre, TY*y+i+1, TX*x+1, "###");
+                        mvwaddstr(fenetre->fenetre, convY(y), convX(x+i*DISTANCE), "###");
+                        mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x+i*DISTANCE), "###");
                         break;
                     case 3:
-                        if (!i) mvwaddstr(fenetre->fenetre, TY*y+i+1, TX*x+1, "===");
-                        else mvwaddstr(fenetre->fenetre, TY*y+i+1, TX*x+1, "=?=");
+                        mvwaddstr(fenetre->fenetre, convY(y), convX(x+i*DISTANCE), "===");
+                        mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x+i*DISTANCE), "=?=");
                         break;
                     case 4:
-                        if (!i) mvwaddstr(fenetre->fenetre, TY*y+i+1, TX*x+1, "($)");
-                        else mvwaddstr(fenetre->fenetre, TY*y+i+1, TX*x+1, "   ");
+                        mvwaddstr(fenetre->fenetre, convY(y), convX(x+i*DISTANCE), "($)");
+                        mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x+i*DISTANCE), "   ");
                         break;
                     case 5:
-                        if (i) affichageTuyau(fenetre, TY*(y-1)+1, TX*x+1);
+                        affichageTuyau(fenetre, convY(y), convX(x+i*DISTANCE));
                         break;
                     case 6:
                         break;
                     default:
-                        mvwaddstr(fenetre->fenetre, TY*y+i+1, TX*x+1, "???");
+                        mvwaddstr(fenetre->fenetre, convY(y), convX(x+i*DISTANCE), "???");
+                        mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x+i*DISTANCE), "???");
                         break;
                 }
             }
         }
     }
+    
     char tmp[512];
     for (int i = 0; i < T_LISTE_GOOMBA; i++) {
         if (niv->liste_goomba[i] != NULL) {

@@ -18,5 +18,6 @@ typedef struct WIN {
 #include "generation.h"
 #include "affichage.h"
 #include "menu.h"
+#include "jeu.h"
 
 #endif

@@ -26,8 +26,6 @@ int main() {
 
     liste_score = recupHiscores();
     sauvegarde = recupCheckpoint();
-    
-    // system("./../musique/monbeaumenu.wav");
 
     int id = 0;
     int id_choix = 0;

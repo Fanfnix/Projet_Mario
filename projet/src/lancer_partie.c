@@ -54,12 +54,10 @@ void lancerPartie(){
     int width_carte = (width_fenetre_jeu - 2) / TX;
 
     // Setup création
-    int nb_chunk = width_carte / DISTANCE + 2;
-    int height_gen = height_carte;
-    int width_gen = nb_chunk * DISTANCE;
+    int nb_chunks = width_carte / DISTANCE + 2;
 
     // Setup dimension fenêtre mini_jeu
-    int height_fenetre_mini_jeu = height_gen;
+    int height_fenetre_mini_jeu = height_carte;
     int width_fenetre_mini_jeu = COLS;
     int startx_fenetre_mini_jeu = 0;
     int starty_fenetre_mini_jeu = starty_fenetre_jeu + height_fenetre_jeu + 2;
@@ -75,7 +73,7 @@ void lancerPartie(){
 	wrefresh(mini_jeu->fenetre);
 
     // Création d'un niveau vide
-    struct Map * niv = creerMap(height_gen, width_gen);
+    struct Map * niv = creerMap(height_carte, nb_chunks);
 
     // Vérification de la création du niveau
     if (!niv) {
@@ -85,9 +83,13 @@ void lancerPartie(){
     }
 
     // Ajout de la génération de base
-    for (int i = 0; i < nb_chunk; i++) {
-        if (i < 4) genererChunk(niv, i, NULL, NULL);
-        else genererChunk(niv, i, table, &seed);
+    struct Chunk * piece;
+    for (int i = 0; i < nb_chunks; i++) {
+        if (i < 4) piece = genererChunk(niv, i, NULL, NULL);
+        else piece = genererChunk(niv, i, table, &seed);
+        if (piece != NULL) {
+            ajouterChunk(niv, piece);
+        } else printf("Pas ajout\n");
     }
 
     nodelay(jeu->fenetre, true);
@@ -101,8 +103,8 @@ void lancerPartie(){
         begin = clock();
         // CODE >>>
 
-        afficherMap_simp(mini_jeu, niv, height_gen, width_gen);
-        afficherMap(jeu, niv, height_carte, width_carte);
+        afficherMap_simp(mini_jeu, niv);
+        afficherMap(jeu, niv);
 
         // <<< CODE
         end = clock();
