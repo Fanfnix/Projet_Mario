@@ -15,6 +15,7 @@ void genererChunk(struct Map * niv, int id_chunk, int * table, int * seed) {
     int x_mystery, y_mystery, genere_mystery = 0;
     int startx_piece, x_piece = 0, y_piece = 0, nb_piece, compteur_piece = 0;
     int x_tuyaux, y_tuyaux;
+    float x_goomba, y_goomba, speed_goomba;
     // <<< Variables
     // Aléatoire >>>
     int plateforme = (table[0] % 3) == 1;
@@ -38,6 +39,13 @@ void genererChunk(struct Map * niv, int id_chunk, int * table, int * seed) {
         nb_piece = 3 + abs(table[x_piece]) % mod;
     }
     // <<< Piece
+    // Goomba >>>
+    struct Goomba * goomba;
+    if (!tuyau) {
+        x_goomba = abs(table[2]) % DISTANCE;
+        speed_goomba = (table[(int)x_goomba] % 2) ? -1 : 1;
+    }
+    // >>> Goomba
     // Terrain >>>
     for (int x = CHO; x < CHO + DISTANCE; x++) {
         ymax = perlin(x, table, seed);
@@ -63,6 +71,12 @@ void genererChunk(struct Map * niv, int id_chunk, int * table, int * seed) {
             compteur_piece++;
         }
         // <<< Piece
+        // Goomba >>>
+        if (!tuyau && x % DISTANCE == x_goomba) {
+            goomba = creerGoomba(id_chunk, (float)(CHO + x_goomba), (float)(niv->height - ymax), speed_goomba);
+            ajouterGoomba(niv->liste_goomba, goomba);
+        }
+        // >>> Goomba
     }
     // Plateforme >>>
     if (plateforme) {

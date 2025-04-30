@@ -146,6 +146,7 @@ struct Map * creerMap(int height, int width) {
         free(niv);
         return NULL;
     }
+    for (int i = 0; i < T_LISTE_GOOMBA; i++) niv->liste_goomba[i] = NULL;
     return niv;
 }
 

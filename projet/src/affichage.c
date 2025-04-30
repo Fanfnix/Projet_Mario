@@ -38,6 +38,24 @@ void affichageTuyau(WIN * win, int Y, int X) {
 }
 
 
+void affichageGoomba(WIN * win, struct Goomba * machin) {
+    if (machin == NULL) return;
+    char chemin[255] = "../design/goomba/goomba1.txt";
+    char tmp[255];
+    FILE * file = fopen(chemin, "r");
+    for (int j = 0; j < 2; j++) {
+        fgets(tmp, 4, file);
+        for (int k = 0; k < strlen(tmp); k++) {
+            if (tmp[k] == '0') {
+                tmp[k] = ' ';
+            }
+        }
+        mvwaddstr(win->fenetre, TY*(machin->Y)+j-1, TX*(machin->X)+1, tmp);
+    }
+    fclose(file);
+}
+
+
 void afficherMap(WIN * fenetre, struct Map * niv, int height_carte, int width_carte) {
     char txt[255];
     for (int y = 0; y < height_carte; y++) {
@@ -68,6 +86,14 @@ void afficherMap(WIN * fenetre, struct Map * niv, int height_carte, int width_ca
                         break;
                 }
             }
+        }
+    }
+    char tmp[512];
+    for (int i = 0; i < T_LISTE_GOOMBA; i++) {
+        if (niv->liste_goomba[i] != NULL) {
+            affichageGoomba(fenetre, niv->liste_goomba[i]);
+            snprintf(tmp, 511, "ID: %d, X: %d, Y: %d, x: %.2f, y: %.2f, S: %.2f", niv->liste_goomba[i]->id, niv->liste_goomba[i]->X, niv->liste_goomba[i]->Y, niv->liste_goomba[i]->x, niv->liste_goomba[i]->y, niv->liste_goomba[i]->speed);
+            mvwaddstr(fenetre->fenetre, i+2, 1, tmp);
         }
     }
 }

@@ -86,7 +86,7 @@ void lancerPartie(){
 
     // Ajout de la génération de base
     for (int i = 0; i < nb_chunk; i++) {
-        if (i < 3) genererChunk(niv, i, NULL, NULL);
+        if (i < 4) genererChunk(niv, i, NULL, NULL);
         else genererChunk(niv, i, table, &seed);
     }
 
