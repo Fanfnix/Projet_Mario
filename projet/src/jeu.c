@@ -9,6 +9,6 @@ void avancerMapChunk(struct Map * niv, int * table, int * seed){
         niv->carte [i]= niv->carte [i+1];
         niv->carte [i+1] = NULL;
     }
-    struct Chunk * newChunk = genererChunk(niv, niv->carte [niv->nb_chunks - 2], table, seed);
+    struct Chunk * newChunk = genererChunk(niv, niv->carte [niv->nb_chunks - 2]->id, table, seed);
     ajouterChunk(niv, newChunk);
 }

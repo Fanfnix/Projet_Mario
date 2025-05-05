@@ -5,8 +5,8 @@ LIBS = -lm
 SRCDIR = src
 EXEC = result.out
 
-CFLAGS += $(shell pkg-config --cflags ncurses sdl2)
-LIBS += $(shell pkg-config --libs ncurses sdl2)
+CFLAGS += $(shell pkg-config --cflags ncurses sdl2 SDL2_mixer)
+LIBS += $(shell pkg-config --libs ncurses sdl2 SDL2_mixer)
 
 SRCFILES = $(wildcard $(SRCDIR)/*.c)
 OBJFILES = $(patsubst %.c, %.o, $(SRCFILES))

@@ -7,6 +7,7 @@
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
+#include <SDL2/SDL_mixer.h>
 
 #include <ncurses.h>
 
