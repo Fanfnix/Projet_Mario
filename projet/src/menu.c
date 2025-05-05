@@ -73,9 +73,23 @@ WIN * creerWindowEloise() {
 }
 
 
-void affichageEloise(WIN * eloise) {
-    wborder(eloise->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
-    wrefresh(eloise->fenetre);
+void affichageDessinmenu(WIN * eloise){
+    char chemin[] = "../design/dessinmenu/dessinmenu1.txt";
+    FILE * file = fopen(chemin, "r");
+    if (file != NULL){
+        for (int y = 0; y < HEIGHT_ELOISE; y++){
+            char tmp[WIDTH_ELOISE+1];
+            fgets(tmp, WIDTH_ELOISE+1, file);
+            for (int i = 0; i < strlen(tmp); i++){
+                if (tmp[i] == '0') {
+                    tmp[i] = ' ';
+                }
+            }
+            mvwaddstr(eloise->fenetre, y+1, 1, tmp);
+        }
+        wrefresh(eloise->fenetre);
+        fclose(file);
+    }
 }
 
 
@@ -114,7 +128,7 @@ void affichageControle(WIN * controle) {
 void affichageGenerale(WIN * logo, WIN * controle, WIN * eloise) {
     affichageRetromario(logo);
     affichageControle(controle);
-    affichageEloise(eloise);
+    affichageDessinmenu(eloise);
 }
 
 void affichageMenuPrincipal(WIN * menu, int choix) {

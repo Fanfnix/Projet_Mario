@@ -48,7 +48,7 @@ WIN * creerWindowEloise();
 
 void affichageRetromario(WIN * win);
 void affichageControle(WIN * controle);
-void affichageEloise(WIN * eloise);
+void affichageDessinmenu(WIN * eloise);
 
 void affichageGenerale(WIN * logo, WIN * controle, WIN * eloise);
 
