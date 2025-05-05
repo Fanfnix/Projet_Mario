@@ -11,6 +11,9 @@ int main() {
     struct Score ** liste_score;
     Save ** sauvegarde;
 
+    // Creer musique
+    Mix_Music* menuzik = Mix_LoadMUS("../musique/monbeaumenu.wav");
+
     initscr();
     curs_set(0);
     noecho();
@@ -30,6 +33,7 @@ int main() {
     int id = 0;
     int id_choix = 0;
     int run = 1;
+    Mix_PlayMusic(menuzik, 1);
     do {
         actionMenuPrincipal(menu, &id);
         switch (id) {
