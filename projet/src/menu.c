@@ -238,7 +238,7 @@ void actionHiscores(WIN * win, struct Score ** liste_score, int * id) {
     while ((pressed = wgetch(win->fenetre)) != 27) {
         if (pressed == KEY_UP) (*id)--;
         else if (pressed == KEY_DOWN) (*id)++;
-        else if (pressed == 8) supprHiscores(liste_score, *id);  // Supprimer le score
+        else if (pressed == 8 || pressed == 263) supprHiscores(liste_score, *id);  // Supprimer le score
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
         affichageHiscores(win, liste_score, *id);
@@ -354,7 +354,7 @@ void actionSauvegarde(WIN * win,  Save ** liste_sauvegarde, int * id) {
     while ((pressed = wgetch(win->fenetre)) != 27) {
         if (pressed == KEY_UP) (*id)--;
         else if (pressed == KEY_DOWN) (*id)++;
-        else if (pressed == 8) supprSauvegarde(liste_sauvegarde, *id);  // Supprimer la sauvegarde
+        else if (pressed == 8 || pressed == 263) supprSauvegarde(liste_sauvegarde, *id);  // Supprimer la sauvegarde
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
         affichageSauvegarde(win, liste_sauvegarde, *id);
