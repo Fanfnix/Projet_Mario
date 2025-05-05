@@ -3,6 +3,6 @@
 
 void lancerPartie();
 
-void avancerMapChunk(struct Map * niv, int nb_chunk);
+void avancerMapChunk(struct Map * niv, int * table, int * seed);
 
 #endif
