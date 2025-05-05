@@ -11,8 +11,18 @@ int main() {
     struct Score ** liste_score;
     Save ** sauvegarde;
 
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+        printf("Echec INIT_AUDIO\n");
+        return 0;
+    }
+
+    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+        printf("Echec Open_Audio\n");
+        return 0;
+    }
+
     // Creer musique
-    Mix_Music * menuzik = Mix_LoadMUS("../musique/monbeaumenu.wav");
+    Mix_Music * menuzik = Mix_LoadMUS("../musique/monbeaumenu.mp3");
     if (menuzik == NULL) {
         printf("Echec Mix_LoadMUS\n");
         return 0;
