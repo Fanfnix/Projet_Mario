@@ -1,6 +1,6 @@
 #include "../include/header.h"
 
-void avancerMapChunk(struct Map * niv, int nb_chunk){
+void avancerMapChunk(struct Map * niv, int * table, int * seed){
 
     if (niv == NULL) return;
     
@@ -9,6 +9,6 @@ void avancerMapChunk(struct Map * niv, int nb_chunk){
         niv->carte [i]= niv->carte [i+1];
         niv->carte [i+1] = NULL;
     }
-    struct Chunk * newChunk = genererChunk(struct Map * niv, int id_chunk, int * table, int * seed);
-    ajouterChunk(struct Map * niv, struct Chunk * newChunk);
+    struct Chunk * newChunk = genererChunk(niv, niv->carte [niv->nb_chunks - 2], table, seed);
+    ajouterChunk(niv, newChunk);
 }
