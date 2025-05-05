@@ -61,7 +61,7 @@ void affichageGoomba(WIN * win, struct Goomba * machin) {
                 tmp[k] = ' ';
             }
         }
-        mvwaddstr(win->fenetre, convY(machin->Y)-TY+1-j, convX(machin->X), tmp);
+        mvwaddstr(win->fenetre, convY(machin->Y)+1-j, convX(machin->X), tmp);
     }
     fclose(file);
 }
@@ -108,10 +108,10 @@ void afficherMap(WIN * fenetre, struct Map * niv) {
     char tmp[512];
     for (int i = 0; i < T_LISTE_GOOMBA; i++) {
         if (niv->liste_goomba[i] != NULL) {
-            if (convX(niv->liste_goomba[i]->X) < fenetre->width) {
+            if (convX(niv->liste_goomba[i]->X) < fenetre->width-3-1) {
                 affichageGoomba(fenetre, niv->liste_goomba[i]);
             }
-            snprintf(tmp, 511, "ID: %d, X: %d, Y: %d, x: %.2f, y: %.2f, S: %.2f", niv->liste_goomba[i]->id, niv->liste_goomba[i]->X, niv->liste_goomba[i]->Y, niv->liste_goomba[i]->x, niv->liste_goomba[i]->y, niv->liste_goomba[i]->speed);
+            snprintf(tmp, 511, "ID: %d, X: %d, Y: %d, x: %.2f, y: %.2f, S: %.2f, DIFF: %d", niv->liste_goomba[i]->id, niv->liste_goomba[i]->X, niv->liste_goomba[i]->Y, niv->liste_goomba[i]->x, niv->liste_goomba[i]->y, niv->liste_goomba[i]->speed, fenetre->width-3-1 - convX(niv->liste_goomba[i]->X));
             mvwaddstr(fenetre->fenetre, i+2, 1, tmp);
         }
     }

@@ -84,7 +84,7 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
 
         // Goomba >>>
         if (!tuyau && x == x_goomba) {
-            goomba = creerGoomba(id_chunk, (float)(x_goomba + id_chunk*DISTANCE), (float)(niv->height - ymax), speed_goomba);
+            goomba = creerGoomba(id_chunk, (float)(x_goomba + id_chunk*DISTANCE), (float)(niv->height - ymax - 1), speed_goomba);
             ajouterGoomba(niv->liste_goomba, goomba);
         }
         // >>> Goomba
