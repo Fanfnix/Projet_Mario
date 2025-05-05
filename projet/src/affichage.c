@@ -37,13 +37,13 @@ void affichageTuyau(WIN * win, int y, int x) {
     FILE * file = fopen(chemin, "r");
     for (int j = 3; j >= 0; j--) {
         fgets(tmp, 10, file);
-        if ((win->width-1-x) < strlen(tmp)) tmp[(win->width-1-x)] = '\0';
+        if ((win->width-1-convX(x)) < strlen(tmp)) tmp[(win->width-1-convX(x))] = '\0';
         for (int k = 0; k < strlen(tmp); k++) {
             if (tmp[k] == '0') {
                 tmp[k] = ' ';
             }
         }
-        mvwaddstr(win->fenetre, y+j, x, tmp);
+        mvwaddstr(win->fenetre, convY(y)+1-j, convX(x), tmp);
     }
     fclose(file);
 }
@@ -54,14 +54,14 @@ void affichageGoomba(WIN * win, struct Goomba * machin) {
     char chemin[255] = "../design/goomba/goomba1.txt";
     char tmp[255];
     FILE * file = fopen(chemin, "r");
-    for (int j = 2; j >= 0; j--) {
+    for (int j = 1; j >= 0; j--) {
         fgets(tmp, 4, file);
         for (int k = 0; k < strlen(tmp); k++) {
             if (tmp[k] == '0') {
                 tmp[k] = ' ';
             }
         }
-        mvwaddstr(win->fenetre, convY(machin->Y)+j, convX(machin->X), tmp);
+        mvwaddstr(win->fenetre, convY(machin->Y)-TY+1-j, convX(machin->X), tmp);
     }
     fclose(file);
 }
@@ -71,8 +71,9 @@ void afficherMap(WIN * fenetre, struct Map * niv) {
     if (niv == NULL || fenetre == NULL) return;
     char txt[255];
     for (int i = 0; i < niv->nb_chunks; i++) {
+        int anti_depassement = ((fenetre->width-2)/TX < i*DISTANCE) ? (i*DISTANCE - (fenetre->width-2)/TX) : 0;
         for (int y = 0; y < niv->height; y++) {
-            for (int x = 0; x < DISTANCE; x++) {
+            for (int x = 0; x < (DISTANCE - anti_depassement); x++) {
                 switch (niv->carte[i]->area[y][x]) {
                     case 0:
                         mvwaddstr(fenetre->fenetre, convY(y), convX(x+i*DISTANCE), "   ");
@@ -91,7 +92,7 @@ void afficherMap(WIN * fenetre, struct Map * niv) {
                         mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x+i*DISTANCE), "   ");
                         break;
                     case 5:
-                        affichageTuyau(fenetre, convY(y), convX(x+i*DISTANCE));
+                        affichageTuyau(fenetre, y, x+i*DISTANCE);
                         break;
                     case 6:
                         break;
