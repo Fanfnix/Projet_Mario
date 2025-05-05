@@ -12,7 +12,11 @@ int main() {
     Save ** sauvegarde;
 
     // Creer musique
-    Mix_Music* menuzik = Mix_LoadMUS("../musique/monbeaumenu.wav");
+    Mix_Music * menuzik = Mix_LoadMUS("../musique/monbeaumenu.wav");
+    if (menuzik == NULL) {
+        printf("Echec Mix_LoadMUS\n");
+        return 0;
+    }
 
     initscr();
     curs_set(0);
