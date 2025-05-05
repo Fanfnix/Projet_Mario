@@ -71,9 +71,9 @@ void afficherMap(WIN * fenetre, struct Map * niv) {
     if (niv == NULL || fenetre == NULL) return;
     char txt[255];
     for (int i = 0; i < niv->nb_chunks; i++) {
-        int anti_depassement = ((fenetre->width-2)/TX < i*DISTANCE) ? (i*DISTANCE - (fenetre->width-2)/TX) : 0;
+        int anti_depassement = ((fenetre->width-2)/TX < (i+1)*DISTANCE) ? ((i+1)*DISTANCE - (fenetre->width-2)/TX) : 0;
         for (int y = 0; y < niv->height; y++) {
-            for (int x = 0; x < (DISTANCE - anti_depassement); x++) {
+            for (int x = 0; x < DISTANCE - anti_depassement; x++) {
                 switch (niv->carte[i]->area[y][x]) {
                     case 0:
                         mvwaddstr(fenetre->fenetre, convY(y), convX(x+i*DISTANCE), "   ");
@@ -108,7 +108,9 @@ void afficherMap(WIN * fenetre, struct Map * niv) {
     char tmp[512];
     for (int i = 0; i < T_LISTE_GOOMBA; i++) {
         if (niv->liste_goomba[i] != NULL) {
-            affichageGoomba(fenetre, niv->liste_goomba[i]);
+            if (convX(niv->liste_goomba[i]->X) < fenetre->width) {
+                affichageGoomba(fenetre, niv->liste_goomba[i]);
+            }
             snprintf(tmp, 511, "ID: %d, X: %d, Y: %d, x: %.2f, y: %.2f, S: %.2f", niv->liste_goomba[i]->id, niv->liste_goomba[i]->X, niv->liste_goomba[i]->Y, niv->liste_goomba[i]->x, niv->liste_goomba[i]->y, niv->liste_goomba[i]->speed);
             mvwaddstr(fenetre->fenetre, i+2, 1, tmp);
         }
