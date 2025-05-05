@@ -33,7 +33,7 @@ int main() {
     int id = 0;
     int id_choix = 0;
     int run = 1;
-    Mix_PlayMusic(menuzik, 1);
+    Mix_PlayMusic(menuzik, 0);
     do {
         actionMenuPrincipal(menu, &id);
         switch (id) {
