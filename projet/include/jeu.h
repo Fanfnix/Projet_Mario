@@ -11,7 +11,7 @@ typedef struct  Mario {
 } Mario;
 
 struct Mario * creerMario(int id, float x, float y, float speed, int vies);
-void initMario(Mario * perso, Map *niv);
+void initMario(Mario * perso, struct Map *niv, WIN * fenetre, int y);
 void avancerMapChunk(struct Map * niv, int * table, int * seed);
 
 
