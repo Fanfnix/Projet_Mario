@@ -74,7 +74,7 @@ void lancerPartie() {
 
     // Création d'un niveau vide
     struct Map * niv = creerMap(height_carte, nb_chunks);
-    creerMario(1.0, 3);
+    Mario * perso = creerMario(1.0, 3);
     // Vérification de la création du niveau
     if (!niv) {
         endwin();  // Sort la console du mode "ncurses"
