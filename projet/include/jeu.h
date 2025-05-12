@@ -8,7 +8,7 @@ typedef struct  Mario {
     float x, y;
     float speed;
     int vies
-}Mario;
+} Mario;
 
 struct Mario * creerMario(int id, float x, float y, float speed, int vies);
 void initMario(Mario * perso, Map *niv);

@@ -15,7 +15,7 @@ void avancerMapChunk(struct Map * niv, int * table, int * seed){
 
 struct Mario * creerMario(int id, float x, float y, float speed, int vies) {
     struct Mario * perso = malloc(sizeof(struct Mario));
-    if (perso == NULL) return;
+    if (perso == NULL) return NULL;
     perso->id = id;
     perso->x = x;
     perso->y = y;
@@ -24,7 +24,7 @@ struct Mario * creerMario(int id, float x, float y, float speed, int vies) {
     return perso;
 }
 
-void initMario(Mario * perso, struct Map * niv, WIN * fenetre){
+void initMario(Mario * perso, struct Map * niv, WIN * fenetre, int y){
     if (perso == NULL || niv == NULL || fenetre == NULL) return;
     perso->x = 5;
     while (fenetre->fenetre[y-1] != "###")
