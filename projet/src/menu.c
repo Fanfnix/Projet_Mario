@@ -224,7 +224,7 @@ void affichageHiscores(WIN * win, struct Score ** liste_score, int choisi) {
         else sprintf(text, "  >>> null");
         WINDOW * score = derwin(win->fenetre, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
         if (i == choisi) wattron(score, A_BOLD);
-        mvwaddstr(score, 2, 2, text);
+        mvwaddstr(score, 2, (COLS - WIDTH_MENU - strlen(text))/2, text);
         if (i == choisi) wattroff(score, A_BOLD);
     }
     mvwaddstr(win->fenetre, 50, 2, " [DEL] to delete a score");
@@ -341,7 +341,7 @@ void affichageSauvegarde(WIN * win, Save ** liste_sauvegarde, int choisi) {
         else sprintf(text, "  >>> null");
         WINDOW * save = derwin(win->fenetre, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
         if (i == choisi) wattron(save, A_BOLD);
-        mvwaddstr(save, 2, 2, text);
+        mvwaddstr(save, 2, (COLS - WIDTH_MENU - strlen(text))/2, text);
         if (i == choisi) wattroff(save, A_BOLD);
     }
     mvwaddstr(win->fenetre, 50, 2, " [DEL] to delete a save");
