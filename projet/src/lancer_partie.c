@@ -74,7 +74,7 @@ void lancerPartie() {
 
     // Création d'un niveau vide
     struct Map * niv = creerMap(height_carte, nb_chunks);
-
+    creerMario(1.0, 3);
     // Vérification de la création du niveau
     if (!niv) {
         endwin();  // Sort la console du mode "ncurses"
@@ -108,7 +108,7 @@ void lancerPartie() {
             if (newChunk != NULL) tmp_first->suivant = newChunk;
         }
     }
-
+    initMario(perso, niv, jeu);
     nodelay(jeu->fenetre, true);
 
     clock_t begin, end;
@@ -127,37 +127,10 @@ void lancerPartie() {
             case 100: avancerMapChunk(niv, table, &seed); break;
         }
 
-        // creation et initialisation de Mario
-
-    struct Mario * creerMario(float speed, int vies) {
-        struct Mario * perso = malloc(sizeof(struct Mario));
-        if (perso == NULL) return NULL;
-        perso->id = 0;
-        perso->speed = speed;
-        perso->vies= 3;
-    return perso;
-}
-
-    void initMario(Mario * perso, struct Map * niv, WIN * fenetre){
-        if (perso == NULL || niv == NULL || fenetre == NULL) return;
-        perso->x = 5;
-        int id_chunk = perso->x / DISTANCE;
-        struct Chunk * tmp_chunk = niv->p_chunk;
-        for (int i = 0; i < id_chunk; i++)
-        {
-            tmp_chunk = tmp_chunk->suivant;
-        }
-        for (int j = 0; j < tmp_chunk->height; j++)
-        {
-            if (tmp_chunk->area[j][convInt(perso->x)] == 1 || tmp_chunk->area[j][convInt(perso->x)] == 2)
-            {
-                perso->x = tmp_chunk->height - j;
-                break;
-            }     
-        }
-    }
+   
         // afficherMap_simp(mini_jeu, niv);
         afficherMap(jeu, niv);
+        affichageMario(jeu, perso);
 
         // <<< CODE
         end = clock();
