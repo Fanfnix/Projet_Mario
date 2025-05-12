@@ -1,6 +1,6 @@
 #include "../include/header.h"
 
-void lancerPartie(){
+void lancerPartie() {
 
     int max_fps = 30;
     

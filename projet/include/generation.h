@@ -30,6 +30,8 @@ struct Map {
     struct Goomba ** liste_goomba;
 };
 
+int convInt(float y);
+
 int * creerTableSeed();
 int * iterationTable(int * seed, int * table);
 int rand_nb(int seed);
