@@ -71,6 +71,23 @@ WIN * creerWindowEloise() {
     WIN * fenetre = creerFenetre(eloise, width_fenetre_eloise, height_fenetre_eloise);
     return fenetre;
 }
+/*
+if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+    printf("Erreur SDL: %s\n", SDL_GetError());
+    return 1;
+}
+
+if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+    printf("Erreur Mix_OpenAudio: %s\n", Mix_GetError());
+    return 1;
+}
+
+Mix_Chunk* selectSE = Mix_LoadWAV("../musique/select.wav");
+if (!selectSE) {
+    printf("Erreur chargement WAV: %s\n", Mix_GetError());
+    return 1;
+}
+*/
 
 
 void affichageDessinmenu(WIN * eloise){
@@ -153,11 +170,22 @@ void affichageMenuPrincipal(WIN * menu, int choix) {
 }
 
 void actionMenuPrincipal(WIN * menu, int * id) {
+    Mix_Chunk* selectSE = Mix_LoadWAV("../musique/select.wav");
+    if (!selectSE) {
+        printf("Erreur chargement: %s\n", Mix_GetError());
+        return ;
+    }
     int pressed;
     affichageMenuPrincipal(menu, *id);
     while ((pressed = wgetch(menu->fenetre)) != 10) {
-        if (pressed == KEY_UP) (*id)--;
-        else if (pressed == KEY_DOWN) (*id)++;
+        if (pressed == KEY_UP) {
+            (*id)--;
+            Mix_PlayChannel(-1, selectSE, 0);
+        }
+        else if (pressed == KEY_DOWN) {
+            (*id)++;
+            Mix_PlayChannel(-1, selectSE, 0);
+        }
         if (*id < 0) *id = 3;
         if (*id > 3) *id = 0;
         affichageMenuPrincipal(menu, *id);
