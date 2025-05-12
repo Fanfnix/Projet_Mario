@@ -66,6 +66,23 @@ void affichageGoomba(WIN * win, struct Goomba * machin) {
     fclose(file);
 }
 
+void affichageMario(WIN * win, Mario * perso) {
+    if (perso == NULL) return;
+    char chemin[255] = "../design/mario/mario1.txt";
+    char tmp[255];
+    FILE * file = fopen(chemin, "r");
+    for (int j = 1; j >= 0; j--) {
+        fgets(tmp, 4, file);
+        for (int k = 0; k < strlen(tmp); k++) {
+            if (tmp[k] == '0') {
+                tmp[k] = ' ';
+            }
+        }
+        mvwaddstr(win->fenetre, convY(perso->Y)+1-j, convX(perso->X), tmp);
+    }
+    fclose(file);
+}
+
 
 void afficherChunk(WIN * fenetre, struct Chunk * troncon) {
     if (fenetre == NULL || troncon == NULL) return;
