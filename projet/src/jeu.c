@@ -1,5 +1,6 @@
 #include "../include/header.h"
 
+
 void avancerMapChunk(struct Map * niv, int * table, int * seed){
     if (niv == NULL) {
         endwin();
@@ -35,6 +36,13 @@ void avancerMapChunk(struct Map * niv, int * table, int * seed){
 
     return;
 }
+
+int avancerMap(struct Map * niv, int * table, int * seed, int decal) {
+    decal = (decal + 1) % DISTANCE;
+    if (decal == 0) avancerMapChunk(niv, table, seed);
+    return decal;
+}
+
 
 struct Mario * creerMario(float speed, int vies) {
     struct Mario * perso = malloc(sizeof(struct Mario));

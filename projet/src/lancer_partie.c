@@ -117,6 +117,8 @@ void lancerPartie() {
     int tot_sec = 0;
     char txt_fps[255] = "\0";
 
+    int decal = 0;
+
     int pressed;
 
     while ((pressed = wgetch(jeu->fenetre)) != 107) {
@@ -124,13 +126,20 @@ void lancerPartie() {
         // CODE >>>
 
         switch (pressed) {
-            case 100: avancerMapChunk(niv, table, &seed); break;
+            case 100: decal = avancerMap(niv, table, &seed, decal); break;
         }
 
+<<<<<<< HEAD
    
         // afficherMap_simp(mini_jeu, niv);
         afficherMap(jeu, niv);
         affichageMario(jeu, perso);
+=======
+        // afficherMap_simp(mini_jeu, niv);
+        afficherMap_simp(mini_jeu, niv);
+        afficherMap(jeu, niv, decal);
+        affichageMario(jeu, perso);
+>>>>>>> 178430e (deplacement map)
 
         // <<< CODE
         end = clock();

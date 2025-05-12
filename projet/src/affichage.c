@@ -1,25 +1,27 @@
 #include "../include/header.h"
 
-// void afficherMap_simp(WIN * fenetre, struct Map * niv) {
-//     char ch;
-//     for (int i = 0; i < niv->nb_chunks; i++) {
-//         for (int y = 0; y < niv->height; y++) {
-//             for (int x = 0; x < DISTANCE; x++) {
-//                 switch (niv->carte[i]->area[y][x]) {
-//                     case 0: ch = ' '; break;
-//                     case 1: ch = '#'; break;
-//                     case 2: ch = 'O'; break;
-//                     case 3: ch = '&'; break;
-//                     case 4: ch = '$'; break;
-//                     case 5: ch = 'H'; break;
-//                     default: ch = '?'; break;
-//                 }
-//                 mvwaddch(fenetre->fenetre, y + 1, i*DISTANCE + x + 1, ch);
-//             }
-//         }
-//     }
-//     wrefresh(fenetre->fenetre);
-// }
+void afficherMap_simp(WIN * fenetre, struct Map * niv) {
+    char ch;
+    struct Chunk * tmp_chunk = niv->p_chunk;
+    while (tmp_chunk != NULL) {
+        for (int y = 0; y < niv->height; y++) {
+            for (int x = 0; x < DISTANCE; x++) {
+                switch (tmp_chunk->area[y][x]) {
+                    case 0: ch = ' '; break;
+                    case 1: ch = '#'; break;
+                    case 2: ch = 'O'; break;
+                    case 3: ch = '&'; break;
+                    case 4: ch = '$'; break;
+                    case 5: ch = 'H'; break;
+                    default: ch = '?'; break;
+                }
+                mvwaddch(fenetre->fenetre, y + 1, tmp_chunk->id * DISTANCE + x + 1, ch);
+            }
+        }
+        tmp_chunk = tmp_chunk->suivant;
+    }
+    wrefresh(fenetre->fenetre);
+}
 
 
 int convX(int x) {
@@ -84,37 +86,38 @@ void affichageMario(WIN * win, Mario * perso) {
 }
 
 
-void afficherChunk(WIN * fenetre, struct Chunk * troncon) {
+void afficherChunk(WIN * fenetre, struct Chunk * troncon, int decal) {
     if (fenetre == NULL || troncon == NULL) return;
     char txt[255];
     int anti_depassement = ((fenetre->width-2)/TX < (troncon->id+1)*DISTANCE) ? ((troncon->id+1)*DISTANCE - (fenetre->width-2)/TX) : 0;
     for (int y = 0; y < troncon->height; y++) {
-        for (int x = 0; x < DISTANCE - anti_depassement; x++) {
+        int debut = (troncon->id == 0) ? decal : 0;
+        for (int x = debut; x < DISTANCE - anti_depassement; x++) {
             switch (troncon->area[y][x]) {
                 case 0:
-                    mvwaddstr(fenetre->fenetre, convY(y), convX(x + troncon->id * DISTANCE), "   ");
-                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x + troncon->id * DISTANCE), "   ");
+                    mvwaddstr(fenetre->fenetre, convY(y), convX(x - decal + troncon->id * DISTANCE), "   ");
+                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x - decal + troncon->id * DISTANCE), "   ");
                     break;
                 case 1: case 2:
-                    mvwaddstr(fenetre->fenetre, convY(y), convX(x + troncon->id * DISTANCE), "###");
-                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x + troncon->id * DISTANCE), "###");
+                    mvwaddstr(fenetre->fenetre, convY(y), convX(x - decal + troncon->id * DISTANCE), "###");
+                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x - decal + troncon->id * DISTANCE), "###");
                     break;
                 case 3:
-                    mvwaddstr(fenetre->fenetre, convY(y), convX(x + troncon->id * DISTANCE), "===");
-                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x + troncon->id * DISTANCE), "=?=");
+                    mvwaddstr(fenetre->fenetre, convY(y), convX(x - decal + troncon->id * DISTANCE), "===");
+                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x - decal + troncon->id * DISTANCE), "=?=");
                     break;
                 case 4:
-                    mvwaddstr(fenetre->fenetre, convY(y), convX(x + troncon->id * DISTANCE), "($)");
-                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x + troncon->id * DISTANCE), "   ");
+                    mvwaddstr(fenetre->fenetre, convY(y), convX(x - decal + troncon->id * DISTANCE), "($)");
+                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x - decal + troncon->id * DISTANCE), "   ");
                     break;
                 case 5:
-                    affichageTuyau(fenetre, y, x + troncon->id * DISTANCE);
+                    affichageTuyau(fenetre, y, x - decal + troncon->id * DISTANCE);
                     break;
                 case 6:
                     break;
                 default:
-                    mvwaddstr(fenetre->fenetre, convY(y), convX(x + troncon->id * DISTANCE), "???");
-                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x + troncon->id * DISTANCE), "???");
+                    mvwaddstr(fenetre->fenetre, convY(y), convX(x - decal + troncon->id * DISTANCE), "???");
+                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x - decal + troncon->id * DISTANCE), "???");
                     break;
             }
         }
@@ -122,7 +125,7 @@ void afficherChunk(WIN * fenetre, struct Chunk * troncon) {
 }
 
 
-void afficherMap(WIN * fenetre, struct Map * niv) {
+void afficherMap(WIN * fenetre, struct Map * niv, int decal) {
     if (niv == NULL || fenetre == NULL) return;
     struct Chunk * tmp_chunk = niv->p_chunk;
     if (tmp_chunk == NULL) {
@@ -130,10 +133,10 @@ void afficherMap(WIN * fenetre, struct Map * niv) {
         printf("ERR [afficherMap] : tmp_chunk = NULL\n");
         return;
     }
-    afficherChunk(fenetre, tmp_chunk);
+    afficherChunk(fenetre, tmp_chunk, decal);
     while (tmp_chunk->suivant != NULL) {
         tmp_chunk = tmp_chunk->suivant;
-        afficherChunk(fenetre, tmp_chunk);
+        afficherChunk(fenetre, tmp_chunk, decal);
     }
     
     char tmp[512];
