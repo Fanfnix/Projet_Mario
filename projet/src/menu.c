@@ -71,24 +71,6 @@ WIN * creerWindowEloise() {
     WIN * fenetre = creerFenetre(eloise, width_fenetre_eloise, height_fenetre_eloise);
     return fenetre;
 }
-/*
-if (SDL_Init(SDL_INIT_AUDIO) < 0) {
-    printf("Erreur SDL: %s\n", SDL_GetError());
-    return 1;
-}
-
-if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-    printf("Erreur Mix_OpenAudio: %s\n", Mix_GetError());
-    return 1;
-}
-
-Mix_Chunk* selectSE = Mix_LoadWAV("../musique/select.wav");
-if (!selectSE) {
-    printf("Erreur chargement WAV: %s\n", Mix_GetError());
-    return 1;
-}
-*/
-
 
 void affichageDessinmenu(WIN * eloise){
     char chemin[] = "../design/dessinmenu/dessinmenu1.txt";
