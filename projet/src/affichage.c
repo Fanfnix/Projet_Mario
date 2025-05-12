@@ -1,25 +1,25 @@
 #include "../include/header.h"
 
-void afficherMap_simp(WIN * fenetre, struct Map * niv) {
-    char ch;
-    for (int i = 0; i < niv->nb_chunks; i++) {
-        for (int y = 0; y < niv->height; y++) {
-            for (int x = 0; x < DISTANCE; x++) {
-                switch (niv->carte[i]->area[y][x]) {
-                    case 0: ch = ' '; break;
-                    case 1: ch = '#'; break;
-                    case 2: ch = 'O'; break;
-                    case 3: ch = '&'; break;
-                    case 4: ch = '$'; break;
-                    case 5: ch = 'H'; break;
-                    default: ch = '?'; break;
-                }
-                mvwaddch(fenetre->fenetre, y + 1, i*DISTANCE + x + 1, ch);
-            }
-        }
-    }
-    wrefresh(fenetre->fenetre);
-}
+// void afficherMap_simp(WIN * fenetre, struct Map * niv) {
+//     char ch;
+//     for (int i = 0; i < niv->nb_chunks; i++) {
+//         for (int y = 0; y < niv->height; y++) {
+//             for (int x = 0; x < DISTANCE; x++) {
+//                 switch (niv->carte[i]->area[y][x]) {
+//                     case 0: ch = ' '; break;
+//                     case 1: ch = '#'; break;
+//                     case 2: ch = 'O'; break;
+//                     case 3: ch = '&'; break;
+//                     case 4: ch = '$'; break;
+//                     case 5: ch = 'H'; break;
+//                     default: ch = '?'; break;
+//                 }
+//                 mvwaddch(fenetre->fenetre, y + 1, i*DISTANCE + x + 1, ch);
+//             }
+//         }
+//     }
+//     wrefresh(fenetre->fenetre);
+// }
 
 
 int convX(int x) {
@@ -67,42 +67,56 @@ void affichageGoomba(WIN * win, struct Goomba * machin) {
 }
 
 
-void afficherMap(WIN * fenetre, struct Map * niv) {
-    if (niv == NULL || fenetre == NULL) return;
+void afficherChunk(WIN * fenetre, struct Chunk * troncon) {
+    if (fenetre == NULL || troncon == NULL) return;
     char txt[255];
-    for (int i = 0; i < niv->nb_chunks; i++) {
-        int anti_depassement = ((fenetre->width-2)/TX < (i+1)*DISTANCE) ? ((i+1)*DISTANCE - (fenetre->width-2)/TX) : 0;
-        for (int y = 0; y < niv->height; y++) {
-            for (int x = 0; x < DISTANCE - anti_depassement; x++) {
-                switch (niv->carte[i]->area[y][x]) {
-                    case 0:
-                        mvwaddstr(fenetre->fenetre, convY(y), convX(x+i*DISTANCE), "   ");
-                        mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x+i*DISTANCE), "   ");
-                        break;
-                    case 1: case 2:
-                        mvwaddstr(fenetre->fenetre, convY(y), convX(x+i*DISTANCE), "###");
-                        mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x+i*DISTANCE), "###");
-                        break;
-                    case 3:
-                        mvwaddstr(fenetre->fenetre, convY(y), convX(x+i*DISTANCE), "===");
-                        mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x+i*DISTANCE), "=?=");
-                        break;
-                    case 4:
-                        mvwaddstr(fenetre->fenetre, convY(y), convX(x+i*DISTANCE), "($)");
-                        mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x+i*DISTANCE), "   ");
-                        break;
-                    case 5:
-                        affichageTuyau(fenetre, y, x+i*DISTANCE);
-                        break;
-                    case 6:
-                        break;
-                    default:
-                        mvwaddstr(fenetre->fenetre, convY(y), convX(x+i*DISTANCE), "???");
-                        mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x+i*DISTANCE), "???");
-                        break;
-                }
+    int anti_depassement = ((fenetre->width-2)/TX < (troncon->id+1)*DISTANCE) ? ((troncon->id+1)*DISTANCE - (fenetre->width-2)/TX) : 0;
+    for (int y = 0; y < troncon->height; y++) {
+        for (int x = 0; x < DISTANCE - anti_depassement; x++) {
+            switch (troncon->area[y][x]) {
+                case 0:
+                    mvwaddstr(fenetre->fenetre, convY(y), convX(x + troncon->id * DISTANCE), "   ");
+                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x + troncon->id * DISTANCE), "   ");
+                    break;
+                case 1: case 2:
+                    mvwaddstr(fenetre->fenetre, convY(y), convX(x + troncon->id * DISTANCE), "###");
+                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x + troncon->id * DISTANCE), "###");
+                    break;
+                case 3:
+                    mvwaddstr(fenetre->fenetre, convY(y), convX(x + troncon->id * DISTANCE), "===");
+                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x + troncon->id * DISTANCE), "=?=");
+                    break;
+                case 4:
+                    mvwaddstr(fenetre->fenetre, convY(y), convX(x + troncon->id * DISTANCE), "($)");
+                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x + troncon->id * DISTANCE), "   ");
+                    break;
+                case 5:
+                    affichageTuyau(fenetre, y, x + troncon->id * DISTANCE);
+                    break;
+                case 6:
+                    break;
+                default:
+                    mvwaddstr(fenetre->fenetre, convY(y), convX(x + troncon->id * DISTANCE), "???");
+                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x + troncon->id * DISTANCE), "???");
+                    break;
             }
         }
+    }
+}
+
+
+void afficherMap(WIN * fenetre, struct Map * niv) {
+    if (niv == NULL || fenetre == NULL) return;
+    struct Chunk * tmp_chunk = niv->p_chunk;
+    if (tmp_chunk == NULL) {
+        endwin();
+        printf("ERR [afficherMap] : tmp_chunk = NULL\n");
+        return;
+    }
+    afficherChunk(fenetre, tmp_chunk);
+    while (tmp_chunk->suivant != NULL) {
+        tmp_chunk = tmp_chunk->suivant;
+        afficherChunk(fenetre, tmp_chunk);
     }
     
     char tmp[512];

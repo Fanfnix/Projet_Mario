@@ -83,13 +83,30 @@ void lancerPartie(){
     }
 
     // Ajout de la génération de base
-    struct Chunk * piece;
+    struct Chunk * newChunk;
     for (int i = 0; i < nb_chunks; i++) {
-        if (i < 4) piece = genererChunk(niv, i, NULL, NULL);
-        else piece = genererChunk(niv, i, table, &seed);
-        if (piece != NULL) {
-            ajouterChunk(niv, piece);
-        } else printf("Pas ajout\n");
+        if (i < 3) newChunk = genererChunk(niv, i, NULL, NULL);
+        else newChunk = genererChunk(niv, i, table, &seed);
+
+        if (newChunk == NULL) {
+            endwin();
+            printf("ERR [main] : newChunk == NULL\n");
+            return;
+        }
+
+        struct Chunk * tmp_first = niv->p_chunk;
+        if (niv->p_chunk == NULL) {
+            niv->p_chunk = newChunk;
+            endwin();
+            printf("== DEBUT GENERATION ==\n");
+            printf("INFO [main][tmp_first == NULL] : tmp_first = %p / niv->p_chunk = %p\n", tmp_first, niv->p_chunk);
+        }
+        else {
+            while (tmp_first->suivant != NULL) tmp_first = tmp_first->suivant;
+            endwin();
+            printf("INFO [main][tmp_first != NULL] : tmp_first = %p / tmp_first->suivant = %p\n", tmp_first, tmp_first->suivant);
+            if (newChunk != NULL) tmp_first->suivant = newChunk;
+        }
     }
 
     nodelay(jeu->fenetre, true);
@@ -99,11 +116,18 @@ void lancerPartie(){
     int nb_frames = 0;
     int tot_sec = 0;
     char txt_fps[255] = "\0";
-    while (wgetch(jeu->fenetre) != 'k') {
+
+    int pressed;
+
+    while ((pressed = wgetch(jeu->fenetre)) != 107) {
         begin = clock();
         // CODE >>>
 
-        afficherMap_simp(mini_jeu, niv);
+        switch (pressed) {
+            case 100: avancerMapChunk(niv, table, &seed); break;
+        }
+
+        // afficherMap_simp(mini_jeu, niv);
         afficherMap(jeu, niv);
 
         // <<< CODE

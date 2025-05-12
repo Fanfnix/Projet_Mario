@@ -1,16 +1,39 @@
 #include "../include/header.h"
 
 void avancerMapChunk(struct Map * niv, int * table, int * seed){
-
-    if (niv == NULL) return;
-    
-    libMemChunk(niv->carte [0]);
-    for (int i = 0; i < niv->nb_chunks; i++){
-        niv->carte [i]= niv->carte [i+1];
-        niv->carte [i+1] = NULL;
+    if (niv == NULL) {
+        endwin();
+        printf("ERR [avancerMapChunk] : niv == NULL\n");
+        return;
     }
-    struct Chunk * newChunk = genererChunk(niv, niv->carte [niv->nb_chunks - 2]->id, table, seed);
-    ajouterChunk(niv, newChunk);
+
+    if (niv->p_chunk == NULL) {
+        endwin();
+        printf("ERR [avancerMapChunk] : niv->p_chunk == NULL\n");
+        return;
+    }
+
+    struct Chunk * a_suppr = niv->p_chunk;
+    niv->p_chunk = niv->p_chunk->suivant;
+    libMemChunk(a_suppr);
+
+    struct Chunk * tmp_chunk = niv->p_chunk;
+    tmp_chunk->id--;
+    while (tmp_chunk->suivant != NULL) {
+        tmp_chunk = tmp_chunk->suivant;
+        tmp_chunk->id--;
+    }
+
+    struct Chunk * newChunk = genererChunk(niv, tmp_chunk->id+1, table, seed);
+    if (newChunk == NULL) {
+        endwin();
+        printf("ERR [avancerMapChunk] : newChunk == NULL\n");
+        return;
+    }
+
+    if (newChunk != NULL) tmp_chunk->suivant = newChunk;
+
+    return;
 }
 
 struct Mario * creerMario(float speed, int vies) {

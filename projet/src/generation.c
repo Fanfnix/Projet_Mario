@@ -124,6 +124,7 @@ struct Chunk * creerChunk(int id, int height) {
     piece->id = id;
     piece->height = height;
     piece->area = malloc(height * sizeof(int *));
+    piece->suivant = NULL;
     if (piece->area == NULL) {
         free(piece);
         return NULL;
@@ -153,13 +154,14 @@ void libMemChunk(struct Chunk * piece) {
 // Ajoute le chunk a la carte
 void ajouterChunk(struct Map * niv, struct Chunk * piece) {
     if (niv == NULL || piece == NULL) return;
-    for (int i = 0; i < niv->nb_chunks; i++) {
-        if (niv->carte[i] == NULL) {
-            niv->carte[i] = piece;
-            // printf("Ajout : i = %d / %p\n", i, niv->carte[i]);
-            return;
-        }
+    if (niv->p_chunk == NULL) niv->p_chunk = piece;
+    struct Chunk * tmp_first = niv->p_chunk;
+    while (tmp_first->suivant != NULL) {
+        tmp_first = tmp_first->suivant;
+        printf("- %d ", piece->id);
     }
+    tmp_first->suivant = piece;
+    return;
 }
 
 
@@ -169,12 +171,9 @@ struct Map * creerMap(int height, int nb_chunks) {
     if (niv == NULL) return NULL;
     niv->height = height;
     niv->nb_chunks = nb_chunks;
-    niv->carte = malloc(niv->nb_chunks * sizeof(struct Chunk *));
-    if (niv->carte != NULL) for (int i = 0; i < niv->nb_chunks; i++) niv->carte[i] = NULL;
+    niv->p_chunk = NULL;
     niv->liste_goomba = malloc(T_LISTE_GOOMBA * sizeof(struct Goomba *));
     if (niv->liste_goomba == NULL) {
-        for (int y = 0; y < niv->height; y++) free(niv->carte[y]);
-        free(niv->carte);
         free(niv);
         return NULL;
     }
@@ -185,11 +184,23 @@ struct Map * creerMap(int height, int nb_chunks) {
 
 // Libère la Map
 void libMemMap(struct Map * niv) {
-    if (niv == NULL) return;
-    for (int i = 0; i < niv->nb_chunks; i++) {
-        libMemChunk(niv->carte[i]);
+    if (niv == NULL) {
+        endwin();
+        printf("ERR [libMemMap] : niv == NULL\n");
+        return;
     }
-    free(niv->carte);
+    if (niv->p_chunk == NULL) {
+        endwin();
+        printf("ERR [libMemMap] : niv->p_chunk == NULL\n");
+        return;
+    }
+    if (niv == NULL) return;
+    struct Chunk * tmp_chunk = NULL;
+    while (niv->p_chunk->suivant != NULL) {
+        tmp_chunk = niv->p_chunk->suivant;
+        libMemChunk(niv->p_chunk);
+        niv->p_chunk = tmp_chunk;
+    }
     free(niv);
 }
 

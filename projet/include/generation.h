@@ -20,12 +20,13 @@ struct Chunk {
     int id;
     int height;
     int ** area;
+    struct Chunk * suivant;
 };
 
 struct Map {
     int height;
     int nb_chunks;
-    struct Chunk ** carte;
+    struct Chunk * p_chunk;
     struct Goomba ** liste_goomba;
 };
 
