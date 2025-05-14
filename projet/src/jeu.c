@@ -107,8 +107,8 @@ void sautMario(Mario *perso, struct Map * niv){
     if (perso == NULL || niv == NULL) return;
     float tmp = 0.0;
     tmp = perso->y;
-    perso->y = perso->y - 10 * perso->vertical_speed;
-    while (perso->y >tmp)
+    perso->y = perso->y - 20 * perso->vertical_speed;
+    while (perso->y >=tmp)
     {
         perso->y = perso->y + perso->vertical_speed * GRAVITE; 
     }
