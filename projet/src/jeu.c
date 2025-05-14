@@ -91,13 +91,19 @@ void actionGoombas(struct Map * niv) {
         machin = niv->liste_goomba[i];
         if (machin != NULL) {
             float new_pos_x = machin->x + machin->speed * SPEED_GOOMBA;
+            if (convInt(new_pos_x) < 0) {
+                supprimerGoomba(niv->liste_goomba, machin->id);
+                continue;
+            }
             int id_chunk = new_pos_x / DISTANCE;
+            int pos_in_chunk = convInt(new_pos_x) % DISTANCE;
             struct Chunk * tmp_chunk = niv->p_chunk;
 
-            for (int j = 0; j < id_chunk; j++) tmp_chunk = tmp_chunk->suivant;
+            for (int j = 0; j < id_chunk; j++) {
+                tmp_chunk = tmp_chunk->suivant;
+            }
             if (tmp_chunk != NULL) {
-                bloc = tmp_chunk->area[convInt(machin->y)][convInt(new_pos_x) % DISTANCE];
-                if (convInt(new_pos_x) < 0) supprimerGoomba(niv->liste_goomba, machin->id);
+                bloc = tmp_chunk->area[convInt(machin->y)][pos_in_chunk];
                 if (bloc == 1 || bloc == 2 || bloc == 3 || bloc == 5 || bloc == 6) {
                     machin->speed = (machin->speed < 0) ? 1.0f : -1.0f;
                     new_pos_x = machin->x + machin->speed * SPEED_GOOMBA;
