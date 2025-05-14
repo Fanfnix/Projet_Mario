@@ -78,7 +78,7 @@ void initMario(Mario * perso, struct Map * niv, WIN * fenetre){
             break;
         }
     }
-    perso->y = 5;
+    perso->y = fenetre->height - tmp_chunk->height;
 }
 
 
