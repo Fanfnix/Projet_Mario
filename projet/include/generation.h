@@ -9,12 +9,12 @@
 
 struct Goomba {
     int id;
-    int X, Y;
     float x, y;
     float speed;
 };
 
 #define T_LISTE_GOOMBA 50
+#define SPEED_GOOMBA 0.1
 
 struct Chunk {
     int id;

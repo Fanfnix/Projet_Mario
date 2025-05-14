@@ -121,6 +121,8 @@ void lancerPartie() {
         begin = clock();
         // CODE >>>
 
+        actionGoombas(niv);
+
         switch (pressed) {
             case KEY_RIGHT: decal = avancerMap(niv, table, &seed, decal); break;
         }

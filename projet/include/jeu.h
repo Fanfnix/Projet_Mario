@@ -11,6 +11,7 @@ typedef struct  Mario {
 } Mario;
 
 void lancerPartie();
+void actionGoombas(struct Map * niv);
 
 struct Mario * creerMario(float speed, int vies);
 void initMario(Mario * perso, struct Map * niv, WIN * fenetre);

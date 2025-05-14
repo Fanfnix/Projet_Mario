@@ -40,6 +40,12 @@ void avancerMapChunk(struct Map * niv, int * table, int * seed){
 int avancerMap(struct Map * niv, int * table, int * seed, int decal) {
     decal = (decal + 1) % DISTANCE;
     if (decal == 0) avancerMapChunk(niv, table, seed);
+    if (niv->liste_goomba == NULL) return decal;
+    for (int i = 0; i < T_LISTE_GOOMBA; i++) {
+        if (niv->liste_goomba[i] != NULL) {
+            niv->liste_goomba[i]->x--;
+        }
+    }
     return decal;
 }
 
@@ -69,5 +75,25 @@ void initMario(Mario * perso, struct Map * niv, WIN * fenetre){
             perso->x = tmp_chunk->height + j;
             break;
         }     
+    }
+}
+
+
+void actionGoombas(struct Map * niv) {
+    if (niv == NULL) return;
+    if (niv->liste_goomba == NULL) return;
+    for (int i = 0; i < T_LISTE_GOOMBA; i++) {
+        if (niv->liste_goomba[i] != NULL) {
+            int new_pos_x = niv->liste_goomba[i]->x + niv->liste_goomba[i]->speed * SPEED_GOOMBA;
+            int id_chunk = new_pos_x / DISTANCE;
+            struct Chunk * tmp_chunk = niv->p_chunk;
+            for (int j = 0; j < id_chunk; j++) tmp_chunk = tmp_chunk->suivant;
+            // int bloc = tmp_chunk->area[convInt(niv->liste_goomba[i]->y)][convInt(new_pos_x) % DISTANCE];
+            // if (bloc == 1 || bloc == 2 || bloc == 3 || bloc == 5 || bloc == 6 || new_pos_x == -1) {
+            //     niv->liste_goomba[i]->speed = (niv->liste_goomba[i]->speed < 0) ? 1.0f : -1.0f;
+            //     new_pos_x = niv->liste_goomba[i]->x + niv->liste_goomba[i]->speed * SPEED_GOOMBA;
+            // }
+            niv->liste_goomba[i]->x = new_pos_x;
+        }
     }
 }

@@ -212,8 +212,6 @@ struct Goomba * creerGoomba(int id, float x, float y, float speed) {
     struct Goomba * machin = malloc(sizeof(struct Goomba));
     if (machin == NULL) return NULL;
     machin->id = id;
-    machin->X = convInt(x);
-    machin->Y = convInt(y);
     machin->x = x;
     machin->y = y;
     machin->speed = speed;
