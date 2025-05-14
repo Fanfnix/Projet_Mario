@@ -205,10 +205,49 @@ struct Score ** recupHiscores() {
         if (fgets(line, sizeof(line), file) == NULL) break;
         liste_score[i] = recupScore(line);
     }
-    fclose(file);
+    if (fclose(file) == EOF)
+    {
+        return EXIT_FAILURE;
+    }
     return liste_score;
 }
 
+void ecrireHiscores(struct Score ** liste_score) {
+    if (liste_score == NULL)
+    {
+        return;
+    }
+    char chemin[] = "data/hi_scores.txt";  // Le chemin est à calculer depuis l'éxécutable.
+    FILE * file = fopen(chemin, "w");
+    if (file == NULL) {
+        free(liste_score);
+        return NULL;
+    }
+    char line[50];
+    for (int i = 0; i < 10; i++) {
+        if (liste_score[i] != NULL) {
+            sprintf(line, "%d,%s,%d\n", liste_score[i]->id, liste_score[i]->pseudo, liste_score[i]->score);
+            fputs(line, file);
+        }
+    }
+    if (fclose(file) == EOF)
+    {
+        return EXIT_FAILURE;
+    }
+}
+
+void trierHiscores(struct Score ** liste_score){
+    int temp;
+    for (int i = 0; i < 10-1 ; i++){
+        for (int j = 0; j < 10-i-1; j++){
+            if (liste_score[j]->score < liste_score[j+1]->score){
+                struct Score * tmp = liste_score[j];
+                liste_score[j] = liste_score[j+1];
+                liste_score[j+1] = tmp;
+            }
+        }
+    }
+}
 
 void affichageHiscores(WIN * win, struct Score ** liste_score, int choisi) {
     if (choisi >= 10) {

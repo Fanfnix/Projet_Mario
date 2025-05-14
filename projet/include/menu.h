@@ -58,6 +58,8 @@ void actionMenuPrincipal(WIN* menu, int* id, Mix_Chunk* selectSE, Mix_Chunk* con
 struct Score ** recupHiscores();
 struct Score ** recupHiscores();
 
+void ecrireHiscores(struct Score ** liste_score);
+void trierHiscores(struct Score ** liste_score);
 void affichageHiscores(WIN * win, struct Score ** liste_score, int choisi);
 void actionHiscores(WIN* win, struct Score** liste_score, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
 void supprHiscores(struct Score ** liste_score, int id);
