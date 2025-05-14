@@ -21,10 +21,28 @@ int main() {
         return 0;
     }
 
-    // Creer musique
+    // Creer musique/sons
     Mix_Music * menuzik = Mix_LoadMUS("../musique/monbeaumenu.mp3");
     if (menuzik == NULL) {
         printf("Echec Mix_LoadMUS\n");
+        return 0;
+    }
+
+    Mix_Chunk* selectSE = Mix_LoadWAV("../musique/select.wav");
+    if (!selectSE) {
+        printf("Erreur chargement: %s\n", Mix_GetError());
+        return 0;
+    }
+
+    Mix_Chunk* degatSE = Mix_LoadWAV("../musique/degat.wav");
+    if (!degatSE) {
+        printf("Erreur chargement: %s\n", Mix_GetError());
+        return 0;
+    }
+
+    Mix_Chunk* confirmeSE = Mix_LoadWAV("../musique/confirme.wav");
+    if (!confirmeSE) {
+        printf("Erreur chargement: %s\n", Mix_GetError());
         return 0;
     }
 
@@ -49,11 +67,11 @@ int main() {
     int run = 1;
     Mix_PlayMusic(menuzik, 1);
     do {
-        actionMenuPrincipal(menu, &id);
+        actionMenuPrincipal(menu, &id, selectSE, confirmeSE);
         switch (id) {
             case 0: nettoyerMenu(logo, menu, choix, controle, eloise); lancerPartie(); break;
-            case 1: actionHiscores(choix, liste_score, &id_choix); break;
-            case 2: actionSauvegarde(choix, sauvegarde, &id_choix); break;
+            case 1: actionHiscores(choix, liste_score, &id_choix, selectSE, degatSE); break;
+            case 2: actionSauvegarde(choix, sauvegarde, &id_choix, selectSE, degatSE); break;
             case 3: run = 0; break;
         }
         affichageGenerale(logo, controle, eloise);

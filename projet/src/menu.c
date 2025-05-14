@@ -151,12 +151,7 @@ void affichageMenuPrincipal(WIN * menu, int choix) {
     wrefresh(menu->fenetre);
 }
 
-void actionMenuPrincipal(WIN * menu, int * id) {
-    Mix_Chunk* selectSE = Mix_LoadWAV("../musique/select.wav");
-    if (!selectSE) {
-        printf("Erreur chargement: %s\n", Mix_GetError());
-        return ;
-    }
+void actionMenuPrincipal(WIN * menu, int * id, Mix_Chunk* selectSE, Mix_Chunk* confirmeSE) {
     int pressed;
     affichageMenuPrincipal(menu, *id);
     while ((pressed = wgetch(menu->fenetre)) != 10) {
@@ -172,6 +167,7 @@ void actionMenuPrincipal(WIN * menu, int * id) {
         if (*id > 3) *id = 0;
         affichageMenuPrincipal(menu, *id);
     }
+    Mix_PlayChannel(-1, confirmeSE, 0);
 }
 
 // HI-SCORE
@@ -242,13 +238,22 @@ void affichageHiscores(WIN * win, struct Score ** liste_score, int choisi) {
 }
 
 
-void actionHiscores(WIN * win, struct Score ** liste_score, int * id) {
+void actionHiscores(WIN * win, struct Score ** liste_score, int * id, Mix_Chunk* selectSE, Mix_Chunk* degatSE) {
     int pressed;
     affichageHiscores(win, liste_score, *id);
     while ((pressed = wgetch(win->fenetre)) != 27) {
-        if (pressed == KEY_UP) (*id)--;
-        else if (pressed == KEY_DOWN) (*id)++;
-        else if (pressed == 8 || pressed == 263) supprHiscores(liste_score, *id);  // Supprimer le score
+        if (pressed == KEY_UP) {
+            (*id)--;
+            Mix_PlayChannel(-1, selectSE, 0);
+        }
+        else if (pressed == KEY_DOWN) {
+            (*id)++;
+            Mix_PlayChannel(-1, selectSE, 0);
+        }
+        else if (pressed == 8 || pressed == 263) {
+            supprHiscores(liste_score, *id);
+            Mix_PlayChannel(-1, degatSE, 0);
+        }  // Supprimer le score
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
         affichageHiscores(win, liste_score, *id);
@@ -358,13 +363,22 @@ void affichageSauvegarde(WIN * win, Save ** liste_sauvegarde, int choisi) {
     wrefresh(win->fenetre);
 }
 
-void actionSauvegarde(WIN * win,  Save ** liste_sauvegarde, int * id) {
+void actionSauvegarde(WIN * win,  Save ** liste_sauvegarde, int * id, Mix_Chunk* selectSE, Mix_Chunk* degatSE) {
     int pressed;
     affichageSauvegarde(win, liste_sauvegarde, *id);
     while ((pressed = wgetch(win->fenetre)) != 27) {
-        if (pressed == KEY_UP) (*id)--;
-        else if (pressed == KEY_DOWN) (*id)++;
-        else if (pressed == 8 || pressed == 263) supprSauvegarde(liste_sauvegarde, *id);  // Supprimer la sauvegarde
+        if (pressed == KEY_UP) {
+            (*id)--;
+            Mix_PlayChannel(-1, selectSE, 0);
+        }
+        else if (pressed == KEY_DOWN) {
+            (*id)++;
+            Mix_PlayChannel(-1, selectSE, 0);
+        }
+        else if (pressed == 8 || pressed == 263) {
+            supprSauvegarde(liste_sauvegarde, *id);
+            Mix_PlayChannel(-1, degatSE, 0);
+        }  // Supprimer la sauvegarde
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
         affichageSauvegarde(win, liste_sauvegarde, *id);

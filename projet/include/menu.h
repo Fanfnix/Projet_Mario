@@ -53,13 +53,13 @@ void affichageDessinmenu(WIN * eloise);
 void affichageGenerale(WIN * logo, WIN * controle, WIN * eloise);
 
 void affichageMenuPrincipal(WIN * menu, int choix);
-void actionMenuPrincipal(WIN * menu, int * id);
+void actionMenuPrincipal(WIN* menu, int* id, Mix_Chunk* selectSE, Mix_Chunk* confirmeSE);
 
 struct Score ** recupHiscores();
 struct Score ** recupHiscores();
 
 void affichageHiscores(WIN * win, struct Score ** liste_score, int choisi);
-void actionHiscores(WIN * win, struct Score ** liste_score, int * id);
+void actionHiscores(WIN* win, struct Score** liste_score, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
 void supprHiscores(struct Score ** liste_score, int id);
 void libererHiscores(struct Score ** liste_score);
 
@@ -67,7 +67,7 @@ void libererHiscores(struct Score ** liste_score);
 Save * recupSave(char * str);
 Save ** recupCheckpoint();
 void affichageSauvegarde(WIN * win, Save ** liste_sauvegarde, int choisi);
-void actionSauvegarde(WIN * win, Save ** liste_sauvegarde, int * id);
+void actionSauvegarde(WIN* win, Save** liste_sauvegarde, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
 void supprSauvegarde(Save ** liste_sauvegarde, int id);
 void libererSauvegarde(Save ** liste_sauvegarde);
 
