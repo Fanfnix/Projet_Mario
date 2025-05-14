@@ -72,7 +72,7 @@ void lancerPartie() {
 	wborder(mini_jeu->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
 	wrefresh(mini_jeu->fenetre);
 
-    // Création d'un niveau vide
+    // Création d'un niveau vide avec mario
     struct Map * niv = creerMap(height_carte, nb_chunks);
     Mario * perso = creerMario(1.0, 3);
     // Vérification de la création du niveau
