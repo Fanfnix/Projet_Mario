@@ -105,6 +105,7 @@ void actionMario(Mario * perso, struct Map * niv){
 
 void sautMario(Mario *perso, struct Map * niv){
     if (perso == NULL || niv == NULL) return;
-    perso->vertical_speed = perso->vertical_speed + 3;
+    perso->vertical_speed = perso->vertical_speed + 10;
     float new_pos_y = perso->y + perso->vertical_speed * GRAVITE;
+    perso->y = new_pos_y;
 }
