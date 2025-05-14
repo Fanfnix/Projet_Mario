@@ -55,10 +55,11 @@ void affichageGenerale(WIN * logo, WIN * controle, WIN * eloise);
 void affichageMenuPrincipal(WIN * menu, int choix);
 void actionMenuPrincipal(WIN* menu, int* id, Mix_Chunk* selectSE, Mix_Chunk* confirmeSE);
 
-struct Score ** recupHiscores();
+// HI-SCORE
+struct Score * recupScore(char * str);
 struct Score ** recupHiscores();
 
-void ecrireHiscores(struct Score ** liste_score);
+void ecritureHiscores(struct Score ** liste_score);
 void trierHiscores(struct Score ** liste_score);
 void affichageHiscores(WIN * win, struct Score ** liste_score, int choisi);
 void actionHiscores(WIN* win, struct Score** liste_score, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);

@@ -181,6 +181,10 @@ struct Score * recupScore(char * str) {
     for (int i = 1; i < 3; i++) {
         elem[i] = strtok(NULL, ", \n");
     }
+    if (!elem[0] || !elem[1] || !elem[2]) {
+        free(struct_score);
+        return NULL;
+    }
     struct_score->id = atoi(elem[0]);
     strncpy(struct_score->pseudo, elem[1], sizeof(struct_score->pseudo) - 1);
     struct_score->pseudo[sizeof(struct_score->pseudo) - 1] = '\0';
@@ -192,6 +196,7 @@ struct Score * recupScore(char * str) {
 
 struct Score ** recupHiscores() {
     struct Score ** liste_score = malloc(10 * sizeof(struct Score*));
+    if (liste_score == NULL) return NULL;
     for (int i = 0; i < 10; i++) liste_score[i] = NULL;
 
     char chemin[] = "data/hi_scores.txt";  // Le chemin est à calculer depuis l'éxécutable.
@@ -207,7 +212,7 @@ struct Score ** recupHiscores() {
     }
     if (fclose(file) == EOF)
     {
-        return EXIT_FAILURE;
+        return NULL;
     }
     return liste_score;
 }
@@ -221,23 +226,22 @@ void ecrireHiscores(struct Score ** liste_score) {
     FILE * file = fopen(chemin, "w");
     if (file == NULL) {
         free(liste_score);
-        return NULL;
+        return;
     }
     char line[50];
     for (int i = 0; i < 10; i++) {
         if (liste_score[i] != NULL) {
-            sprintf(line, "%d,%s,%d\n", liste_score[i]->id, liste_score[i]->pseudo, liste_score[i]->score);
+            fprintf(file, "%d,%s,%d\n", liste_score[i]->id, liste_score[i]->pseudo, liste_score[i]->score);
             fputs(line, file);
         }
     }
     if (fclose(file) == EOF)
     {
-        return EXIT_FAILURE;
+        return;
     }
 }
 
 void trierHiscores(struct Score ** liste_score){
-    int temp;
     for (int i = 0; i < 10-1 ; i++){
         for (int j = 0; j < 10-i-1; j++){
             if (liste_score[j]->score < liste_score[j+1]->score){
