@@ -127,6 +127,7 @@ void actionMario(Mario * perso, struct Map * niv){
     if (tmp_chunk->area[convInt(perso->y) + 1][convInt(perso->x)] == 1 || tmp_chunk->area[convInt(perso->y) + 1][convInt(perso->x)] == 2)
     {
         perso->vertical_speed = 0.0f;
+        perso->y = (float)convInt(perso->y);
     }
 }
 
