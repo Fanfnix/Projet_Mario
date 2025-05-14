@@ -63,7 +63,6 @@ struct Mario * creerMario(int vies, float speed, float vertical_speed) {
 
 void initMario(Mario * perso, struct Map * niv, WIN * fenetre){
     if (perso == NULL || niv == NULL || fenetre == NULL) return;
-    perso->x = 2;
     int id_chunk = perso->x / DISTANCE;
     struct Chunk * tmp_chunk = niv->p_chunk;
     for (int i = 0; i < id_chunk; i++)
@@ -78,7 +77,7 @@ void initMario(Mario * perso, struct Map * niv, WIN * fenetre){
             break;
         }
     }
-    perso->y = fenetre->height - tmp_chunk->height +1;
+    perso->y = fenetre->height - tmp_chunk->height -2;
 }
 
 
