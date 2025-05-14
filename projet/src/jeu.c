@@ -64,9 +64,9 @@ void initMario(Mario * perso, struct Map * niv, WIN * fenetre){
     }
     for (int j = 0; j < tmp_chunk->height; j++)
     {
-        if (tmp_chunk->area[j][convInt(perso->x)] == 1 || tmp_chunk->area[j][convInt(perso->x)] == 2)
+        if (tmp_chunk->area[j][convInt(perso->y)] == 1 || tmp_chunk->area[j][convInt(perso->y)] == 2)
         {
-            perso->x = tmp_chunk->height - j;
+            perso->y = tmp_chunk->height + j;
             break;
         }     
     }
