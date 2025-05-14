@@ -89,6 +89,25 @@ int main() {
     } while (run);
 
     endwin();
+    supprWin(logo);
+    supprWin(menu);
+    supprWin(choix);
+    supprWin(controle);
+    supprWin(eloise);
+
+    Mix_FreeMusic(menuzik);
+    Mix_FreeMusic(jeuzik);
+    Mix_FreeChunk(selectSE);
+    Mix_FreeChunk(degatSE);
+    Mix_FreeChunk(confirmeSE);
+    Mix_CloseAudio();
+    SDL_Quit();
+
+    // Tri Liste_score
+    /* ICI */
+
+    // Ecriture Liste_score
+    /* ICI */
 
     libererHiscores(liste_score);
     libererSauvegarde(sauvegarde);
