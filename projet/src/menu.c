@@ -217,7 +217,7 @@ struct Score ** recupHiscores() {
     return liste_score;
 }
 
-void ecrireHiscores(struct Score ** liste_score) {
+void ecritureHiscores(struct Score ** liste_score) {
     if (liste_score == NULL)
     {
         return;
@@ -241,9 +241,11 @@ void ecrireHiscores(struct Score ** liste_score) {
     }
 }
 
-void trierHiscores(struct Score ** liste_score){
-    for (int i = 0; i < 10-1 ; i++){
-        for (int j = 0; j < 10-i-1; j++){
+void trierHiscores(struct Score ** liste_score) {
+    if (liste_score == NULL) return;
+    for (int i = 0; i < 10-1 ; i++) {
+        for (int j = 0; j < 10-i-2; j++) {
+            if (liste_score[j] == NULL || liste_score[j+1] == NULL) continue;
             if (liste_score[j]->score < liste_score[j+1]->score){
                 struct Score * tmp = liste_score[j];
                 liste_score[j] = liste_score[j+1];
@@ -475,4 +477,16 @@ void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * elo
 
     wclear(eloise->fenetre);
     wrefresh(eloise->fenetre);
+}
+
+
+void supprWin(WIN * fenetre) {
+    if (fenetre == NULL) return;
+    if (fenetre->fenetre != NULL) {
+        wclear(fenetre->fenetre);
+        wrefresh(fenetre->fenetre);
+        delwin(fenetre->fenetre);
+    }
+    free(fenetre);
+    fenetre = NULL;
 }
