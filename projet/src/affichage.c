@@ -73,7 +73,7 @@ void affichageMario(WIN * win, Mario * perso) {
     char chemin[255] = "../design/mario/mario1.txt";
     char tmp[255];
     FILE * file = fopen(chemin, "r");
-    for (int j = 5; j >= 0; j--) {
+    for (int j = 6; j >= 0; j--) {
         fgets(tmp, 4, file);
         for (int k = 0; k < strlen(tmp); k++) {
             if (tmp[k] == '0') {
