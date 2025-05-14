@@ -77,10 +77,21 @@ int main() {
         affichageGenerale(logo, controle, eloise);
     } while (run);
 
+    supprWin(logo);
+    supprWin(menu);
+    supprWin(choix);
+    supprWin(controle);
+    supprWin(eloise);
+
     endwin();
 
     libererHiscores(liste_score);
     libererSauvegarde(sauvegarde);
+
+    Mix_FreeMusic(menuzik);
+    Mix_FreeMusic(jeuzik);
+    Mix_CloseAudio();
+    SDL_Quit();
         
     return 0;
 }

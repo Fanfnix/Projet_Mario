@@ -73,4 +73,6 @@ void libererSauvegarde(Save ** liste_sauvegarde);
 
 void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * eloise);
 
+void supprWin(WIN * fenetre);
+
 #endif

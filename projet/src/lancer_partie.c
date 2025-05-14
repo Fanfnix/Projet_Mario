@@ -157,12 +157,18 @@ void lancerPartie() {
     wclear(jeu->fenetre);
     wrefresh(jeu->fenetre);
     delwin(jeu->fenetre);
+    free(jeu);
+    jeu == NULL;
     
     wclear(tmp->fenetre);
     wrefresh(tmp->fenetre);
     delwin(tmp->fenetre);
+    free(tmp);
+    tmp == NULL;
     
     wclear(mini_jeu->fenetre);
     wrefresh(mini_jeu->fenetre);
     delwin(mini_jeu->fenetre);
+    free(mini_jeu);
+    mini_jeu == NULL;
 }

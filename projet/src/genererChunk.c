@@ -51,7 +51,7 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
     struct Goomba * goomba;
     if (!tuyau) {
         x_goomba = abs(table[2]) % DISTANCE;
-        speed_goomba = (table[(int)x_goomba] % 2) ? -1 : 1;
+        speed_goomba = (table[(int)x_goomba] % 2) ? -1.0f : 1.0f;
     }
     // >>> Goomba
 

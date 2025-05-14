@@ -433,3 +433,11 @@ void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * elo
     wclear(eloise->fenetre);
     wrefresh(eloise->fenetre);
 }
+
+
+void supprWin(WIN * fenetre) {
+    if (fenetre == NULL) return;
+    if (fenetre->fenetre != NULL) delwin(fenetre->fenetre);
+    free(fenetre);
+    fenetre == NULL;
+}
