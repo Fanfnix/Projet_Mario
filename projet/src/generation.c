@@ -158,7 +158,6 @@ void ajouterChunk(struct Map * niv, struct Chunk * piece) {
     struct Chunk * tmp_first = niv->p_chunk;
     while (tmp_first->suivant != NULL) {
         tmp_first = tmp_first->suivant;
-        printf("- %d ", piece->id);
     }
     tmp_first->suivant = piece;
     return;
@@ -194,7 +193,6 @@ void libMemMap(struct Map * niv) {
         printf("ERR [libMemMap] : niv->p_chunk == NULL\n");
         return;
     }
-    if (niv == NULL) return;
     struct Chunk * tmp_chunk = NULL;
     while (niv->p_chunk->suivant != NULL) {
         tmp_chunk = niv->p_chunk->suivant;

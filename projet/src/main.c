@@ -87,7 +87,21 @@ int main() {
         affichageGenerale(logo, controle, eloise);
     } while (run);
 
+    supprWin(logo);
+    supprWin(menu);
+    supprWin(choix);
+    supprWin(controle);
+    supprWin(eloise);
+
     endwin();
+
+    Mix_FreeMusic(menuzik);
+    Mix_FreeMusic(jeuzik);
+    Mix_FreeChunk(selectSE);
+    Mix_FreeChunk(degatSE);
+    Mix_FreeChunk(confirmeSE);
+    Mix_CloseAudio();
+    SDL_Quit();
 
     libererHiscores(liste_score);
     libererSauvegarde(sauvegarde);
