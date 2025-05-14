@@ -74,7 +74,7 @@ void lancerPartie() {
 
     // Création d'un niveau vide avec mario
     struct Map * niv = creerMap(height_carte, nb_chunks);
-    Mario * perso = creerMario(1.0, 3);
+    Mario * perso = creerMario(3, 0.15, 0.15 );
     // Vérification de la création du niveau
     if (!niv) {
         endwin();  // Sort la console du mode "ncurses"
@@ -125,6 +125,7 @@ void lancerPartie() {
 
         switch (pressed) {
             case KEY_RIGHT: decal = avancerMap(niv, table, &seed, decal); break;
+            case 32: sautMario(perso, jeu);
         }
 
         afficherMap_simp(mini_jeu, niv);

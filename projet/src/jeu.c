@@ -50,11 +50,12 @@ int avancerMap(struct Map * niv, int * table, int * seed, int decal) {
 }
 
 
-struct Mario * creerMario(float speed, int vies) {
+struct Mario * creerMario(int vies, float speed, float vertical_speed) {
     struct Mario * perso = malloc(sizeof(struct Mario));
     if (perso == NULL) return NULL;
     perso->id = 0;
     perso->speed = speed;
+    perso->vertical_speed = vertical_speed;
     perso->vies= 3;
     return perso;
 }
@@ -96,4 +97,20 @@ void actionGoombas(struct Map * niv) {
             niv->liste_goomba[i]->x = new_pos_x;
         }
     }
+}
+
+void actionMario(Mario * perso, struct Map * niv){
+
+}
+
+void sautMario(Mario *perso, struct Map * niv){
+    if (perso == NULL || niv == NULL) return;
+    float tmp = 0.0;
+    tmp = perso->y;
+    perso->y = perso->y - 10 * perso->vertical_speed;
+    while (perso->y >tmp)
+    {
+        perso->y = perso->y + perso->vertical_speed * GRAVITE; 
+    }
+    
 }
