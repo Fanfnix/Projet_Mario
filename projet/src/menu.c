@@ -374,8 +374,35 @@ Save ** recupCheckpoint() {
         if (fgets(line, sizeof(line), file) == NULL) break;
         liste_sauvegarde[i] = recupSave(line);
     }
-    fclose(file);
+    if (fclose(file) == EOF)
+    {
+        return NULL;
+    }
     return liste_sauvegarde;
+}
+
+void ecritureSauvegarde(struct Save ** liste_sauvegarde) {
+    if (liste_sauvegarde == NULL)
+    {
+        return;
+    }
+    char chemin[] = "data/sauvegardes.txt";  // Le chemin est à calculer depuis l'éxécutable.
+    FILE * file = fopen(chemin, "w");
+    if (file == NULL) {
+        free(liste_sauvegarde);
+        return;
+    }
+    char line[50];
+    for (int i = 0; i < 10; i++) {
+        if (liste_sauvegarde[i] != NULL) {
+            fprintf(file, "%d,%d,%d,%d,%d,%d,%d,%d\n", liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->kills,liste_sauvegarde[i]->piece,liste_sauvegarde[i]->vies);
+            fputs(line, file);
+        }
+    }
+    if (fclose(file) == EOF)
+    {
+        return;
+    }
 }
 
 void affichageSauvegarde(WIN * win, Save ** liste_sauvegarde, int choisi) {

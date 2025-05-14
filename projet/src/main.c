@@ -104,11 +104,9 @@ int main() {
     Mix_CloseAudio();
     SDL_Quit();
 
-    // Tri Liste_score
     trierHiscores(liste_score);
-
-    // Ecriture Liste_score
     ecritureHiscores(liste_score);
+    ecritureSauvegarde(sauvegarde);
 
     libererHiscores(liste_score);
     libererSauvegarde(sauvegarde);

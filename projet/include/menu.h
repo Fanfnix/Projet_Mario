@@ -70,6 +70,7 @@ void libererHiscores(struct Score ** liste_score);
 // SAUVEGARDES
 Save * recupSave(char * str);
 Save ** recupCheckpoint();
+void ecritureSauvegarde(struct Save ** liste_sauvegarde);
 void affichageSauvegarde(WIN * win, Save ** liste_sauvegarde, int choisi);
 void actionSauvegarde(WIN* win, Save** liste_sauvegarde, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
 void supprSauvegarde(Save ** liste_sauvegarde, int id);
