@@ -125,7 +125,7 @@ void lancerPartie() {
 
         switch (pressed) {
             case KEY_RIGHT: decal = avancerMap(niv, table, &seed, decal); break;
-            case 32: sautMario(perso, jeu);
+            case 32: sautMario(perso, niv);
         }
 
         afficherMap_simp(mini_jeu, niv);
