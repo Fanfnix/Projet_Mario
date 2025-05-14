@@ -80,7 +80,7 @@ void affichageMario(WIN * win, Mario * perso) {
                 tmp[k] = ' ';
             }
         }
-        mvwaddstr(win->fenetre, convInt(perso->y)+29-j, convInt(perso->x), tmp);
+        mvwaddstr(win->fenetre, convInt(perso->y)+28-j, convInt(perso->x), tmp);
     }
     fclose(file);
 }
