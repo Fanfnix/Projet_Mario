@@ -23,7 +23,13 @@ int main() {
 
     // Creer musique/sons
     Mix_Music * menuzik = Mix_LoadMUS("../musique/monbeaumenu.mp3");
-    if (menuzik == NULL) {
+    if (!menuzik) {
+        printf("Echec Mix_LoadMUS\n");
+        return 0;
+    }
+
+    Mix_Music* jeuzik = Mix_LoadMUS("../musique/allan-venture.mp3");
+    if (!jeuzik) {
         printf("Echec Mix_LoadMUS\n");
         return 0;
     }
@@ -65,11 +71,15 @@ int main() {
     int id = 0;
     int id_choix = 0;
     int run = 1;
-    Mix_PlayMusic(menuzik, 1);
+    Mix_PlayMusic(menuzik, -1);
     do {
         actionMenuPrincipal(menu, &id, selectSE, confirmeSE);
         switch (id) {
-            case 0: nettoyerMenu(logo, menu, choix, controle, eloise); lancerPartie(); break;
+            case 0: nettoyerMenu(logo, menu, choix, controle, eloise);
+                Mix_HaltMusic();
+                Mix_PlayMusic(jeuzik, -1);
+                lancerPartie();
+                break;
             case 1: actionHiscores(choix, liste_score, &id_choix, selectSE, degatSE); break;
             case 2: actionSauvegarde(choix, sauvegarde, &id_choix, selectSE, degatSE); break;
             case 3: run = 0; break;
@@ -77,21 +87,10 @@ int main() {
         affichageGenerale(logo, controle, eloise);
     } while (run);
 
-    supprWin(logo);
-    supprWin(menu);
-    supprWin(choix);
-    supprWin(controle);
-    supprWin(eloise);
-
     endwin();
 
     libererHiscores(liste_score);
     libererSauvegarde(sauvegarde);
-
-    Mix_FreeMusic(menuzik);
-    Mix_FreeMusic(jeuzik);
-    Mix_CloseAudio();
-    SDL_Quit();
         
     return 0;
 }

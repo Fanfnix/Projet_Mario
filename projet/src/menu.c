@@ -258,6 +258,7 @@ void actionHiscores(WIN * win, struct Score ** liste_score, int * id, Mix_Chunk*
         if (*id > 9) *id = 0;
         affichageHiscores(win, liste_score, *id);
     }
+    Mix_PlayChannel(-1, selectSE, 0);
     wclear(win->fenetre);
     wrefresh(win->fenetre);
 }
@@ -383,6 +384,7 @@ void actionSauvegarde(WIN * win,  Save ** liste_sauvegarde, int * id, Mix_Chunk*
         if (*id > 9) *id = 0;
         affichageSauvegarde(win, liste_sauvegarde, *id);
     }
+    Mix_PlayChannel(-1, selectSE, 0);
     wclear(win->fenetre);
     wrefresh(win->fenetre);
 }
@@ -432,12 +434,4 @@ void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * elo
 
     wclear(eloise->fenetre);
     wrefresh(eloise->fenetre);
-}
-
-
-void supprWin(WIN * fenetre) {
-    if (fenetre == NULL) return;
-    if (fenetre->fenetre != NULL) delwin(fenetre->fenetre);
-    free(fenetre);
-    fenetre == NULL;
 }
