@@ -105,10 +105,10 @@ int main() {
     SDL_Quit();
 
     // Tri Liste_score
-    /* ICI */
+    trierHiscores(liste_score);
 
     // Ecriture Liste_score
-    /* ICI */
+    ecritureHiscores(liste_score);
 
     libererHiscores(liste_score);
     libererSauvegarde(sauvegarde);

@@ -61,6 +61,7 @@ struct Score ** recupHiscores();
 
 void ecritureHiscores(struct Score ** liste_score);
 void trierHiscores(struct Score ** liste_score);
+
 void affichageHiscores(WIN * win, struct Score ** liste_score, int choisi);
 void actionHiscores(WIN* win, struct Score** liste_score, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
 void supprHiscores(struct Score ** liste_score, int id);
