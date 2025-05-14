@@ -159,10 +159,6 @@ void lancerPartie(Mix_Music* menuzik) {
     supprWin(jeu);
     supprWin(tmp);
     supprWin(mini_jeu);
-<<<<<<< HEAD
 
-    // Libération Mario
     libMario(perso);
-=======
->>>>>>> Réglage bug musique
 }

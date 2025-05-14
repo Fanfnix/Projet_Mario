@@ -88,12 +88,13 @@ int main() {
         affichageGenerale(logo, controle, eloise);
     } while (run);
 
-    endwin();
     supprWin(logo);
     supprWin(menu);
     supprWin(choix);
     supprWin(controle);
     supprWin(eloise);
+
+    endwin();
 
     Mix_FreeMusic(menuzik);
     Mix_FreeMusic(jeuzik);
