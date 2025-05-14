@@ -122,10 +122,11 @@ void lancerPartie(Mix_Music* menuzik) {
         // CODE >>>
 
         actionGoombas(niv);
+        actionMario(perso, niv);
 
         switch (pressed) {
             case KEY_RIGHT: decal = avancerMap(niv, table, &seed, decal); break;
-            case 32: sautMario(perso, niv);
+            case 32: perso->y--; perso->vertical_speed - 5; break;
         }
 
         afficherMap_simp(mini_jeu, niv);

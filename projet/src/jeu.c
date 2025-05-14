@@ -115,13 +115,23 @@ void actionGoombas(struct Map * niv) {
 }
 
 void actionMario(Mario * perso, struct Map * niv){
-
+    if (perso == NULL || niv == NULL) return;
+    float new_pos_y = perso->y + perso->vertical_speed + GRAVITE;
+    int id_chunk = perso->x / DISTANCE;
+    struct Chunk * tmp_chunk = niv->p_chunk;
+    for (int i = 0; i < id_chunk; i++)
+    {
+        tmp_chunk = tmp_chunk->suivant;
+    }
+    if (tmp_chunk->area[convInt(perso->y) + 1][convInt(perso->x)] == 1 || tmp_chunk->area[convInt(perso->y) + 1][convInt(perso->x)] == 2)
+    {
+        perso->vertical_speed = 0.0f;
+    }
 }
 
 void sautMario(Mario *perso, struct Map * niv){
-    if (perso == NULL || niv == NULL) return;
-    perso->vertical_speed = perso->vertical_speed - 10;
-    float new_pos_y = perso->y + perso->vertical_speed * GRAVITE;
+    
+    
     perso->y = new_pos_y;
 }
 

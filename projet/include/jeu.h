@@ -1,7 +1,7 @@
 #ifndef JEU
 #define JEU
 
-#define GRAVITE 0.10 
+#define GRAVITE 0.10f
 
 typedef struct  Mario {
     int id;
@@ -20,7 +20,6 @@ void initMario(Mario * perso, struct Map * niv, WIN * fenetre);
 void avancerMapChunk(struct Map * niv, int * table, int * seed);
 void affichageMario(WIN * win, Mario * perso);
 int avancerMap(struct Map * niv, int * table, int * seed, int decal);
-void sautMario(Mario * perso, struct Map *niv);
 void actionMario(Mario * perso, struct Map * niv);
 void libMario(Mario * perso);
 
