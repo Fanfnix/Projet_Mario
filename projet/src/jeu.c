@@ -78,7 +78,7 @@ void initMario(Mario * perso, struct Map * niv, WIN * fenetre){
             break;
         }
     }
-    perso->y = fenetre->height - tmp_chunk->height -2;
+    perso->y = fenetre->height + tmp_chunk->height;
 }
 
 
@@ -117,4 +117,9 @@ void sautMario(Mario *perso, struct Map * niv){
     perso->vertical_speed = perso->vertical_speed - 10;
     float new_pos_y = perso->y + perso->vertical_speed * GRAVITE;
     perso->y = new_pos_y;
+}
+
+void libMario(Mario * perso){
+    free(perso);
+    perso == NULL;
 }

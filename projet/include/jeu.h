@@ -22,5 +22,5 @@ void affichageMario(WIN * win, Mario * perso);
 int avancerMap(struct Map * niv, int * table, int * seed, int decal);
 void sautMario(Mario * perso, struct Map *niv);
 void actionMario(Mario * perso, struct Map * niv);
-
+void libMario(Mario *perso);
 #endif
