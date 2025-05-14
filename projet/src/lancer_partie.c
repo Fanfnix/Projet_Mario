@@ -1,6 +1,6 @@
 #include "../include/header.h"
 
-void lancerPartie() {
+void lancerPartie(Mix_Music* menuzik) {
 
     int max_fps = 30;
     
@@ -148,6 +148,8 @@ void lancerPartie() {
         mvwaddstr(jeu->fenetre, 1, 1, txt_fps);
         wrefresh(jeu->fenetre);
     }
+    Mix_HaltMusic();
+    Mix_PlayMusic(menuzik, -1);
 
     // Libération de la mémoire : niveau et table aléatoire
     libMemMap(niv);
@@ -157,7 +159,10 @@ void lancerPartie() {
     supprWin(jeu);
     supprWin(tmp);
     supprWin(mini_jeu);
+<<<<<<< HEAD
 
     // Libération Mario
     libMario(perso);
+=======
+>>>>>>> Réglage bug musique
 }

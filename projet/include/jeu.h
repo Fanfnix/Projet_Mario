@@ -12,7 +12,7 @@ typedef struct  Mario {
     int vies;
 } Mario;
 
-void lancerPartie();
+void lancerPartie(Mix_Music* menuzik);
 void actionGoombas(struct Map * niv);
 
 struct Mario * creerMario(int vies, float speed, float vertical_speed);
@@ -22,5 +22,5 @@ void affichageMario(WIN * win, Mario * perso);
 int avancerMap(struct Map * niv, int * table, int * seed, int decal);
 void sautMario(Mario * perso, struct Map *niv);
 void actionMario(Mario * perso, struct Map * niv);
-void libMario(Mario *perso);
+
 #endif

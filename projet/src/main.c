@@ -22,6 +22,7 @@ int main() {
     }
 
     // Creer musique/sons
+
     Mix_Music * menuzik = Mix_LoadMUS("../musique/monbeaumenu.mp3");
     if (!menuzik) {
         printf("Echec Mix_LoadMUS\n");
@@ -78,7 +79,7 @@ int main() {
             case 0: nettoyerMenu(logo, menu, choix, controle, eloise);
                 Mix_HaltMusic();
                 Mix_PlayMusic(jeuzik, -1);
-                lancerPartie();
+                lancerPartie(menuzik);
                 break;
             case 1: actionHiscores(choix, liste_score, &id_choix, selectSE, degatSE); break;
             case 2: actionSauvegarde(choix, sauvegarde, &id_choix, selectSE, degatSE); break;
@@ -87,21 +88,7 @@ int main() {
         affichageGenerale(logo, controle, eloise);
     } while (run);
 
-    supprWin(logo);
-    supprWin(menu);
-    supprWin(choix);
-    supprWin(controle);
-    supprWin(eloise);
-
     endwin();
-
-    Mix_FreeMusic(menuzik);
-    Mix_FreeMusic(jeuzik);
-    Mix_FreeChunk(selectSE);
-    Mix_FreeChunk(degatSE);
-    Mix_FreeChunk(confirmeSE);
-    Mix_CloseAudio();
-    SDL_Quit();
 
     libererHiscores(liste_score);
     libererSauvegarde(sauvegarde);
