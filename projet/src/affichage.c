@@ -89,7 +89,7 @@ void affichageMario(WIN * win, Mario * perso) {
 void afficherChunk(WIN * fenetre, struct Chunk * troncon, int decal) {
     if (fenetre == NULL || troncon == NULL) return;
     char txt[255];
-    int anti_depassement = ((fenetre->width-2)/TX < (troncon->id+1)*DISTANCE) ? ((troncon->id+1)*DISTANCE - (fenetre->width-2)/TX) : 0;
+    int anti_depassement = ((fenetre->width-2)/TX < (troncon->id+1)*DISTANCE-decal) ? ((troncon->id+1)*DISTANCE-decal - (fenetre->width-2)/TX) : 0;
     for (int y = 0; y < troncon->height; y++) {
         int debut = (troncon->id == 0) ? decal : 0;
         for (int x = debut; x < DISTANCE - anti_depassement; x++) {

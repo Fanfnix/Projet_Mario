@@ -97,19 +97,15 @@ void lancerPartie() {
         struct Chunk * tmp_first = niv->p_chunk;
         if (niv->p_chunk == NULL) {
             niv->p_chunk = newChunk;
-            endwin();
-            printf("== DEBUT GENERATION ==\n");
-            printf("INFO [main][tmp_first == NULL] : tmp_first = %p / niv->p_chunk = %p\n", tmp_first, niv->p_chunk);
         }
         else {
             while (tmp_first->suivant != NULL) tmp_first = tmp_first->suivant;
-            endwin();
-            printf("INFO [main][tmp_first != NULL] : tmp_first = %p / tmp_first->suivant = %p\n", tmp_first, tmp_first->suivant);
             if (newChunk != NULL) tmp_first->suivant = newChunk;
         }
     }
     initMario(perso, niv, jeu);
     nodelay(jeu->fenetre, true);
+    keypad(jeu->fenetre, true);
 
     clock_t begin, end;
     float fps, timediff, supp;
@@ -121,25 +117,17 @@ void lancerPartie() {
 
     int pressed;
 
-    while ((pressed = wgetch(jeu->fenetre)) != 107) {
+    while ((pressed = wgetch(jeu->fenetre)) != 27) {
         begin = clock();
         // CODE >>>
 
         switch (pressed) {
-            case 100: decal = avancerMap(niv, table, &seed, decal); break;
+            case KEY_RIGHT: decal = avancerMap(niv, table, &seed, decal); break;
         }
 
-<<<<<<< HEAD
-   
-        // afficherMap_simp(mini_jeu, niv);
-        afficherMap(jeu, niv);
-        affichageMario(jeu, perso);
-=======
-        // afficherMap_simp(mini_jeu, niv);
         afficherMap_simp(mini_jeu, niv);
         afficherMap(jeu, niv, decal);
         affichageMario(jeu, perso);
->>>>>>> 178430e (deplacement map)
 
         // <<< CODE
         end = clock();
