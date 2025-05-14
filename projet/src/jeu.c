@@ -129,12 +129,6 @@ void actionMario(Mario * perso, struct Map * niv){
     }
 }
 
-void sautMario(Mario *perso, struct Map * niv){
-    
-    
-    perso->y = new_pos_y;
-}
-
 void libMario(Mario * perso) {
     free(perso);
     perso == NULL;
