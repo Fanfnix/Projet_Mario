@@ -116,7 +116,8 @@ void actionGoombas(struct Map * niv) {
 
 void actionMario(Mario * perso, struct Map * niv){
     if (perso == NULL || niv == NULL) return;
-    float new_pos_y = perso->y + perso->vertical_speed + GRAVITE;
+    perso->vertical_speed += GRAVITE;
+    perso->y += perso->vertical_speed;
     int id_chunk = perso->x / DISTANCE;
     struct Chunk * tmp_chunk = niv->p_chunk;
     for (int i = 0; i < id_chunk; i++)
