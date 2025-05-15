@@ -47,7 +47,6 @@ void lancerPartie(Mix_Music* menuzik) {
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return;
     }
-    afficherTmp(tmp, 0, 0, 0, table, seed);
 
     // Setup dimension carte
     int height_carte = height_fenetre_jeu / TY;
@@ -126,18 +125,23 @@ void lancerPartie(Mix_Music* menuzik) {
         actionGoombas(niv);
         actionMario(perso, niv);
 
+        afficherTmp(tmp, convInt(perso->x), convInt(perso->y), dmax, table, seed);
+
         int test_d;
 
         switch (pressed) {
             case KEY_RIGHT:
                 perso->x += 1.00f;
-                dmax += 1;
-                if (dmax % DISTANCE == 0) avancerMapChunk(niv, table, &seed);
+                if (convInt(perso->x) - dmax >= (jeu->width / 3 / TX)) dmax += 1;
+                if ((convInt(perso->x) % DISTANCE) == 0 && (convInt(perso->x) - dmax + 1) == (jeu->width / 3 / TX)) avancerMapChunk(niv, table, &seed);
+                // printf("X = %d / WIDTH = %d\n", convInt(perso->x) - dmax, jeu->width / 3 / TX);
+                break;
+            case KEY_LEFT:
+                if (convInt(perso->x) - dmax > 0) perso->x -= 1.00f;
                 break;
             case 32:
                 if (verifSol(niv, perso->x, perso->y) == 1) {
-                    perso->y--;
-                    perso->vertical_speed -= 0.8f;
+                    perso->vertical_speed -= 0.9f;
                 }
                 break;
         }

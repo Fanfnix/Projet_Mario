@@ -19,6 +19,7 @@ void afficherMap_simp(WIN * fenetre, struct Map * niv, Mario * perso, int dmax) 
             }
         }
         tmp_chunk = tmp_chunk->suivant;
+        // Afficher Mario
         mvwaddch(fenetre->fenetre, convInt(perso->y), convInt(perso->x) + 1 - (dmax / DISTANCE) * DISTANCE, 'M');
         mvwaddch(fenetre->fenetre, convInt(perso->y) + 1, convInt(perso->x) + 1 - (dmax / DISTANCE) * DISTANCE, 'X');
     }
@@ -132,7 +133,7 @@ void afficherChunk(WIN * fenetre, struct Chunk * troncon, int dmax) {
     int decal = dmax % DISTANCE;
 
     int anti_depassement;
-    if ((fenetre->width-2)/TX < ((pos_troncon)*DISTANCE-decal)) {
+    if ((fenetre->width-2)/TX < ((pos_troncon+1)*DISTANCE-decal)) {
         anti_depassement = ((pos_troncon+1)*DISTANCE-decal - (fenetre->width-2)/TX);
     } else {
         anti_depassement = 0;
