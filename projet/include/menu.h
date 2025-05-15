@@ -32,6 +32,7 @@ typedef struct Save
 {
     int id;
     int seed;
+    int distance;
     float posx;
     float posy;
     int score;

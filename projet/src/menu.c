@@ -344,20 +344,18 @@ void libererHiscores(struct Score ** liste_score) {
 Save * recupSave(char * str) {
     Save * liste_sauvegarde = malloc(sizeof(Save));
     if (liste_sauvegarde == NULL) return NULL;
-    char * elem[8]= {NULL};
+    char * elem[7]= {NULL};
     elem[0] = strtok(str, ", \n");
-    for (int i = 1; i < 8; i++)
+    for (int i = 1; i < 7; i++)
     {
         elem[i] = strtok(NULL, ", \n");
     }
     liste_sauvegarde->id = atoi(elem[0]);
     liste_sauvegarde->seed = atoi(elem[1]);
     liste_sauvegarde->distance = atoi(elem[2]);
-    liste_sauvegarde->posx = atoi(elem[3]);
-    liste_sauvegarde->posy = atoi(elem[4]);
-    liste_sauvegarde->kills = atoi(elem[5]);
-    liste_sauvegarde->piece = atoi(elem[6]);
-    liste_sauvegarde->vies = atoi(elem[7]);
+    liste_sauvegarde->posx = (float)atoi(elem[3]);
+    liste_sauvegarde->posy = (float)atoi(elem[4]);
+    liste_sauvegarde->vies = atoi(elem[5]);
 
     return liste_sauvegarde;
 }
@@ -391,8 +389,7 @@ void ecritureSauvegarde(struct Save ** liste_sauvegarde) {
     if (file == NULL) return;
     for (int i = 0; i < 10; i++) {
         if (liste_sauvegarde[i] != NULL) {
-            fprintf(file, "%d,%d,%d,%f,%f,%d\n", liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->score,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->vies);
-            fputs(line, file);
+            fprintf(file, "%d,%d,,%d,%d,%f,%f,%d\n", liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance, liste_sauvegarde[i]->score,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->vies);
         }
     }
     if (fclose(file) == EOF) return;
