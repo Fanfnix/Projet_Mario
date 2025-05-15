@@ -19,11 +19,7 @@ void avancerMapChunk(struct Map * niv, int * table, int * seed){
     libMemChunk(a_suppr);
 
     struct Chunk * tmp_chunk = niv->p_chunk;
-    tmp_chunk->id--;
-    while (tmp_chunk->suivant != NULL) {
-        tmp_chunk = tmp_chunk->suivant;
-        tmp_chunk->id--;
-    }
+    while (tmp_chunk->suivant != NULL) tmp_chunk = tmp_chunk->suivant;
 
     struct Chunk * newChunk = genererChunk(niv, tmp_chunk->id+1, table, seed);
     if (newChunk == NULL) {
@@ -34,20 +30,7 @@ void avancerMapChunk(struct Map * niv, int * table, int * seed){
 
     if (newChunk != NULL) tmp_chunk->suivant = newChunk;
 
-    if (niv->liste_goomba == NULL) return;
-    for (int i = 0; i < T_LISTE_GOOMBA; i++) {
-        if (niv->liste_goomba[i] != NULL) {
-            niv->liste_goomba[i]->x -= DISTANCE;
-        }
-    }
-
     return;
-}
-
-int avancerMap(struct Map * niv, int * table, int * seed, int decal) {
-    decal = (decal + 1) % DISTANCE;
-    if (decal == 0) avancerMapChunk(niv, table, seed);
-    return decal;
 }
 
 
@@ -63,7 +46,7 @@ struct Mario * creerMario(int vies, float speed, float vertical_speed) {
 
 void initMario(Mario * perso, struct Map * niv, WIN * fenetre){
     if (perso == NULL || niv == NULL || fenetre == NULL) return;
-    perso->x=1.0f;
+    perso->x = 1.0f;
     int id_chunk = perso->x / DISTANCE;
     struct Chunk * tmp_chunk = niv->p_chunk;
     for (int i = 0; i < id_chunk; i++)
@@ -78,7 +61,6 @@ void initMario(Mario * perso, struct Map * niv, WIN * fenetre){
             break;
         }
     }
-    
 }
 
 
@@ -91,18 +73,19 @@ void actionGoombas(struct Map * niv) {
         machin = niv->liste_goomba[i];
         if (machin != NULL) {
             float new_pos_x = machin->x + machin->speed * SPEED_GOOMBA;
-            if (convInt(new_pos_x) < 0) {
-                supprimerGoomba(niv->liste_goomba, machin->id);
-                continue;
-            }
             int id_chunk = new_pos_x / DISTANCE;
             int pos_in_chunk = convInt(new_pos_x) % DISTANCE;
             struct Chunk * tmp_chunk = niv->p_chunk;
 
-            for (int j = 0; j < id_chunk; j++) {
+            while (tmp_chunk->suivant != NULL) {
+                if (tmp_chunk->id == id_chunk) break;
                 tmp_chunk = tmp_chunk->suivant;
             }
-            if (tmp_chunk != NULL) {
+            if (tmp_chunk->id == id_chunk) {
+                if (convInt(new_pos_x) < id_chunk * DISTANCE) {
+                    supprimerGoomba(niv->liste_goomba, machin->id);
+                    continue;
+                }
                 bloc = tmp_chunk->area[convInt(machin->y)][pos_in_chunk];
                 if (bloc == 1 || bloc == 2 || bloc == 3 || bloc == 5 || bloc == 6) {
                     machin->speed = (machin->speed < 0) ? 1.0f : -1.0f;
@@ -118,17 +101,43 @@ void actionMario(Mario * perso, struct Map * niv){
     if (perso == NULL || niv == NULL) return;
     perso->vertical_speed += GRAVITE;
     perso->y += perso->vertical_speed;
-    int id_chunk = perso->x / DISTANCE;
-    struct Chunk * tmp_chunk = niv->p_chunk;
-    for (int i = 0; i < id_chunk; i++)
-    {
-        tmp_chunk = tmp_chunk->suivant;
-    }
-    if (tmp_chunk->area[convInt(perso->y) + 1][convInt(perso->x)] == 1 || tmp_chunk->area[convInt(perso->y) + 1][convInt(perso->x)] == 2)
-    {
+    if (verifSol(niv, perso->x, perso->y) == 1) {
         perso->vertical_speed = 0.0f;
         perso->y = (float)convInt(perso->y);
     }
+}
+
+int verifSol(struct Map * niv, float x, float y) {
+    if (niv == NULL) return -1;
+    int id_chunk = convInt(x) / DISTANCE;
+    int pos_in_chunk = convInt(x) % DISTANCE;
+    struct Chunk * tmp_chunk = niv->p_chunk;
+    if (pos_in_chunk < 0 || pos_in_chunk > DISTANCE) return -1;
+    while (tmp_chunk->suivant != NULL) {
+        if (tmp_chunk->id == id_chunk) break;
+        tmp_chunk = tmp_chunk->suivant;
+    }
+    if (tmp_chunk->id == id_chunk) {
+        if ((convInt(y)+1) >= niv->height) y = niv->height-1;
+        if (tmp_chunk->area[convInt(y)+1][pos_in_chunk] == 0 || tmp_chunk->area[convInt(y)+1][pos_in_chunk] == 4) return 0;
+    }
+    return 1;
+}
+
+int verifDroite(struct Map * niv, float x, float y) {
+    if (niv == NULL) return -1;
+    int id_chunk = convInt(x) / DISTANCE;
+    int pos_in_chunk = convInt(x) % DISTANCE;
+    struct Chunk * tmp_chunk = niv->p_chunk;
+    if (pos_in_chunk < 0 || pos_in_chunk > DISTANCE) return -1;
+    while (tmp_chunk->suivant != NULL) {
+        if (tmp_chunk->id == id_chunk) break;
+        tmp_chunk = tmp_chunk->suivant;
+    }
+    if (tmp_chunk->id == id_chunk) {
+        if (tmp_chunk->area[convInt(y)][convInt(x)+1] == 0 || tmp_chunk->area[convInt(y)][convInt(x)+1] == 4) return 0;
+    }
+    return 1;
 }
 
 void libMario(Mario * perso) {

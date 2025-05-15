@@ -230,27 +230,16 @@ struct Score ** recupHiscores() {
 }
 
 void ecritureHiscores(struct Score ** liste_score) {
-    if (liste_score == NULL)
-    {
-        return;
-    }
+    if (liste_score == NULL) return;
     char chemin[] = "data/hi_scores.txt";  // Le chemin est à calculer depuis l'éxécutable.
     FILE * file = fopen(chemin, "w");
-    if (file == NULL) {
-        free(liste_score);
-        return;
-    }
-    char line[50];
+    if (file == NULL) return;
     for (int i = 0; i < 10; i++) {
         if (liste_score[i] != NULL) {
             fprintf(file, "%d,%s,%d\n", liste_score[i]->id, liste_score[i]->pseudo, liste_score[i]->score);
-            fputs(line, file);
         }
     }
-    if (fclose(file) == EOF)
-    {
-        return;
-    }
+    if (fclose(file) == EOF) return;
 }
 
 void trierHiscores(struct Score ** liste_score) {
@@ -396,27 +385,16 @@ Save ** recupCheckpoint() {
 }
 
 void ecritureSauvegarde(struct Save ** liste_sauvegarde) {
-    if (liste_sauvegarde == NULL)
-    {
-        return;
-    }
+    if (liste_sauvegarde == NULL) return;
     char chemin[] = "data/sauvegardes.txt";  // Le chemin est à calculer depuis l'éxécutable.
     FILE * file = fopen(chemin, "w");
-    if (file == NULL) {
-        free(liste_sauvegarde);
-        return;
-    }
-    char line[50];
+    if (file == NULL) return;
     for (int i = 0; i < 10; i++) {
         if (liste_sauvegarde[i] != NULL) {
             fprintf(file, "%d,%d,%d,%d,%d,%d,%d,%d\n", liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->kills,liste_sauvegarde[i]->piece,liste_sauvegarde[i]->vies);
-            fputs(line, file);
         }
     }
-    if (fclose(file) == EOF)
-    {
-        return;
-    }
+    if (fclose(file) == EOF) return;
 }
 
 void affichageSauvegarde(WIN * win, Save ** liste_sauvegarde, int choisi) {

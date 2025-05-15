@@ -1,7 +1,7 @@
 #ifndef JEU
 #define JEU
 
-#define GRAVITE 0.1f
+#define GRAVITE 0.075f
 
 typedef struct  Mario {
     int id;
@@ -13,14 +13,19 @@ typedef struct  Mario {
 } Mario;
 
 void lancerPartie(Mix_Music* menuzik);
+
 void actionGoombas(struct Map * niv);
 
 struct Mario * creerMario(int vies, float speed, float vertical_speed);
 void initMario(Mario * perso, struct Map * niv, WIN * fenetre);
-void avancerMapChunk(struct Map * niv, int * table, int * seed);
-void affichageMario(WIN * win, Mario * perso);
-int avancerMap(struct Map * niv, int * table, int * seed, int decal);
+void affichageMario(WIN * win, Mario * perso, int dmax);
 void actionMario(Mario * perso, struct Map * niv);
 void libMario(Mario * perso);
 
+void afficherMap_simp(WIN * fenetre, struct Map * niv, Mario * perso, int dmax);
+
+void avancerMapChunk(struct Map * niv, int * table, int * seed);
+
+int verifSol(struct Map * niv, float x, float y);
+int verifDroite(struct Map * niv, float x, float y);
 #endif

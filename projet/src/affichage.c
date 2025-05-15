@@ -1,6 +1,6 @@
 #include "../include/header.h"
 
-void afficherMap_simp(WIN * fenetre, struct Map * niv) {
+void afficherMap_simp(WIN * fenetre, struct Map * niv, Mario * perso, int dmax) {
     char ch;
     struct Chunk * tmp_chunk = niv->p_chunk;
     while (tmp_chunk != NULL) {
@@ -15,10 +15,12 @@ void afficherMap_simp(WIN * fenetre, struct Map * niv) {
                     case 5: ch = 'H'; break;
                     default: ch = '?'; break;
                 }
-                mvwaddch(fenetre->fenetre, y + 1, tmp_chunk->id * DISTANCE + x + 1, ch);
+                mvwaddch(fenetre->fenetre, y + 1, (tmp_chunk->id - dmax / DISTANCE) * DISTANCE + x + 1, ch);
             }
         }
         tmp_chunk = tmp_chunk->suivant;
+        mvwaddch(fenetre->fenetre, convInt(perso->y), convInt(perso->x) + 1 - (dmax / DISTANCE) * DISTANCE, 'M');
+        mvwaddch(fenetre->fenetre, convInt(perso->y) + 1, convInt(perso->x) + 1 - (dmax / DISTANCE) * DISTANCE, 'X');
     }
     wrefresh(fenetre->fenetre);
 }
@@ -51,7 +53,7 @@ void affichageTuyau(WIN * win, int y, int x) {
 }
 
 
-void affichageGoomba(WIN * win, struct Goomba * machin, int decal) {
+void affichageGoomba(WIN * win, struct Goomba * machin, int dmax) {
     if (machin == NULL) return;
     char chemin[255] = "../design/goomba/goomba1.txt";
     char tmp[255];
@@ -63,12 +65,12 @@ void affichageGoomba(WIN * win, struct Goomba * machin, int decal) {
                 tmp[k] = ' ';
             }
         }
-        mvwaddstr(win->fenetre, convY(convInt(machin->y))+1-j, convX(convInt(machin->x)-decal), tmp);
+        mvwaddstr(win->fenetre, convY(convInt(machin->y))+1-j, convX(convInt(machin->x)-dmax), tmp);
     }
     fclose(file);
 }
 
-void affichageMario(WIN * win, Mario * perso) {
+void affichageMario(WIN * win, Mario * perso, int dmax) {
     if (perso == NULL) return;
     char chemin[255] = "../design/mario/mario1.txt";
     char tmp[255];
@@ -80,52 +82,53 @@ void affichageMario(WIN * win, Mario * perso) {
                 tmp[k] = ' ';
             }
         }
-        mvwaddstr(win->fenetre, convY(convInt(perso->y))-j+1, convX(convInt(perso->x)), tmp);
+        mvwaddstr(win->fenetre, convY(convInt(perso->y))-j+1, convX(convInt(perso->x - dmax)), tmp);
     }
     fclose(file);
 }
 
 
-void afficherChunk(WIN * fenetre, struct Chunk * troncon, int decal) {
+void afficherBloc(WIN * fenetre, int y, int x, int id_bloc) {
+    if (fenetre == NULL) return;
+    int X_affiche = convX(x);
+    int Y_affiche = convY(y);
+    char haut[TX+1], bas[TX+1];
+    switch (id_bloc) {
+        case 0: strcpy(haut, "   "); strcpy(bas, "   "); break;
+        case 1: case 2: strcpy(haut, "###"); strcpy(bas, "###"); break;
+        case 3: strcpy(haut, "==="); strcpy(bas, "=?="); break;
+        case 4: strcpy(haut, "($)"); strcpy(bas, "   "); break;
+        case 5: affichageTuyau(fenetre, y, x);
+        case 6: break;
+        default: strcpy(haut, "???"); strcpy(bas, "???"); break;
+    }
+    mvwaddstr(fenetre->fenetre, Y_affiche, X_affiche, haut);
+    mvwaddstr(fenetre->fenetre, Y_affiche + 1, X_affiche, bas);
+}
+
+
+void afficherChunk(WIN * fenetre, struct Chunk * troncon, int dmax) {
     if (fenetre == NULL || troncon == NULL) return;
+
     char txt[255];
-    int anti_depassement = ((fenetre->width-2)/TX < (troncon->id+1)*DISTANCE-decal) ? ((troncon->id+1)*DISTANCE-decal - (fenetre->width-2)/TX) : 0;
+    int pos_troncon = troncon->id - dmax / DISTANCE;
+    int decal = dmax % DISTANCE;
+
+    int anti_depassement;
+    if ((fenetre->width-2)/TX < ((pos_troncon)*DISTANCE-decal)) {
+        anti_depassement = ((pos_troncon+1)*DISTANCE-decal - (fenetre->width-2)/TX);
+    } else {
+        anti_depassement = 0;
+    }
+
     for (int y = 0; y < troncon->height; y++) {
-        int debut = (troncon->id == 0) ? decal : 0;
-        for (int x = debut; x < DISTANCE - anti_depassement; x++) {
-            switch (troncon->area[y][x]) {
-                case 0:
-                    mvwaddstr(fenetre->fenetre, convY(y), convX(x - decal + troncon->id * DISTANCE), "   ");
-                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x - decal + troncon->id * DISTANCE), "   ");
-                    break;
-                case 1: case 2:
-                    mvwaddstr(fenetre->fenetre, convY(y), convX(x - decal + troncon->id * DISTANCE), "###");
-                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x - decal + troncon->id * DISTANCE), "###");
-                    break;
-                case 3:
-                    mvwaddstr(fenetre->fenetre, convY(y), convX(x - decal + troncon->id * DISTANCE), "===");
-                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x - decal + troncon->id * DISTANCE), "=?=");
-                    break;
-                case 4:
-                    mvwaddstr(fenetre->fenetre, convY(y), convX(x - decal + troncon->id * DISTANCE), "($)");
-                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x - decal + troncon->id * DISTANCE), "   ");
-                    break;
-                case 5:
-                    affichageTuyau(fenetre, y, x - decal + troncon->id * DISTANCE);
-                    break;
-                case 6:
-                    break;
-                default:
-                    mvwaddstr(fenetre->fenetre, convY(y), convX(x - decal + troncon->id * DISTANCE), "???");
-                    mvwaddstr(fenetre->fenetre, convY(y)+1, convX(x - decal + troncon->id * DISTANCE), "???");
-                    break;
-            }
-        }
+        int debut = (pos_troncon == 0) ? decal : 0;
+        for (int x = debut; x < DISTANCE - anti_depassement; x++) afficherBloc(fenetre, y, x + pos_troncon * DISTANCE - decal, troncon->area[y][x]);
     }
 }
 
 
-void afficherMap(WIN * fenetre, struct Map * niv, int decal) {
+void afficherMap(WIN * fenetre, struct Map * niv, int dmax) {
     if (niv == NULL || fenetre == NULL) return;
     struct Chunk * tmp_chunk = niv->p_chunk;
     if (tmp_chunk == NULL) {
@@ -133,17 +136,17 @@ void afficherMap(WIN * fenetre, struct Map * niv, int decal) {
         printf("ERR [afficherMap] : tmp_chunk = NULL\n");
         return;
     }
-    afficherChunk(fenetre, tmp_chunk, decal);
+    afficherChunk(fenetre, tmp_chunk, dmax);
     while (tmp_chunk->suivant != NULL) {
         tmp_chunk = tmp_chunk->suivant;
-        afficherChunk(fenetre, tmp_chunk, decal);
+        afficherChunk(fenetre, tmp_chunk, dmax);
     }
     
     char tmp[512];
     for (int i = 0; i < T_LISTE_GOOMBA; i++) {
         if (niv->liste_goomba[i] != NULL) {
-            if (convX(convInt(niv->liste_goomba[i]->x)) < fenetre->width-3-1) {
-                affichageGoomba(fenetre, niv->liste_goomba[i], decal);
+            if (convX(convInt(niv->liste_goomba[i]->x - dmax)) < fenetre->width-3-1) {
+                affichageGoomba(fenetre, niv->liste_goomba[i], dmax);
             }
             snprintf(tmp, 511, "ID: %d, X: %d, Y: %d, x: %.2f, y: %.2f, S: %.2f, DIFF: %d", niv->liste_goomba[i]->id, convInt(niv->liste_goomba[i]->x), convInt(niv->liste_goomba[i]->y), niv->liste_goomba[i]->x, niv->liste_goomba[i]->y, niv->liste_goomba[i]->speed, fenetre->width-3-1 - convX(convInt(niv->liste_goomba[i]->x)));
             mvwaddstr(fenetre->fenetre, i+2, 1, tmp);

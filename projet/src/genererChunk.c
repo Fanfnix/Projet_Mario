@@ -7,7 +7,7 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
 
     // Met un sol dans le cas ou aucune valeur aléatoire lui est donné
     if (table == NULL && seed == NULL) {
-        for (int x = 0; x < DISTANCE; x++) for (int y = niv->height-Y_MIN; y < niv->height; y++) piece->area[y][x] = 1;
+        for (int x = 0; x < DISTANCE; x++) for (int y = niv->height-Y_MIN; y < niv->height; y++) if (x == 0) piece->area[y][x] = 2; else piece->area[y][x] = 1;
         return piece;
     }
 

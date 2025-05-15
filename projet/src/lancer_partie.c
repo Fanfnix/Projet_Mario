@@ -2,7 +2,7 @@
 
 void lancerPartie(Mix_Music* menuzik) {
 
-    int max_fps = 30;
+    int max_fps = 60;
     
     // Initialisation aléatoire
     srand(time(NULL));
@@ -113,9 +113,11 @@ void lancerPartie(Mix_Music* menuzik) {
     int tot_sec = 0;
     char txt_fps[255] = "\0";
 
-    int decal = 0;
+    int dmax = 0;
 
     int pressed;
+
+    system("xset r rate 100 25");
 
     while ((pressed = wgetch(jeu->fenetre)) != 27) {
         begin = clock();
@@ -124,14 +126,25 @@ void lancerPartie(Mix_Music* menuzik) {
         actionGoombas(niv);
         actionMario(perso, niv);
 
+        int test_d;
+
         switch (pressed) {
-            case KEY_RIGHT: decal = avancerMap(niv, table, &seed, decal); break;
-            case 32: perso->y--; perso->vertical_speed -= 1; break;
+            case KEY_RIGHT:
+                perso->x += 1.00f;
+                dmax += 1;
+                if (dmax % DISTANCE == 0) avancerMapChunk(niv, table, &seed);
+                break;
+            case 32:
+                if (verifSol(niv, perso->x, perso->y) == 1) {
+                    perso->y--;
+                    perso->vertical_speed -= 0.8f;
+                }
+                break;
         }
 
-        afficherMap_simp(mini_jeu, niv);
-        afficherMap(jeu, niv, decal);
-        affichageMario(jeu, perso);
+        afficherMap_simp(mini_jeu, niv, perso, dmax);
+        afficherMap(jeu, niv, dmax);
+        affichageMario(jeu, perso, dmax);
 
         // <<< CODE
         end = clock();
@@ -149,6 +162,9 @@ void lancerPartie(Mix_Music* menuzik) {
         mvwaddstr(jeu->fenetre, 1, 1, txt_fps);
         wrefresh(jeu->fenetre);
     }
+
+    system("xset r rate 500 33");
+
     Mix_HaltMusic();
     Mix_PlayMusic(menuzik, -1);
 

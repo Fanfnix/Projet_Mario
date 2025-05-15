@@ -14,7 +14,7 @@ struct Goomba {
 };
 
 #define T_LISTE_GOOMBA 50
-#define SPEED_GOOMBA 0.2f
+#define SPEED_GOOMBA 0.12f
 
 struct Chunk {
     int id;
