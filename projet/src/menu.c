@@ -72,6 +72,17 @@ WIN * creerWindowEloise() {
     return fenetre;
 }
 
+WIN * creerWindowAscii() {
+    int height_fenetre_ascii, width_fenetre_ascii, startx_fenetre_ascii, starty_fenetre_ascii;
+    height_fenetre_ascii = HEIGHT_ASCII + 2;
+    width_fenetre_ascii = WIDTH_ASCII + 2;
+    startx_fenetre_ascii = (40);
+    starty_fenetre_ascii = (5);
+    WINDOW * ascii = newwin(height_fenetre_ascii, width_fenetre_ascii, starty_fenetre_ascii, startx_fenetre_ascii);
+    WIN * fenetre = creerFenetre(ascii, width_fenetre_ascii, height_fenetre_ascii);
+    return fenetre;
+}
+
 void affichageDessinmenu(WIN * eloise){
     char chemin[] = "../design/dessinmenu/dessinmenu1.txt";
     FILE * file = fopen(chemin, "r");
@@ -128,6 +139,7 @@ void affichageGenerale(WIN * logo, WIN * controle, WIN * eloise) {
     affichageRetromario(logo);
     affichageControle(controle);
     affichageDessinmenu(eloise);
+
 }
 
 void affichageMenuPrincipal(WIN * menu, int choix) {
@@ -255,7 +267,7 @@ void trierHiscores(struct Score ** liste_score) {
     }
 }
 
-void affichageHiscores(WIN * win, struct Score ** liste_score, int choisi) {
+void affichageHiscores(WIN * win,WIN * ascii, struct Score ** liste_score, int choisi) {
     if (choisi >= 10) {
         endwin();
         printf("CHOIX = %d | SIZE = 10\n", choisi);
@@ -280,12 +292,14 @@ void affichageHiscores(WIN * win, struct Score ** liste_score, int choisi) {
     }
     mvwaddstr(win->fenetre, 50, 2, " [DEL] to delete a score");
     wrefresh(win->fenetre);
+    wborder(ascii->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
+    wrefresh(ascii->fenetre);
+
 }
 
-
-void actionHiscores(WIN * win, struct Score ** liste_score, int * id, Mix_Chunk* selectSE, Mix_Chunk* degatSE) {
+void actionHiscores(WIN * win,WIN *ascii, struct Score ** liste_score, int * id, Mix_Chunk* selectSE, Mix_Chunk* degatSE) {
     int pressed;
-    affichageHiscores(win, liste_score, *id);
+    affichageHiscores(win,ascii, liste_score, *id);
     while ((pressed = wgetch(win->fenetre)) != 27) {
         if (pressed == KEY_UP) {
             (*id)--;
@@ -301,7 +315,7 @@ void actionHiscores(WIN * win, struct Score ** liste_score, int * id, Mix_Chunk*
         }  // Supprimer le score
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
-        affichageHiscores(win, liste_score, *id);
+        affichageHiscores(win,ascii, liste_score, *id);
     }
     wclear(win->fenetre);
     wrefresh(win->fenetre);
@@ -489,7 +503,7 @@ void libererSauvegarde(Save ** liste_sauvegarde) {
     liste_sauvegarde = NULL;
 }
 
-void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * eloise) {
+void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * eloise, WIN * ascii) {
     wclear(logo->fenetre);
     wrefresh(logo->fenetre);
 
@@ -504,6 +518,9 @@ void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * elo
 
     wclear(eloise->fenetre);
     wrefresh(eloise->fenetre);
+
+    wclear(ascii->fenetre);
+    wrefresh(ascii->fenetre);
 }
 
 
