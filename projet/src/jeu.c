@@ -149,7 +149,7 @@ void checkpoint(Mario * perso, struct Save * checkpoint){
 
     checkpoint->posx = perso->x;
     checkpoint->posy = perso->y;
-    checkpoint->score = score;
+    //checkpoint->score = score;
     checkpoint->vies = perso->vies;
      
 }
