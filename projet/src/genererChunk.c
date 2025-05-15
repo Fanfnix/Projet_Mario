@@ -50,7 +50,7 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
     // <<< Piece
 
     // Drapeau >>>
-    if (drapeau && !tuyaux) {
+    if (drapeau && !tuyau) {
         startx_drapeau = abs(table[1]) % (DISTANCE - 1);
     }
     // <<< Drapeau
