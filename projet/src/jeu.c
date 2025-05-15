@@ -103,7 +103,6 @@ void actionMario(Mario * perso, struct Map * niv){
     perso->y += perso->vertical_speed;
     if (verifSol(niv, perso->x, perso->y) == 1) {
         perso->vertical_speed = 0.0f;
-        perso->y = (float)convInt(perso->y);
     }
 }
 
@@ -143,4 +142,14 @@ int verifDroite(struct Map * niv, float x, float y) {
 void libMario(Mario * perso) {
     free(perso);
     perso == NULL;
+}
+
+void checkpoint(Mario * perso, struct Save * checkpoint){
+    if(perso == NULL || checkpoint == NULL) return ;
+
+    checkpoint->posx = perso->x;
+    checkpoint->posy = perso->y;
+    checkpoint->score = score;
+    checkpoint->vies = perso->vies;
+     
 }

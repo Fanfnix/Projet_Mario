@@ -391,7 +391,8 @@ void ecritureSauvegarde(struct Save ** liste_sauvegarde) {
     if (file == NULL) return;
     for (int i = 0; i < 10; i++) {
         if (liste_sauvegarde[i] != NULL) {
-            fprintf(file, "%d,%d,%d,%d,%d,%d,%d,%d\n", liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->kills,liste_sauvegarde[i]->piece,liste_sauvegarde[i]->vies);
+            fprintf(file, "%d,%d,%d,%f,%f,%d\n", liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->score,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->vies);
+            fputs(line, file);
         }
     }
     if (fclose(file) == EOF) return;
@@ -415,7 +416,7 @@ void affichageSauvegarde(WIN * win, Save ** liste_sauvegarde, int choisi) {
     for (int i = 0; i < 10; i++) {
         if (liste_sauvegarde[i] != NULL) {
             WINDOW * save = derwin(win->fenetre, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
-            sprintf(text, "  >>> %d. Seed :%d - Distance :%d - Pose en x/y : %d / %d - kills : %d - Pieces : %d - Vies : %d",liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->kills,liste_sauvegarde[i]->piece,liste_sauvegarde[i]->vies);
+            sprintf(text, "  >>> %d. Seed :%d - Pose en x/y : %f / %f - score : %d - Vies : %d",liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->posx, liste_sauvegarde[i]->posy, liste_sauvegarde[i]->score, liste_sauvegarde[i]->vies);
         }
         else sprintf(text, "  >>> null");
         WINDOW * save = derwin(win->fenetre, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);

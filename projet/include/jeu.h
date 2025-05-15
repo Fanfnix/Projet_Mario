@@ -28,4 +28,6 @@ void avancerMapChunk(struct Map * niv, int * table, int * seed);
 
 int verifSol(struct Map * niv, float x, float y);
 int verifDroite(struct Map * niv, float x, float y);
+void checkpoint(Mario * perso, struct Save * checkpoint);
+
 #endif

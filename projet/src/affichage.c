@@ -34,6 +34,8 @@ int convY(int y) {
     return TY * y + 1;
 }
 
+void affichageDrapeau(WIN * win, )
+
 
 void affichageTuyau(WIN * win, int y, int x) {
     char chemin[255] = "../design/tuyau/tuyau1.txt";
