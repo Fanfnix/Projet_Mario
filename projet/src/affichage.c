@@ -34,7 +34,22 @@ int convY(int y) {
     return TY * y + 1;
 }
 
-void affichageDrapeau(WIN * win, )
+void affichageDrapeau(WIN * win,int y, int x){
+    char chemin[255] = "../../design/drapeau/drapeau1.txt";
+    char tmp[255];
+    FILE * file = fopen(chemin, "r");
+    for (int j = 5; j >= 0; j--) {
+        fgets(tmp, 4, file);
+        if ((win->width-1-convX(x)) < strlen(tmp)) tmp[(win->width-1-convX(x))] = '\0';
+        for (int k = 0; k < strlen(tmp); k++) {
+            if (tmp[k] == '0') {
+                tmp[k] = ' ';
+            }
+        }
+        mvwaddstr(win->fenetre, convY(y)+1-j, convX(x), tmp);
+    }
+    fclose(file);
+}
 
 
 void affichageTuyau(WIN * win, int y, int x) {
