@@ -112,6 +112,7 @@ void actionMario(Mario * perso, struct Map * niv){
     perso->y += perso->vertical_speed;
 }
 
+<<<<<<< HEAD
 int verifSol(struct Map * niv, float x, float y) {
     if (niv == NULL) return -1;
 
@@ -154,6 +155,8 @@ int verifDroite(struct Map * niv, float x, float y) {
     return 1;
 }
 
+=======
+>>>>>>> 2ded3f9 (collisions cotés mario)
 void libMario(Mario * perso) {
     free(perso);
     perso == NULL;

@@ -136,7 +136,7 @@ void lancerPartie(Mix_Music* menuzik) {
 
         switch (pressed) {
             case KEY_RIGHT:
-                perso->x++;
+                if (!verifDroite(niv, perso->x, perso->y)) perso->x++;
                 if (convInt(perso->x)-dmax >= (jeu->width/3/TX)) dmax++;
                 if ((convInt(perso->x)%DISTANCE) == 0 && (convInt(perso->x)-dmax+1) == (jeu->width/3/TX)) {
                     struct Chunk * tmp_chunk = niv->p_chunk;
@@ -147,7 +147,7 @@ void lancerPartie(Mix_Music* menuzik) {
                 }
                 break;
             case KEY_LEFT:
-                if (convInt(perso->x)-dmax > 0) perso->x--;
+                if (convInt(perso->x)-dmax > 0 && !verifGauche(niv, perso->x, perso->y)) perso->x--;
                 break;
             case 32:
                 if (verifSol(niv, perso->x, perso->y) == 1) {
