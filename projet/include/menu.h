@@ -50,7 +50,7 @@ WIN * creerWindowMenu();
 WIN * creerWindowChoix();
 WIN * creerWindowControle();
 WIN * creerWindowEloise();
-WIN * creerWindowAscii();
+WIN * creerWindowAscii(WIN * win);
 WIN * creerWindowBlocpiece(WIN * win);
 
 void affichageRetromario(WIN * win);

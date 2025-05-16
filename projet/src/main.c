@@ -63,10 +63,11 @@ int main() {
     logo = creerWindowLogo();
     controle = creerWindowControle();
     eloise = creerWindowEloise();
-    ascii = creerWindowAscii();
     menu = creerWindowMenu();
     choix = creerWindowChoix();
-    blocpiece = creerWindowBlocpiece();
+
+    blocpiece = creerWindowBlocpiece(choix);
+    ascii = creerWindowAscii(choix);
 
     affichageGenerale(logo, controle, eloise);
 

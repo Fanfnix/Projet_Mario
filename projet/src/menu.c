@@ -72,7 +72,7 @@ WIN * creerWindowEloise() {
     return fenetre;
 }
 
-WIN * creerWindowAscii() {
+WIN * creerWindowAscii(WIN * win) {
     int height_fenetre_ascii, width_fenetre_ascii, startx_fenetre_ascii, starty_fenetre_ascii;
     height_fenetre_ascii = HEIGHT_ASCII + 2;
     width_fenetre_ascii = WIDTH_ASCII + 2;
