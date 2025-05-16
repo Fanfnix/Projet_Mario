@@ -164,7 +164,7 @@ void lancerPartie(Mix_Music* menuzik) {
                 }
                 break;
         }
-        getCoin(niv, perso->x, perso->y, coin, coinSE);
+        getCoin(niv, perso->x, perso->y, &coin, coinSE);
         afficherMap_simp(mini_jeu, niv, perso, dmax);
         afficherMap(jeu, niv, dmax);
         affichageMario(jeu, perso, dmax);

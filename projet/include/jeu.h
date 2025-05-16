@@ -29,7 +29,7 @@ void avancerMapChunk(struct Map * niv, int * table, int * seed);
 int verifSol(struct Map * niv, float x, float y);
 int verifDroite(struct Map * niv, float x, float y);
 int verifGauche(struct Map* niv, float x, float y);
-void getCoin(struct Map* niv, float x, float y, int coin, Mix_Chunk* coinSE);
+void getCoin(struct Map* niv, float x, float y, int * coin, Mix_Chunk* coinSE);
 void checkpoint(Mario * perso, struct Save * checkpoint);
 
 #endif
