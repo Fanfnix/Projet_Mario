@@ -173,6 +173,7 @@ void afficherMap(WIN * fenetre, struct Map * niv, int dmax) {
 }
 
 void afficherTmp(WIN * tmp, int X, int Y, int dMax, int* table, int seed) {
+    wclear(tmp->fenetre);
     wborder(tmp->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
     char elem[255] = "";
     int x = X - dMax;

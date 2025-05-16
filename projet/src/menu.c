@@ -342,22 +342,24 @@ void libererHiscores(struct Score ** liste_score) {
 //SAUVEGARDES
 
 Save * recupSave(char * str) {
-    Save * liste_sauvegarde = malloc(sizeof(Save));
-    if (liste_sauvegarde == NULL) return NULL;
-    char * elem[7]= {NULL};
+    if (str == NULL) return NULL;
+    Save * sauvegarde = malloc(sizeof(Save));
+    if (sauvegarde == NULL) return NULL;
+    char * elem[8]= {NULL};
     elem[0] = strtok(str, ", \n");
     for (int i = 1; i < 7; i++)
     {
         elem[i] = strtok(NULL, ", \n");
     }
-    liste_sauvegarde->id = atoi(elem[0]);
-    liste_sauvegarde->seed = atoi(elem[1]);
-    liste_sauvegarde->distance = atoi(elem[2]);
-    liste_sauvegarde->posx = (float)atoi(elem[3]);
-    liste_sauvegarde->posy = (float)atoi(elem[4]);
-    liste_sauvegarde->vies = atoi(elem[5]);
+    sauvegarde->id = atoi(elem[0]);
+    sauvegarde->seed = atoi(elem[1]);
+    sauvegarde->distance = atoi(elem[2]);
+    sauvegarde->score = atoi(elem[3]);
+    sauvegarde->posx = (float)atoi(elem[4]);
+    sauvegarde->posy = (float)atoi(elem[5]);
+    sauvegarde->vies = atoi(elem[6]);
 
-    return liste_sauvegarde;
+    return sauvegarde;
 }
 
 Save ** recupCheckpoint() {
@@ -389,7 +391,7 @@ void ecritureSauvegarde(struct Save ** liste_sauvegarde) {
     if (file == NULL) return;
     for (int i = 0; i < 10; i++) {
         if (liste_sauvegarde[i] != NULL) {
-            fprintf(file, "%d,%d,%d,%d,%f,%f,%d\n", liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance, liste_sauvegarde[i]->score,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->vies);
+            fprintf(file, "%d,%d,%d,%d,%f,%f,%d\n", liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance, liste_sauvegarde[i]->score, liste_sauvegarde[i]->posx, liste_sauvegarde[i]->posy, liste_sauvegarde[i]->vies);
         }
     }
     if (fclose(file) == EOF) return;
@@ -413,7 +415,7 @@ void affichageSauvegarde(WIN * win, Save ** liste_sauvegarde, int choisi) {
     for (int i = 0; i < 10; i++) {
         if (liste_sauvegarde[i] != NULL) {
             WINDOW * save = derwin(win->fenetre, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
-            sprintf(text, "  >>> %d. Seed :%d - Pose en x/y : %f / %f - score : %d - Vies : %d",liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->posx, liste_sauvegarde[i]->posy, liste_sauvegarde[i]->score, liste_sauvegarde[i]->vies);
+            sprintf(text, "  >>> %d. Seed :%d - Pose en x/y : %.0f / %.0f - score : %d - Vies : %d",liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->posx, liste_sauvegarde[i]->posy, liste_sauvegarde[i]->score, liste_sauvegarde[i]->vies);
         }
         else sprintf(text, "  >>> null");
         WINDOW * save = derwin(win->fenetre, 5, (COLS - WIDTH_MENU - 7), 5+2*i, 0);
