@@ -68,32 +68,19 @@ void actionGoombas(struct Map * niv) {
     if (niv == NULL) return;
     if (niv->liste_goomba == NULL) return;
     struct Goomba * machin;
-    int bloc;
     for (int i = 0; i < T_LISTE_GOOMBA; i++) {
         machin = niv->liste_goomba[i];
         if (machin != NULL) {
-            float new_pos_x = machin->x + machin->speed * SPEED_GOOMBA;
-            int id_chunk = new_pos_x / DISTANCE;
-            int pos_in_chunk = convInt(new_pos_x) % DISTANCE;
-            struct Chunk * tmp_chunk = niv->p_chunk;
+            if (verifDroite(niv, machin->x, machin->y) == 1) machin->speed = -1.0f;
+            if (verifGauche(niv, machin->x, machin->y) == 1) machin->speed = 1.0f;
+            if (verifSol(niv, machin->x, machin->y) == 0) machin->y += 1.0f;
 
-            while (tmp_chunk->suivant != NULL) {
-                if (tmp_chunk->id == id_chunk) break;
-                tmp_chunk = tmp_chunk->suivant;
+            if (convInt(machin->x) <= niv->p_chunk->id * DISTANCE) {
+                supprimerGoomba(niv->liste_goomba, machin->id);
+                continue;
             }
-            if (tmp_chunk->id == id_chunk) {
-                if (convInt(machin->x) <= niv->p_chunk->id * DISTANCE) {
-                    supprimerGoomba(niv->liste_goomba, machin->id);
-                    continue;
-                }
-                if (verifSol(niv, machin->x, machin->y) == 0) machin->y += 1.0f;
-                bloc = tmp_chunk->area[convInt(machin->y)][pos_in_chunk];
-                if (bloc == 1 || bloc == 2 || bloc == 3 || bloc == 5 || bloc == 6) {
-                    machin->speed = (machin->speed < 0) ? 1.0f : -1.0f;
-                    new_pos_x = machin->x + machin->speed * SPEED_GOOMBA;
-                }
-                machin->x = new_pos_x;
-            }
+
+            machin->x += machin->speed * SPEED_GOOMBA;
         }
     }
 }
