@@ -112,51 +112,7 @@ void actionMario(Mario * perso, struct Map * niv){
     perso->y += perso->vertical_speed;
 }
 
-<<<<<<< HEAD
-int verifSol(struct Map * niv, float x, float y) {
-    if (niv == NULL) return -1;
 
-    if (y <= 2) y = 2;
-
-    int x_int = convInt(x);
-    int y_int = convInt(y);
-
-    int id_chunk = x_int / DISTANCE;
-    int pos_in_chunk = x_int % DISTANCE;
-
-    if (pos_in_chunk < 0 || pos_in_chunk > DISTANCE) return -1;
-
-    struct Chunk * tmp_chunk = niv->p_chunk;
-    while (tmp_chunk != NULL) {
-        if (tmp_chunk->id == id_chunk) break;
-        tmp_chunk = tmp_chunk->suivant;
-    }
-    if (tmp_chunk == NULL) return -1;
-    if (tmp_chunk->id == id_chunk) {
-        if ((y_int + 1) >= niv->height) y_int = niv->height - 2;
-        if (tmp_chunk->area[y_int + 1][pos_in_chunk] == 0 || tmp_chunk->area[y_int + 1][pos_in_chunk] == 4) return 0;
-    }
-    return 1;
-}
-
-int verifDroite(struct Map * niv, float x, float y) {
-    if (niv == NULL) return -1;
-    int id_chunk = convInt(x) / DISTANCE;
-    int pos_in_chunk = convInt(x) % DISTANCE;
-    struct Chunk * tmp_chunk = niv->p_chunk;
-    if (pos_in_chunk < 0 || pos_in_chunk > DISTANCE) return -1;
-    while (tmp_chunk->suivant != NULL) {
-        if (tmp_chunk->id == id_chunk) break;
-        tmp_chunk = tmp_chunk->suivant;
-    }
-    if (tmp_chunk->id == id_chunk) {
-        if (tmp_chunk->area[convInt(y)][convInt(x)+1] == 0 || tmp_chunk->area[convInt(y)][convInt(x)+1] == 4) return 0;
-    }
-    return 1;
-}
-
-=======
->>>>>>> 2ded3f9 (collisions cotés mario)
 void libMario(Mario * perso) {
     free(perso);
     perso == NULL;
