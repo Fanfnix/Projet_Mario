@@ -99,12 +99,12 @@ void actionGoombas(struct Map * niv) {
 
 void actionMario(Mario * perso, struct Map * niv){
     if (perso == NULL || niv == NULL) return;
-    perso->vertical_speed += GRAVITE;
-    perso->y += perso->vertical_speed;
     if (verifSol(niv, perso->x, perso->y) == 1) {
         perso->vertical_speed = 0.0f;
         perso->y = convInt(perso->y);
     }
+    perso->vertical_speed += GRAVITE;
+    perso->y += perso->vertical_speed;
 }
 
 int verifSol(struct Map * niv, float x, float y) {
@@ -114,7 +114,7 @@ int verifSol(struct Map * niv, float x, float y) {
     int y_int = convInt(y);
 
     int id_chunk = x_int / DISTANCE;
-    int pos_in_chunk = y_int % DISTANCE;
+    int pos_in_chunk = x_int % DISTANCE;
 
     if (pos_in_chunk < 0 || pos_in_chunk > DISTANCE) return -1;
 

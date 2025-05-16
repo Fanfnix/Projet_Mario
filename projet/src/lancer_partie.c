@@ -116,7 +116,12 @@ void lancerPartie(Mix_Music* menuzik) {
 
     int pressed;
 
-    system("xset r rate 100 25");
+    FILE * f = popen("echo $XDG_SESSION_TYPE", "r");
+    char xorg[512] = {0};
+    fgets(xorg, 512, f);
+    pclose(f);
+    
+    if (strcmp(xorg, "x11\n") == 0) system("xset r rate 100 25");
 
     while ((pressed = wgetch(jeu->fenetre)) != 27) {
         begin = clock();
@@ -169,7 +174,7 @@ void lancerPartie(Mix_Music* menuzik) {
         wrefresh(jeu->fenetre);
     }
 
-    system("xset r rate 500 33");
+    if (strcmp(xorg, "x11\n") == 0) system("xset r rate 500 33");
 
     Mix_HaltMusic();
     Mix_PlayMusic(menuzik, -1);
