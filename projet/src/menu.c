@@ -87,7 +87,7 @@ WIN * creerWindowBlocpiece() {
     int height_fenetre_blocpiece, width_fenetre_blocpiece, startx_fenetre_blocpiece, starty_fenetre_blocpiece;
     height_fenetre_blocpiece = HEIGHT_BLOCPIECE + 2;
     width_fenetre_blocpiece = WIDTH_BLOCPIECE + 2;
-    startx_fenetre_blocpiece = 190;
+    startx_fenetre_blocpiece = 175;
     starty_fenetre_blocpiece = 7;
     WINDOW * blocpiece = newwin(height_fenetre_blocpiece, width_fenetre_blocpiece, starty_fenetre_blocpiece, startx_fenetre_blocpiece);
     WIN * fenetre = creerFenetre(blocpiece, width_fenetre_blocpiece, height_fenetre_blocpiece);
@@ -304,7 +304,7 @@ void trierHiscores(struct Score ** liste_score) {
     }
 }
 
-void affichageHiscores(WIN * win,WIN * ascii, WIN * blocpiece, struct Score ** liste_score, int choisi) {
+void affichageHiscores(WIN * win, WIN * ascii, WIN * blocpiece, struct Score ** liste_score, int choisi) {
     if (choisi >= 10) {
         endwin();
         printf("CHOIX = %d | SIZE = 10\n", choisi);
@@ -334,7 +334,7 @@ void affichageHiscores(WIN * win,WIN * ascii, WIN * blocpiece, struct Score ** l
 
 }
 
-void actionHiscores(WIN * win,WIN *ascii,WIN * blocpiece, struct Score ** liste_score, int * id, Mix_Chunk* selectSE, Mix_Chunk* degatSE) {
+void actionHiscores(WIN * win,WIN * ascii, WIN * blocpiece, struct Score ** liste_score, int * id, Mix_Chunk* selectSE, Mix_Chunk* degatSE) {
     int pressed;
     affichageHiscores(win, ascii, blocpiece, liste_score, *id);
     while ((pressed = wgetch(win->fenetre)) != 27) {
@@ -445,7 +445,7 @@ void ecritureSauvegarde(struct Save ** liste_sauvegarde) {
     if (fclose(file) == EOF) return;
 }
 
-void affichageSauvegarde(WIN * win, Save ** liste_sauvegarde, int choisi) {
+void affichageSauvegarde(WIN * win,WIN * ascii, WIN * blocpiece, struct Save ** liste_sauvegarde, int choisi) {
     if (choisi >= 10) {
         endwin();
         printf("CHOIX = %d | SIZE = 10\n", choisi);
@@ -473,11 +473,13 @@ void affichageSauvegarde(WIN * win, Save ** liste_sauvegarde, int choisi) {
     }
     mvwaddstr(win->fenetre, 50, 2, " [DEL] to delete a save");
     wrefresh(win->fenetre);
+    affichageAscii(ascii);
+    affichageBlocpiece(blocpiece);
 }
 
-void actionSauvegarde(WIN * win,  Save ** liste_sauvegarde, int * id, Mix_Chunk* selectSE, Mix_Chunk* degatSE) {
+void actionSauvegarde(WIN * win,WIN * ascii, WIN * blocpiece,struct Save ** liste_sauvegarde, int * id, Mix_Chunk* selectSE, Mix_Chunk* degatSE) {
     int pressed;
-    affichageSauvegarde(win, liste_sauvegarde, *id);
+    affichageSauvegarde(win, ascii, blocpiece, liste_sauvegarde, *id);
     while ((pressed = wgetch(win->fenetre)) != 27) {
         if (pressed == KEY_UP) {
             (*id)--;
@@ -493,7 +495,7 @@ void actionSauvegarde(WIN * win,  Save ** liste_sauvegarde, int * id, Mix_Chunk*
         }  // Supprimer la sauvegarde
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
-        affichageSauvegarde(win, liste_sauvegarde, *id);
+        affichageSauvegarde(win, ascii, blocpiece, liste_sauvegarde, *id);
     }
     wclear(win->fenetre);
     wrefresh(win->fenetre);

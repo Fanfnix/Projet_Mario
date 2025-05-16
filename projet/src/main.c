@@ -86,7 +86,7 @@ int main() {
                 lancerPartie(menuzik);
                 break;
             case 1: actionHiscores(choix, ascii, blocpiece, liste_score, &id_choix, selectSE, degatSE); break;
-            case 2: actionSauvegarde(choix, sauvegarde, &id_choix, selectSE, degatSE); break;
+            case 2: actionSauvegarde(choix, ascii, blocpiece, sauvegarde, &id_choix, selectSE, degatSE); break;
             case 3: run = 0; break;
         }
         affichageGenerale(logo, controle, eloise);

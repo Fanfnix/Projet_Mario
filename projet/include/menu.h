@@ -71,8 +71,8 @@ struct Score ** recupHiscores();
 void ecritureHiscores(struct Score ** liste_score);
 void trierHiscores(struct Score ** liste_score);
 
-void affichageHiscores(WIN * win, WIN * ascii, WIN * blocpiece, struct Score ** liste_score, int choisi);
-void actionHiscores(WIN* win, WIN * ascii, WIN * blocpiece, struct Score** liste_score, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
+void affichageHiscores(WIN * win, WIN * ascii,WIN * blocpiece, struct Score ** liste_score, int choisi);
+void actionHiscores(WIN* win, WIN * ascii,WIN * blocpiece, struct Score** liste_score, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
 void supprHiscores(struct Score ** liste_score, int id);
 void libererHiscores(struct Score ** liste_score);
 
@@ -80,8 +80,8 @@ void libererHiscores(struct Score ** liste_score);
 Save * recupSave(char * str);
 Save ** recupCheckpoint();
 void ecritureSauvegarde(struct Save ** liste_sauvegarde);
-void affichageSauvegarde(WIN * win, Save ** liste_sauvegarde, int choisi);
-void actionSauvegarde(WIN* win, Save** liste_sauvegarde, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
+void affichageSauvegarde(WIN * win,WIN * ascii, WIN * blocpiece, Save ** liste_sauvegarde, int choisi);
+void actionSauvegarde(WIN* win,WIN * ascii, WIN * blocpiece, Save** liste_sauvegarde, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
 void supprSauvegarde(Save ** liste_sauvegarde, int id);
 void libererSauvegarde(Save ** liste_sauvegarde);
 
