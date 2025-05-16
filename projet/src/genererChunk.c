@@ -18,7 +18,7 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
     int x_mystery, y_mystery, genere_mystery = 0;
     int startx_coin, x_coin = 0, y_coin = 0, nb_coin, compteur_coin = 0;
     int x_tuyaux, y_tuyaux;
-    int startx_drapeau, x_drapeau, starty_drapeau, finishy_drapeau;
+    int drapeau = 0, x_drapeau, y_drapeau;
     float x_goomba, y_goomba, speed_goomba;
     // <<< Variables
 
@@ -26,7 +26,6 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
     int plateforme = (table[0] % 3) == 1;
     int coin = (table[0] % 2) == 1;
     int tuyau = ((table[0] / 10) % 3) == 0 || ((table[0] / 10) % 3) == 1;
-    int drapeau = (table[0] % 5) == 1;
     // <<< Aléatoire
 
     // Plateforme >>>
@@ -49,11 +48,7 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
     }
     // <<< Piece
 
-    // Drapeau >>>
-    if (drapeau && !tuyau) {
-        startx_drapeau = abs(table[1]) % (DISTANCE - 1);
-    }
-    //<<< Drapeau
+
 
     // Goomba >>>
     struct Goomba * goomba;
@@ -96,6 +91,14 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
             ajouterGoomba(niv->liste_goomba, goomba);
         }
         // >>> Goomba
+
+        // Drapeau >>>       
+        if (id_chunk * DISTANCE + x % 150 == 0) {
+            x_drapeau = id_chunk * DISTANCE + x;
+            y_drapeau = niv->height - ymax - 1;
+            printf("Drapeau");
+        }
+        //<<< Drapeau
     }
     // Plateforme >>>
     if (plateforme) {
@@ -126,15 +129,7 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
         }
      } // <<< Plateforme
 
-    //  // Drapeau >>>
-     if (drapeau) {
-        x_drapeau = abs(table[0] % (DISTANCE - 3));
-        starty_drapeau = niv->height - ydeb - 1;
-        printf("Drapeau \n");
-     }
-     // <<< Drapeau
-
-    else {
+     else {
         // Tuyau >>>
         if (ydeb == yfin && tuyau) {
             x_tuyaux = abs(table[0] % (DISTANCE - 3));

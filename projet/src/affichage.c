@@ -35,8 +35,8 @@ int convY(int y) {
     return TY * y + 1;
 }
 
-void affichageDrapeau(WIN * win,int y, int x){
-    if(win == NULL) return;
+void affichageDrapeau(WIN * win, Drapeau * flag, int y, int x){
+    if(win == NULL || flag == NULL) return;
     char chemin[255] = "../design/drapeau/drapeau1.txt";
     char tmp[255];
     FILE * file = fopen(chemin, "r");
@@ -55,6 +55,7 @@ void affichageDrapeau(WIN * win,int y, int x){
 
 
 void affichageTuyau(WIN * win, int y, int x) {
+     if(win == NULL) return;
     char chemin[255] = "../design/tuyau/tuyau1.txt";
     char tmp[255];
     FILE * file = fopen(chemin, "r");
