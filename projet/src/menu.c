@@ -87,7 +87,7 @@ WIN * creerWindowBlocpiece(WIN * win) {
     int height_fenetre_blocpiece, width_fenetre_blocpiece, startx_fenetre_blocpiece, starty_fenetre_blocpiece;
     height_fenetre_blocpiece = HEIGHT_BLOCPIECE + 2;
     width_fenetre_blocpiece = WIDTH_BLOCPIECE + 2;
-    startx_fenetre_blocpiece = (win->width -WIDTH_MENU - 68 - width_fenetre_blocpiece)/2;
+    startx_fenetre_blocpiece = win->width - WIDTH_MENU / 2;
     starty_fenetre_blocpiece = 7;
     WINDOW * blocpiece = newwin(height_fenetre_blocpiece, width_fenetre_blocpiece, starty_fenetre_blocpiece, startx_fenetre_blocpiece);
     WIN * fenetre = creerFenetre(blocpiece, width_fenetre_blocpiece, height_fenetre_blocpiece);
