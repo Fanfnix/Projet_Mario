@@ -389,7 +389,7 @@ void ecritureSauvegarde(struct Save ** liste_sauvegarde) {
     if (file == NULL) return;
     for (int i = 0; i < 10; i++) {
         if (liste_sauvegarde[i] != NULL) {
-            fprintf(file, "%d,%d,,%d,%d,%f,%f,%d\n", liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance, liste_sauvegarde[i]->score,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->vies);
+            fprintf(file, "%d,%d,%d,%d,%f,%f,%d\n", liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance, liste_sauvegarde[i]->score,liste_sauvegarde[i]->posx,liste_sauvegarde[i]->posy,liste_sauvegarde[i]->vies);
         }
     }
     if (fclose(file) == EOF) return;

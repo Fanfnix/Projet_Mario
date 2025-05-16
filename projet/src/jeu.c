@@ -103,22 +103,30 @@ void actionMario(Mario * perso, struct Map * niv){
     perso->y += perso->vertical_speed;
     if (verifSol(niv, perso->x, perso->y) == 1) {
         perso->vertical_speed = 0.0f;
+        perso->y = convInt(perso->y);
     }
 }
 
 int verifSol(struct Map * niv, float x, float y) {
     if (niv == NULL) return -1;
-    int id_chunk = convInt(x) / DISTANCE;
-    int pos_in_chunk = convInt(x) % DISTANCE;
-    struct Chunk * tmp_chunk = niv->p_chunk;
+
+    int x_int = convInt(x);
+    int y_int = convInt(y);
+
+    int id_chunk = x_int / DISTANCE;
+    int pos_in_chunk = y_int % DISTANCE;
+
     if (pos_in_chunk < 0 || pos_in_chunk > DISTANCE) return -1;
-    while (tmp_chunk->suivant != NULL) {
+
+    struct Chunk * tmp_chunk = niv->p_chunk;
+    while (tmp_chunk != NULL) {
         if (tmp_chunk->id == id_chunk) break;
         tmp_chunk = tmp_chunk->suivant;
     }
+    
     if (tmp_chunk->id == id_chunk) {
-        if ((convInt(y)+1) >= niv->height) y = niv->height-1;
-        if (tmp_chunk->area[convInt(y)+1][pos_in_chunk] == 0 || tmp_chunk->area[convInt(y)+1][pos_in_chunk] == 4) return 0;
+        if ((y_int + 1) >= niv->height) y = (float)(niv->height - 1);
+        if (tmp_chunk->area[y_int + 1][pos_in_chunk] == 0 || tmp_chunk->area[y_int + 1][pos_in_chunk] == 4) return 0;
     }
     return 1;
 }
@@ -149,7 +157,7 @@ void checkpoint(Mario * perso, struct Save * checkpoint){
 
     checkpoint->posx = perso->x;
     checkpoint->posy = perso->y;
-    //checkpoint->score = score;
+    // checkpoint->score = score;
     checkpoint->vies = perso->vies;
      
 }

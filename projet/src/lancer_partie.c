@@ -134,13 +134,13 @@ void lancerPartie(Mix_Music* menuzik) {
                 perso->x += 1.00f;
                 if (convInt(perso->x) - dmax >= (jeu->width / 3 / TX)) dmax += 1;
                 if ((convInt(perso->x) % DISTANCE) == 0 && (convInt(perso->x) - dmax + 1) == (jeu->width / 3 / TX)) avancerMapChunk(niv, table, &seed);
-                // printf("X = %d / WIDTH = %d\n", convInt(perso->x) - dmax, jeu->width / 3 / TX);
                 break;
             case KEY_LEFT:
                 if (convInt(perso->x) - dmax > 0) perso->x -= 1.00f;
                 break;
             case 32:
                 if (verifSol(niv, perso->x, perso->y) == 1) {
+                    perso->y--;
                     perso->vertical_speed -= 0.9f;
                 }
                 break;
