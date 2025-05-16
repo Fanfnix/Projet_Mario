@@ -1,7 +1,7 @@
 #ifndef JEU
 #define JEU
 
-#define GRAVITE 0.075f
+#define GRAVITE 0.06f
 
 typedef struct  Mario {
     int id;

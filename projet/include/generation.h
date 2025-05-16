@@ -19,7 +19,7 @@ typedef struct Drapeau {
 }Drapeau;
 
 #define T_LISTE_GOOMBA 50
-#define SPEED_GOOMBA 0.12f
+#define SPEED_GOOMBA 0.075f
 
 struct Chunk {
     int id;

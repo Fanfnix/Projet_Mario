@@ -86,6 +86,7 @@ void actionGoombas(struct Map * niv) {
                     supprimerGoomba(niv->liste_goomba, machin->id);
                     continue;
                 }
+                if (verifSol(niv, machin->x, machin->y) == 0) machin->y += 1.0f;
                 bloc = tmp_chunk->area[convInt(machin->y)][pos_in_chunk];
                 if (bloc == 1 || bloc == 2 || bloc == 3 || bloc == 5 || bloc == 6) {
                     machin->speed = (machin->speed < 0) ? 1.0f : -1.0f;
@@ -131,7 +132,7 @@ int verifSol(struct Map * niv, float x, float y) {
     }
     if (tmp_chunk == NULL) return -1;
     if (tmp_chunk->id == id_chunk) {
-        if ((y_int + 1) >= niv->height) y = (float)(niv->height - 1);
+        if ((y_int + 1) >= niv->height) y_int = niv->height - 2;
         if (tmp_chunk->area[y_int + 1][pos_in_chunk] == 0 || tmp_chunk->area[y_int + 1][pos_in_chunk] == 4) return 0;
     }
     return 1;

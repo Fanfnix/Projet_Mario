@@ -118,8 +118,8 @@ void afficherBloc(WIN * fenetre, int y, int x, int id_bloc) {
         case 1: case 2: strcpy(haut, "###"); strcpy(bas, "###"); break;
         case 3: strcpy(haut, "==="); strcpy(bas, "=?="); break;
         case 4: strcpy(haut, "($)"); strcpy(bas, "   "); break;
-        case 5: affichageTuyau(fenetre, y, x);
-        case 6: break;
+        case 5: strcpy(haut, ""); strcpy(bas, ""); affichageTuyau(fenetre, y, x); break;
+        case 6: strcpy(haut, ""); strcpy(bas, ""); break;
         default: strcpy(haut, "???"); strcpy(bas, "???"); break;
     }
     mvwaddstr(fenetre->fenetre, Y_affiche, X_affiche, haut);

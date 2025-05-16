@@ -121,7 +121,7 @@ void lancerPartie(Mix_Music* menuzik) {
     fgets(xorg, 512, f);
     pclose(f);
     
-    if (strcmp(xorg, "x11\n") == 0) system("xset r rate 100 25");
+    if (strcmp(xorg, "x11\n") == 0) system("xset r rate 100 12");
 
     while ((pressed = wgetch(jeu->fenetre)) != 27) {
         begin = clock();
