@@ -36,7 +36,8 @@ int convY(int y) {
 }
 
 void affichageDrapeau(WIN * win,int y, int x){
-    char chemin[255] = "../../design/drapeau/drapeau1.txt";
+    if(win == NULL) return;
+    char chemin[255] = "../design/drapeau/drapeau1.txt";
     char tmp[255];
     FILE * file = fopen(chemin, "r");
     for (int j = 5; j >= 0; j--) {
