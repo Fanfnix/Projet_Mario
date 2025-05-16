@@ -11,7 +11,7 @@
 #define WIDTH_LOGO 72
 #define HEIGHT_LOGO 6
 
-#define WIDTH_CONTROLE 20
+#define WIDTH_CONTROLE 22
 #define HEIGHT_CONTROLE 9
 
 #define WIDTH_MENU 30

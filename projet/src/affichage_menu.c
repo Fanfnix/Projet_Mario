@@ -81,10 +81,10 @@ void affichageRetromario(WIN * logo) {
 void affichageControle(WIN * controle) {
     wborder(controle->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
 
-    mvwaddstr(controle->fenetre, 2, 3, "> SAUTER / ^ : Z");
-    mvwaddstr(controle->fenetre, 4, 3, "> GAUCHE / v : Q");
-    mvwaddstr(controle->fenetre, 6, 3, "> DROITE : D");
-    mvwaddstr(controle->fenetre, 8, 3, "> PAUSE :  P");
+    mvwaddstr(controle->fenetre, 2, 3, "> SAUTER : [SPACE]");
+    mvwaddstr(controle->fenetre, 4, 3, "> GAUCHE : <");
+    mvwaddstr(controle->fenetre, 6, 3, "> DROITE : >");
+    mvwaddstr(controle->fenetre, 8, 3, "> PAUSE :  [ESC]");
 
     wrefresh(controle->fenetre);
 }
