@@ -71,3 +71,30 @@ int verifGauche(struct Map* niv, float x, float y) {
     }
     return 1;
 }
+
+void getCoin(struct Map* niv, float x, float y, int coin, Mix_Chunk* coinSE) {
+    if (niv == NULL) return;
+
+    int x_int = convInt(x);
+    int y_int = convInt(y);
+
+    int id_chunk = x_int / DISTANCE;
+    int pos_in_chunk = x_int % DISTANCE;
+
+    if (pos_in_chunk < 0 || pos_in_chunk > DISTANCE) return;
+
+    struct Chunk* tmp_chunk = niv->p_chunk;
+    while (tmp_chunk != NULL) {
+        if (tmp_chunk->id == id_chunk) break;
+        tmp_chunk = tmp_chunk->suivant;
+    }
+    if (tmp_chunk == NULL) return;
+    if (tmp_chunk->id == id_chunk) {
+        if (tmp_chunk->area[y_int][pos_in_chunk] == 4) {
+            coin++;
+            tmp_chunk->area[y_int][pos_in_chunk] = 0;
+            Mix_PlayChannel(-1, coinSE, 0);
+        }
+    }
+    return ;
+}

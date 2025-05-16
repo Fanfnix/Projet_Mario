@@ -116,12 +116,20 @@ void lancerPartie(Mix_Music* menuzik) {
 
     int pressed;
 
+    int coin = 0;
+
+    Mix_Chunk* coinSE = Mix_LoadWAV("../musique/coin.wav");
+    if (!coinSE) {
+        printf("Erreur chargement: %s\n", Mix_GetError());
+        return;
+    }
+
     FILE * f = popen("echo $XDG_SESSION_TYPE", "r");
     char xorg[512] = {0};
     fgets(xorg, 512, f);
     pclose(f);
     
-    if (strcmp(xorg, "x11\n") == 0) system("xset r rate 100 12");
+    if (strcmp(xorg, "x11\n") == 0) system("xset r rate 100 25");
 
     while ((pressed = wgetch(jeu->fenetre)) != 27) {
         begin = clock();
@@ -156,7 +164,7 @@ void lancerPartie(Mix_Music* menuzik) {
                 }
                 break;
         }
-
+        getCoin(niv, perso->x, perso->y, coin, coinSE);
         afficherMap_simp(mini_jeu, niv, perso, dmax);
         afficherMap(jeu, niv, dmax);
         affichageMario(jeu, perso, dmax);
@@ -184,6 +192,8 @@ void lancerPartie(Mix_Music* menuzik) {
     Mix_PlayMusic(menuzik, -1);
 
     // Libération de la mémoire : niveau et table aléatoire
+    Mix_FreeChunk(coinSE);
+
     libMemMap(niv);
     free(table);
     table = NULL;
