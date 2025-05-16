@@ -139,7 +139,11 @@ void lancerPartie(Mix_Music* menuzik) {
                 perso->x++;
                 if (convInt(perso->x)-dmax >= (jeu->width/3/TX)) dmax++;
                 if ((convInt(perso->x)%DISTANCE) == 0 && (convInt(perso->x)-dmax+1) == (jeu->width/3/TX)) {
-                    avancerMapChunk(niv, table, &seed);
+                    struct Chunk * tmp_chunk = niv->p_chunk;
+                    while (tmp_chunk->suivant != NULL) tmp_chunk = tmp_chunk->suivant;
+                    if ((tmp_chunk->id + 1) == dmax / DISTANCE + niv->nb_chunks) {
+                        avancerMapChunk(niv, table, &seed);
+                    }
                 }
                 break;
             case KEY_LEFT:

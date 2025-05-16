@@ -129,7 +129,7 @@ int verifSol(struct Map * niv, float x, float y) {
         if (tmp_chunk->id == id_chunk) break;
         tmp_chunk = tmp_chunk->suivant;
     }
-    
+    if (tmp_chunk == NULL) return -1;
     if (tmp_chunk->id == id_chunk) {
         if ((y_int + 1) >= niv->height) y = (float)(niv->height - 1);
         if (tmp_chunk->area[y_int + 1][pos_in_chunk] == 0 || tmp_chunk->area[y_int + 1][pos_in_chunk] == 4) return 0;
