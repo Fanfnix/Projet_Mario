@@ -99,6 +99,10 @@ void actionGoombas(struct Map * niv) {
 
 void actionMario(Mario * perso, struct Map * niv){
     if (perso == NULL || niv == NULL) return;
+    if (perso->y <= 2) {
+        perso->y = 2.0f;
+        perso->vertical_speed = 0.0f;
+    }
     if (verifSol(niv, perso->x, perso->y) == 1) {
         perso->vertical_speed = 0.0f;
         perso->y = convInt(perso->y);
@@ -109,6 +113,8 @@ void actionMario(Mario * perso, struct Map * niv){
 
 int verifSol(struct Map * niv, float x, float y) {
     if (niv == NULL) return -1;
+
+    if (y <= 2) y = 2;
 
     int x_int = convInt(x);
     int y_int = convInt(y);
