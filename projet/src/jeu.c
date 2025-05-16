@@ -82,7 +82,7 @@ void actionGoombas(struct Map * niv) {
                 tmp_chunk = tmp_chunk->suivant;
             }
             if (tmp_chunk->id == id_chunk) {
-                if (convInt(new_pos_x) < id_chunk * DISTANCE) {
+                if (convInt(machin->x) <= niv->p_chunk->id * DISTANCE) {
                     supprimerGoomba(niv->liste_goomba, machin->id);
                     continue;
                 }
