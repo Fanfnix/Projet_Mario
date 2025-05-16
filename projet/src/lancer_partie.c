@@ -124,6 +124,12 @@ void lancerPartie(Mix_Music* menuzik) {
         return;
     }
 
+    Mix_Chunk* jumpSE = Mix_LoadWAV("../musique/jump.wav");
+    if (!jumpSE) {
+        printf("Erreur chargement: %s\n", Mix_GetError());
+        return;
+    }
+
     FILE * f = popen("echo $XDG_SESSION_TYPE", "r");
     char xorg[512] = {0};
     fgets(xorg, 512, f);
@@ -161,6 +167,7 @@ void lancerPartie(Mix_Music* menuzik) {
                 if (verifSol(niv, perso->x, perso->y) == 1) {
                     perso->y--;
                     perso->vertical_speed -= 0.9f;
+                    Mix_PlayChannel(-1, jumpSE, 0);
                 }
                 break;
         }
@@ -193,6 +200,7 @@ void lancerPartie(Mix_Music* menuzik) {
 
     // Libération de la mémoire : niveau et table aléatoire
     Mix_FreeChunk(coinSE);
+    Mix_FreeChunk(jumpSE);
 
     libMemMap(niv);
     free(table);
