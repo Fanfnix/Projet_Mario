@@ -8,6 +8,7 @@ int main() {
     WIN * controle;
     WIN * eloise;
     WIN * ascii;
+    WIN * blocpiece;
 
     struct Score ** liste_score;
     Save ** sauvegarde;
@@ -65,6 +66,7 @@ int main() {
     ascii = creerWindowAscii();
     menu = creerWindowMenu();
     choix = creerWindowChoix();
+    blocpiece = creerWindowBlocpiece();
 
     affichageGenerale(logo, controle, eloise);
 
@@ -78,12 +80,12 @@ int main() {
     do {
         actionMenuPrincipal(menu, &id, selectSE, confirmeSE);
         switch (id) {
-            case 0: nettoyerMenu(logo, menu, choix, controle, eloise, ascii);
+            case 0: nettoyerMenu(logo, menu, choix, controle, eloise, ascii, blocpiece);
                 Mix_HaltMusic();
                 Mix_PlayMusic(jeuzik, -1);
                 lancerPartie(menuzik);
                 break;
-            case 1: actionHiscores(choix, ascii, liste_score, &id_choix, selectSE, degatSE); break;
+            case 1: actionHiscores(choix, ascii, blocpiece, liste_score, &id_choix, selectSE, degatSE); break;
             case 2: actionSauvegarde(choix, sauvegarde, &id_choix, selectSE, degatSE); break;
             case 3: run = 0; break;
         }
@@ -96,6 +98,7 @@ int main() {
     supprWin(controle);
     supprWin(eloise);
     supprWin(ascii);
+    supprWin(blocpiece);
 
     endwin();
 

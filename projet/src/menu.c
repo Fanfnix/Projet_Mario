@@ -76,10 +76,21 @@ WIN * creerWindowAscii() {
     int height_fenetre_ascii, width_fenetre_ascii, startx_fenetre_ascii, starty_fenetre_ascii;
     height_fenetre_ascii = HEIGHT_ASCII + 2;
     width_fenetre_ascii = WIDTH_ASCII + 2;
-    startx_fenetre_ascii = (40);
-    starty_fenetre_ascii = (5);
+    startx_fenetre_ascii = 50;
+    starty_fenetre_ascii = 6;
     WINDOW * ascii = newwin(height_fenetre_ascii, width_fenetre_ascii, starty_fenetre_ascii, startx_fenetre_ascii);
     WIN * fenetre = creerFenetre(ascii, width_fenetre_ascii, height_fenetre_ascii);
+    return fenetre;
+}
+
+WIN * creerWindowBlocpiece() {
+    int height_fenetre_blocpiece, width_fenetre_blocpiece, startx_fenetre_blocpiece, starty_fenetre_blocpiece;
+    height_fenetre_blocpiece = HEIGHT_BLOCPIECE + 2;
+    width_fenetre_blocpiece = WIDTH_BLOCPIECE + 2;
+    startx_fenetre_blocpiece = 190;
+    starty_fenetre_blocpiece = 7;
+    WINDOW * blocpiece = newwin(height_fenetre_blocpiece, width_fenetre_blocpiece, starty_fenetre_blocpiece, startx_fenetre_blocpiece);
+    WIN * fenetre = creerFenetre(blocpiece, width_fenetre_blocpiece, height_fenetre_blocpiece);
     return fenetre;
 }
 
@@ -102,6 +113,43 @@ void affichageDessinmenu(WIN * eloise){
     }
 }
 
+void affichageAscii(WIN * ascii){
+    char chemin[] = "../design/ascii/ascii1.txt";
+    FILE * file = fopen(chemin, "r");
+    if (file != NULL){
+        for (int y = 0; y < HEIGHT_ASCII; y++){
+            char tmp[WIDTH_ASCII+1];
+            fgets(tmp, WIDTH_ASCII+1, file);
+            for (int i = 0; i < strlen(tmp); i++){
+                if (tmp[i] == '0') {
+                    tmp[i] = ' ';
+                }
+            }
+            mvwaddstr(ascii->fenetre, y+1, 1, tmp);
+        }
+        wrefresh(ascii->fenetre);
+        fclose(file);
+    }
+}
+
+void affichageBlocpiece(WIN * blocpiece){
+    char chemin[] = "../design/blocpiece/blocpiece1.txt";
+    FILE * file = fopen(chemin, "r");
+    if (file != NULL){
+        for (int y = 0; y < HEIGHT_BLOCPIECE; y++){
+            char tmp[WIDTH_BLOCPIECE+1];
+            fgets(tmp, WIDTH_BLOCPIECE+1, file);
+            for (int i = 0; i < strlen(tmp); i++){
+                if (tmp[i] == '0') {
+                    tmp[i] = ' ';
+                }
+            }
+            mvwaddstr(blocpiece->fenetre, y+1, 1, tmp);
+        }
+        wrefresh(blocpiece->fenetre);
+        fclose(file);
+    }
+}
 
 void affichageRetromario(WIN * logo) {
     char chemin[] = "../design/retromario/retromario1.txt";  // Le chemin est à calculer depuis l'éxécutable.
@@ -256,7 +304,7 @@ void trierHiscores(struct Score ** liste_score) {
     }
 }
 
-void affichageHiscores(WIN * win,WIN * ascii, struct Score ** liste_score, int choisi) {
+void affichageHiscores(WIN * win,WIN * ascii, WIN * blocpiece, struct Score ** liste_score, int choisi) {
     if (choisi >= 10) {
         endwin();
         printf("CHOIX = %d | SIZE = 10\n", choisi);
@@ -281,14 +329,14 @@ void affichageHiscores(WIN * win,WIN * ascii, struct Score ** liste_score, int c
     }
     mvwaddstr(win->fenetre, 50, 2, " [DEL] to delete a score");
     wrefresh(win->fenetre);
-    wborder(ascii->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
-    wrefresh(ascii->fenetre);
+    affichageAscii(ascii);
+    affichageBlocpiece(blocpiece);
 
 }
 
-void actionHiscores(WIN * win,WIN *ascii, struct Score ** liste_score, int * id, Mix_Chunk* selectSE, Mix_Chunk* degatSE) {
+void actionHiscores(WIN * win,WIN *ascii,WIN * blocpiece, struct Score ** liste_score, int * id, Mix_Chunk* selectSE, Mix_Chunk* degatSE) {
     int pressed;
-    affichageHiscores(win,ascii, liste_score, *id);
+    affichageHiscores(win, ascii, blocpiece, liste_score, *id);
     while ((pressed = wgetch(win->fenetre)) != 27) {
         if (pressed == KEY_UP) {
             (*id)--;
@@ -304,7 +352,7 @@ void actionHiscores(WIN * win,WIN *ascii, struct Score ** liste_score, int * id,
         }  // Supprimer le score
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
-        affichageHiscores(win,ascii, liste_score, *id);
+        affichageHiscores(win, ascii, blocpiece, liste_score, *id);
     }
     wclear(win->fenetre);
     wrefresh(win->fenetre);
@@ -481,7 +529,7 @@ void libererSauvegarde(Save ** liste_sauvegarde) {
     liste_sauvegarde = NULL;
 }
 
-void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * eloise, WIN * ascii) {
+void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * eloise, WIN * ascii, WIN * blocpiece) {
     wclear(logo->fenetre);
     wrefresh(logo->fenetre);
 
@@ -499,6 +547,9 @@ void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * elo
 
     wclear(ascii->fenetre);
     wrefresh(ascii->fenetre);
+
+    wclear(blocpiece->fenetre);
+    wrefresh(blocpiece->fenetre);
 }
 
 

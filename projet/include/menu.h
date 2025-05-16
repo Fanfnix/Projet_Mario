@@ -19,8 +19,11 @@
 #define WIDTH_ELOISE 120
 #define HEIGHT_ELOISE 30
 
-#define WIDTH_ASCII 39
-#define HEIGHT_ASCII 40
+#define WIDTH_ASCII 36
+#define HEIGHT_ASCII 36
+
+#define WIDTH_BLOCPIECE 36
+#define HEIGHT_BLOCPIECE 36
 
 struct Score {
     int id;
@@ -48,10 +51,13 @@ WIN * creerWindowChoix();
 WIN * creerWindowControle();
 WIN * creerWindowEloise();
 WIN * creerWindowAscii();
+WIN * creerWindowBlocpiece();
 
 void affichageRetromario(WIN * win);
 void affichageControle(WIN * controle);
 void affichageDessinmenu(WIN * eloise);
+void affichageAscii(WIN * ascii);
+void affichageBlocpiece(WIN * blocpiece);
 
 void affichageGenerale(WIN * logo, WIN * controle, WIN * eloise);
 
@@ -65,8 +71,8 @@ struct Score ** recupHiscores();
 void ecritureHiscores(struct Score ** liste_score);
 void trierHiscores(struct Score ** liste_score);
 
-void affichageHiscores(WIN * win, WIN * ascii, struct Score ** liste_score, int choisi);
-void actionHiscores(WIN* win, WIN * ascii, struct Score** liste_score, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
+void affichageHiscores(WIN * win, WIN * ascii, WIN * blocpiece, struct Score ** liste_score, int choisi);
+void actionHiscores(WIN* win, WIN * ascii, WIN * blocpiece, struct Score** liste_score, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
 void supprHiscores(struct Score ** liste_score, int id);
 void libererHiscores(struct Score ** liste_score);
 
@@ -79,7 +85,7 @@ void actionSauvegarde(WIN* win, Save** liste_sauvegarde, int* id, Mix_Chunk* sel
 void supprSauvegarde(Save ** liste_sauvegarde, int id);
 void libererSauvegarde(Save ** liste_sauvegarde);
 
-void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * eloise, WIN * ascii);
+void nettoyerMenu(WIN * logo, WIN * menu, WIN * choix, WIN * controle, WIN * eloise, WIN * ascii, WIN * blocpiece);
 
 void supprWin(WIN * fenetre);
 
