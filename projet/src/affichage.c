@@ -14,6 +14,9 @@ void afficherMap_simp(WIN * fenetre, struct Map * niv, Mario * perso, int dmax) 
                     case 4: ch = '$'; break;
                     case 5: ch = 'H'; break;
                     case 7: ch = '8'; break;
+                    case 8: ch = '|'; break;
+                    case 9: ch = '|'; break;
+                    case 10: ch = 'V'; break;
                     default: ch = '?'; break;
                 }
                 mvwaddch(fenetre->fenetre, y + 1, (tmp_chunk->id - dmax / DISTANCE) * DISTANCE + x + 1, ch);
@@ -109,7 +112,7 @@ void affichageMario(WIN * win, Mario * perso, int dmax) {
 }
 
 
-void afficherBloc(WIN * fenetre, int y, int x, int id_bloc) {
+void afficherBloc(WIN * fenetre, int y, int x, int id_bloc, int pos_plantes) {
     if (fenetre == NULL) return;
     int X_affiche = convX(x);
     int Y_affiche = convY(y);
@@ -122,6 +125,35 @@ void afficherBloc(WIN * fenetre, int y, int x, int id_bloc) {
         case 5: strcpy(haut, ""); strcpy(bas, ""); affichageTuyau(fenetre, y, x); break;
         case 6: strcpy(haut, ""); strcpy(bas, ""); break;
         case 7: strcpy(haut, "(O)"); strcpy(bas, " U "); break;
+        case 8:
+            if (pos_plantes >= 2) {
+                strcpy(haut, " | ");
+                strcpy(bas, " | ");
+            }
+            else if (pos_plantes == 1) {
+                strcpy(haut, "\\w/");
+                strcpy(bas, " V ");
+                }
+            else strcpy(haut, "   "); strcpy(bas, "   ");
+            break;
+        case 9:
+            if (pos_plantes == 2) {
+                strcpy(haut, "\\w/");
+                strcpy(bas, " V ");
+            }
+            else if (pos_plantes == 3) {
+                strcpy(haut, " | ");
+                strcpy(bas, " | ");
+            }
+            else strcpy(haut, "   "); strcpy(bas, "   ");
+            break;
+        case 10:
+            if (pos_plantes == 3) {
+                strcpy(haut, "\\w/");
+                strcpy(bas, " v ");
+            }
+            else strcpy(haut, "   "); strcpy(bas, "   ");
+            break;
         default: strcpy(haut, "???"); strcpy(bas, "???"); break;
     }
     mvwaddstr(fenetre->fenetre, Y_affiche, X_affiche, haut);
@@ -129,7 +161,7 @@ void afficherBloc(WIN * fenetre, int y, int x, int id_bloc) {
 }
 
 
-void afficherChunk(WIN * fenetre, struct Chunk * troncon, int dmax) {
+void afficherChunk(WIN * fenetre, struct Chunk * troncon, int dmax, int pos_plantes) {
     if (fenetre == NULL || troncon == NULL) return;
 
     char txt[255];
@@ -145,12 +177,12 @@ void afficherChunk(WIN * fenetre, struct Chunk * troncon, int dmax) {
 
     for (int y = 0; y < troncon->height; y++) {
         int debut = (pos_troncon == 0) ? decal : 0;
-        for (int x = debut; x < DISTANCE - anti_depassement; x++) afficherBloc(fenetre, y, x + pos_troncon * DISTANCE - decal, troncon->area[y][x]);
+        for (int x = debut; x < DISTANCE - anti_depassement; x++) afficherBloc(fenetre, y, x + pos_troncon * DISTANCE - decal, troncon->area[y][x], pos_plantes);
     }
 }
 
 
-void afficherMap(WIN * fenetre, struct Map * niv, int dmax) {
+void afficherMap(WIN * fenetre, struct Map * niv, int dmax, int pos_plantes) {
     if (niv == NULL || fenetre == NULL) return;
     struct Chunk * tmp_chunk = niv->p_chunk;
     if (tmp_chunk == NULL) {
@@ -158,10 +190,10 @@ void afficherMap(WIN * fenetre, struct Map * niv, int dmax) {
         printf("ERR [afficherMap] : tmp_chunk = NULL\n");
         return;
     }
-    afficherChunk(fenetre, tmp_chunk, dmax);
+    afficherChunk(fenetre, tmp_chunk, dmax, pos_plantes);
     while (tmp_chunk->suivant != NULL) {
         tmp_chunk = tmp_chunk->suivant;
-        afficherChunk(fenetre, tmp_chunk, dmax);
+        afficherChunk(fenetre, tmp_chunk, dmax, pos_plantes);
     }
     
     char tmp[512];

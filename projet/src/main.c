@@ -10,6 +10,8 @@ int main() {
     WIN * ascii;
     WIN * blocpiece;
 
+    srand(time(NULL));
+
     struct Score ** liste_score;
     Save ** sauvegarde;
 

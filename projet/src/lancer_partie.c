@@ -116,6 +116,11 @@ void lancerPartie(Mix_Music* menuzik) {
 
     int pressed;
 
+    int cycle_plantes = 0;
+    int pos_plantes = 2;
+
+    int freeze_frames = 0;
+
     int coin = 0;
     int lifes = 2;
 
@@ -133,6 +138,12 @@ void lancerPartie(Mix_Music* menuzik) {
 
     Mix_Chunk* powerupSE = Mix_LoadWAV("../musique/powerup.wav");
     if (!powerupSE) {
+        printf("Erreur chargement: %s\n", Mix_GetError());
+        return;
+    }
+
+    Mix_Chunk* degatSE = Mix_LoadWAV("../musique/degat.wav");
+    if (!degatSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
         return;
     }
@@ -187,10 +198,24 @@ void lancerPartie(Mix_Music* menuzik) {
         */
 
         getCoin(niv, perso->x, perso->y, &coin, coinSE);
-        getLife(niv, perso->x, perso->y, &lifes, powerupSE);;
+        getLife(niv, perso->x, perso->y, &lifes, powerupSE);
+        touchePlante(niv, perso->x, perso->y, &lifes, degatSE, pos_plantes, &freeze_frames);
         afficherMap_simp(mini_jeu, niv, perso, dmax);
-        afficherMap(jeu, niv, dmax);
+        afficherMap(jeu, niv, dmax, pos_plantes);
         affichageMario(jeu, perso, dmax);
+
+        if (freeze_frames != 0) freeze_frames--;
+
+        cycle_plantes++;
+        if (cycle_plantes == 10) pos_plantes = 3;
+        if (cycle_plantes == 110) pos_plantes = 2;
+        if (cycle_plantes == 120) pos_plantes = 1;
+        if (cycle_plantes == 130) pos_plantes = 0;
+        if (cycle_plantes == 230) pos_plantes = 1;
+        if (cycle_plantes == 240) {
+            cycle_plantes = 0;
+            pos_plantes = 2;
+        }
 
         // <<< CODE
         end = clock();
@@ -218,6 +243,7 @@ void lancerPartie(Mix_Music* menuzik) {
     Mix_FreeChunk(coinSE);
     Mix_FreeChunk(jumpSE);
     Mix_FreeChunk(powerupSE);
+    Mix_FreeChunk(degatSE);
 
     libMemMap(niv);
     free(table);

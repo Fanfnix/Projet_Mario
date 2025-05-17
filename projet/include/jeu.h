@@ -32,6 +32,7 @@ int verifDroite(struct Map * niv, float x, float y);
 int verifGauche(struct Map* niv, float x, float y);
 void getCoin(struct Map* niv, float x, float y, int * coin, Mix_Chunk* coinSE);
 void getLife(struct Map* niv, float x, float y, int* lifes, Mix_Chunk* powerupSE);
+void touchePlante(struct Map* niv, float x, float y, int* lifes, Mix_Chunk* degatSE, int pos_plantes, int* freeze_frames);
 int surGoomba(struct Map* niv, float x, float y);
 void checkpoint(Mario * perso, struct Save * checkpoint);
 

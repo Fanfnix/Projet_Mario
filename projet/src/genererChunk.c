@@ -140,6 +140,12 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
             piece->area[y_tuyaux-1][x_tuyaux] = 6;
             piece->area[y_tuyaux-1][x_tuyaux+1] = 6;
             piece->area[y_tuyaux-1][x_tuyaux+2] = 6;
+            int proba = rand() % 2;
+            if (proba == 0) {
+                piece->area[y_tuyaux-2][x_tuyaux + 1] = 8;
+                piece->area[y_tuyaux - 3][x_tuyaux+1] = 9;
+                piece->area[y_tuyaux - 4][x_tuyaux + 1] = 10;
+            }
         }
         // <<< Tuyau
     }
