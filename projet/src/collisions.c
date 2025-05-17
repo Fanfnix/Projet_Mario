@@ -26,6 +26,30 @@ int verifSol(struct Map* niv, float x, float y) {
     return 1;
 }
 
+int verifHaut(struct Map* niv, float x, float y) {
+    if (niv == NULL) return -1;
+    if (y <= 2) return 1;
+
+    int x_int = convInt(x);
+    int y_int = convInt(y);
+
+    int id_chunk = x_int / DISTANCE;
+    int pos_in_chunk = x_int % DISTANCE;
+
+    if (pos_in_chunk < 0 || pos_in_chunk > DISTANCE) return -1;
+
+    struct Chunk* tmp_chunk = niv->p_chunk;
+    while (tmp_chunk != NULL) {
+        if (tmp_chunk->id == id_chunk) break;
+        tmp_chunk = tmp_chunk->suivant;
+    }
+    if (tmp_chunk == NULL) return -1;
+    if (tmp_chunk->id == id_chunk) {
+        if (tmp_chunk->area[y_int - 2][pos_in_chunk] == 3) return 0;
+    }
+    return 1;
+}
+
 int verifDroite(struct Map* niv, float x, float y) {
     if (niv == NULL) return -1;
 
@@ -97,4 +121,40 @@ void getCoin(struct Map* niv, float x, float y, int * coin, Mix_Chunk* coinSE) {
         }
     }
     return ;
+}
+
+int surGoomba(struct Map* niv, float x, float y) {
+    if (niv == NULL) return -1;
+
+    int x_int = convInt(x);
+    int y_int = convInt(y);
+
+    int id_chunk = x_int / DISTANCE;
+    int mario_in_chunk = x_int % DISTANCE;
+
+    if (mario_in_chunk < 0 || mario_in_chunk >= DISTANCE) return -1;
+
+    struct Chunk* tmp_chunk = niv->p_chunk;
+    while (tmp_chunk != NULL && tmp_chunk->id != id_chunk) {
+        tmp_chunk = tmp_chunk->suivant;
+    }
+    if (tmp_chunk == NULL) return -1;
+
+    for (int i = 0; i < T_LISTE_GOOMBA; i++) {
+        struct Goomba* goomba = niv->liste_goomba[i];
+        if (goomba == NULL) return 1;
+
+        int x_goomba = convInt(goomba->x);
+        int y_goomba = convInt(goomba->y);
+        int id_chunk_goomba = x_goomba / DISTANCE;
+        int goomba_in_chunk = x_goomba % DISTANCE;
+
+        if (goomba_in_chunk < 0 || goomba_in_chunk >= DISTANCE) return -1;
+
+        if (id_chunk_goomba == id_chunk && goomba_in_chunk == mario_in_chunk && y_goomba == y_int) {
+            return 0;
+        }
+    }
+
+    return 1;
 }

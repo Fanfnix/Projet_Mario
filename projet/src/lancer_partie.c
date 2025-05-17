@@ -171,6 +171,16 @@ void lancerPartie(Mix_Music* menuzik) {
                 }
                 break;
         }
+        if (!verifHaut(niv, perso->x, perso->y)) {
+            perso->vertical_speed = 0.0f;
+        }
+        /*
+        if (surGoomba(niv, perso->x, perso->y)) {
+            perso->y--;
+            perso->vertical_speed -= 0.9f;
+        }
+        */
+
         getCoin(niv, perso->x, perso->y, &coin, coinSE);
         afficherMap_simp(mini_jeu, niv, perso, dmax);
         afficherMap(jeu, niv, dmax);
