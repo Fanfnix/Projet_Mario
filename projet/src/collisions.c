@@ -26,9 +26,10 @@ int verifSol(struct Map* niv, float x, float y) {
     return 1;
 }
 
-int verifHaut(struct Map* niv, float x, float y) {
+int verifHaut(struct Map* niv, float x, float y, float vertical_speed) {
     if (niv == NULL) return -1;
     if (y <= 2) return 1;
+    if (vertical_speed >= 0) return 1;
     srand(time(NULL));
 
     int x_int = convInt(x);
@@ -50,7 +51,7 @@ int verifHaut(struct Map* niv, float x, float y) {
             tmp_chunk->area[y_int - 2][pos_in_chunk] = 1;
             int proba = rand() % 5;
             if (proba == 0) tmp_chunk->area[y_int - 3][pos_in_chunk] = 7;
-            else tmp_chunk->area[y_int - 3][pos_in_chunk] = 4;
+            else tmp_chunk->area[y_int - 3][pos_in_chunk] = 4   ;
             return 0;
         }
     }

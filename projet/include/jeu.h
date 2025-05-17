@@ -27,7 +27,7 @@ void afficherMap_simp(WIN * fenetre, struct Map * niv, Mario * perso, int dmax);
 void avancerMapChunk(struct Map * niv, int * table, int * seed);
 
 int verifSol(struct Map * niv, float x, float y);
-int verifHaut(struct Map* niv, float x, float y);
+int verifHaut(struct Map* niv, float x, float y, float vertical_speed);
 int verifDroite(struct Map * niv, float x, float y);
 int verifGauche(struct Map* niv, float x, float y);
 void getCoin(struct Map* niv, float x, float y, int * coin, Mix_Chunk* coinSE);

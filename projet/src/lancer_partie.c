@@ -178,9 +178,7 @@ void lancerPartie(Mix_Music* menuzik) {
                 }
                 break;
         }
-        if (!verifHaut(niv, perso->x, perso->y)) {
-            perso->vertical_speed = 0.0f;
-        }
+        if (!verifHaut(niv, perso->x, perso->y, perso->vertical_speed)) perso->vertical_speed = 0.0f;
         /*
         if (surGoomba(niv, perso->x, perso->y)) {
             perso->y--;
