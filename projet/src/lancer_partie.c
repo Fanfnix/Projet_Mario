@@ -117,6 +117,7 @@ void lancerPartie(Mix_Music* menuzik) {
     int pressed;
 
     int coin = 0;
+    int lifes = 2;
 
     Mix_Chunk* coinSE = Mix_LoadWAV("../musique/coin.wav");
     if (!coinSE) {
@@ -126,6 +127,12 @@ void lancerPartie(Mix_Music* menuzik) {
 
     Mix_Chunk* jumpSE = Mix_LoadWAV("../musique/jump.wav");
     if (!jumpSE) {
+        printf("Erreur chargement: %s\n", Mix_GetError());
+        return;
+    }
+
+    Mix_Chunk* powerupSE = Mix_LoadWAV("../musique/powerup.wav");
+    if (!powerupSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
         return;
     }
@@ -182,6 +189,7 @@ void lancerPartie(Mix_Music* menuzik) {
         */
 
         getCoin(niv, perso->x, perso->y, &coin, coinSE);
+        getLife(niv, perso->x, perso->y, &lifes, powerupSE);;
         afficherMap_simp(mini_jeu, niv, perso, dmax);
         afficherMap(jeu, niv, dmax);
         affichageMario(jeu, perso, dmax);
@@ -211,6 +219,7 @@ void lancerPartie(Mix_Music* menuzik) {
     // Libération de la mémoire : niveau et table aléatoire
     Mix_FreeChunk(coinSE);
     Mix_FreeChunk(jumpSE);
+    Mix_FreeChunk(powerupSE);
 
     libMemMap(niv);
     free(table);

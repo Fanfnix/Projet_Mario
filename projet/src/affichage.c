@@ -13,6 +13,7 @@ void afficherMap_simp(WIN * fenetre, struct Map * niv, Mario * perso, int dmax) 
                     case 3: ch = '&'; break;
                     case 4: ch = '$'; break;
                     case 5: ch = 'H'; break;
+                    case 7: ch = '8'; break;
                     default: ch = '?'; break;
                 }
                 mvwaddch(fenetre->fenetre, y + 1, (tmp_chunk->id - dmax / DISTANCE) * DISTANCE + x + 1, ch);
@@ -120,6 +121,7 @@ void afficherBloc(WIN * fenetre, int y, int x, int id_bloc) {
         case 4: strcpy(haut, "($)"); strcpy(bas, "   "); break;
         case 5: strcpy(haut, ""); strcpy(bas, ""); affichageTuyau(fenetre, y, x); break;
         case 6: strcpy(haut, ""); strcpy(bas, ""); break;
+        case 7: strcpy(haut, "(O)"); strcpy(bas, " U "); break;
         default: strcpy(haut, "???"); strcpy(bas, "???"); break;
     }
     mvwaddstr(fenetre->fenetre, Y_affiche, X_affiche, haut);
