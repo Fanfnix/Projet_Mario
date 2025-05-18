@@ -201,6 +201,8 @@ void libMemMap(struct Map * niv) {
         libMemChunk(niv->p_chunk);
         niv->p_chunk = tmp_chunk;
     }
+    free(niv->flag);
+    niv->flag = NULL;
     free(niv);
 }
 

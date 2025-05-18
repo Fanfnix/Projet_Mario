@@ -325,6 +325,8 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     Mix_FreeChunk(powerupSE);
     Mix_FreeChunk(degatSE);
 
+    Save * save = niv->partie;
+
     libMemMap(niv);
     free(table);
     table = NULL;
