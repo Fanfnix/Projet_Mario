@@ -127,9 +127,9 @@ void actionHiscores(WIN * win, WIN * ascii, WIN * blocpiece, struct Score ** lis
             Mix_PlayChannel(-1, selectSE, 0);
         }
         else if (pressed == 8 || pressed == 263) {
-            supprHiscores(liste_score, *id);
+            supprHiscores(liste_score, *id);  // Supprimer le score
             Mix_PlayChannel(-1, degatSE, 0);
-        }  // Supprimer le score
+        }
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
         affichageHiscores(win, ascii, blocpiece, liste_score, *id);
@@ -138,7 +138,7 @@ void actionHiscores(WIN * win, WIN * ascii, WIN * blocpiece, struct Score ** lis
     wrefresh(win->fenetre);
 }
 
-void actionSauvegarde(WIN * win, WIN * ascii, WIN * blocpiece, struct Save ** liste_sauvegarde, int * id, Mix_Chunk* selectSE, Mix_Chunk* degatSE) {
+int actionSauvegarde(WIN * win, WIN * ascii, WIN * blocpiece, struct Save ** liste_sauvegarde, int * id, Mix_Chunk* selectSE, Mix_Chunk* degatSE) {
     int pressed;
     affichageSauvegarde(win, ascii, blocpiece, liste_sauvegarde, *id);
     while ((pressed = wgetch(win->fenetre)) != 27) {
@@ -151,15 +151,19 @@ void actionSauvegarde(WIN * win, WIN * ascii, WIN * blocpiece, struct Save ** li
             Mix_PlayChannel(-1, selectSE, 0);
         }
         else if (pressed == 8 || pressed == 263) {
-            supprSauvegarde(liste_sauvegarde, *id);
+            supprSauvegarde(liste_sauvegarde, *id);  // Supprimer la sauvegarde
             Mix_PlayChannel(-1, degatSE, 0);
-        }  // Supprimer la sauvegarde
+        }
+        else if (pressed == 10) {
+            return 1;
+        }
         if (*id < 0) *id = 9;
         if (*id > 9) *id = 0;
         affichageSauvegarde(win, ascii, blocpiece, liste_sauvegarde, *id);
     }
     wclear(win->fenetre);
     wrefresh(win->fenetre);
+    return 0;
 }
 
 

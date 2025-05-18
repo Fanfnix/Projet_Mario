@@ -34,19 +34,17 @@ void avancerMapChunk(struct Map * niv, int * table, int * seed){
 }
 
 
-struct Mario * creerMario(int vies, float speed, float vertical_speed) {
+struct Mario * creerMario() {
     struct Mario * perso = malloc(sizeof(struct Mario));
     if (perso == NULL) return NULL;
     perso->id = 0;
-    perso->speed = speed;
-    perso->vertical_speed = vertical_speed;
-    perso->vies= 3;
     return perso;
 }
 
-void initMario(Mario * perso, struct Map * niv, WIN * fenetre){
-    if (perso == NULL || niv == NULL || fenetre == NULL) return;
+void initMario(Mario * perso, struct Map * niv) {
+    if (perso == NULL || niv == NULL) return;
     perso->x = 1.0f;
+    perso->vertical_speed = 0.0f;
     int id_chunk = perso->x / DISTANCE;
     struct Chunk * tmp_chunk = niv->p_chunk;
     for (int i = 0; i < id_chunk; i++)
@@ -104,17 +102,6 @@ void actionMario(Mario * perso, struct Map * niv){
 void libMario(Mario * perso) {
     free(perso);
     perso == NULL;
-}
-
-
-void checkpoint(Mario * perso, struct Save * checkpoint){
-    if(perso == NULL || checkpoint == NULL) return ;
-
-    checkpoint->posx = perso->x;
-    checkpoint->posy = perso->y;
-    // checkpoint->score = score;
-    checkpoint->vies = perso->vies;
-     
 }
 
 

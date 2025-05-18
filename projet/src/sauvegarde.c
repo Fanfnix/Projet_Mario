@@ -4,25 +4,26 @@ Save * recupSave(char * str) {
     if (str == NULL) return NULL;
     Save * sauvegarde = malloc(sizeof(Save));
     if (sauvegarde == NULL) return NULL;
-    char * elem[8]= {NULL};
+    char * elem[9] = {NULL};
     elem[0] = strtok(str, ", \n");
-    for (int i = 1; i < 7; i++)
+    for (int i = 1; i < 8; i++)
     {
         elem[i] = strtok(NULL, ", \n");
     }
     sauvegarde->id = atoi(elem[0]);
     sauvegarde->seed = atoi(elem[1]);
     sauvegarde->distance = atoi(elem[2]);
-    sauvegarde->score = atoi(elem[3]);
-    sauvegarde->posx = (float)atoi(elem[4]);
-    sauvegarde->posy = (float)atoi(elem[5]);
-    sauvegarde->vies = atoi(elem[6]);
+    sauvegarde->coin = atoi(elem[3]);
+    sauvegarde->goomba_tuee = atoi(elem[4]);
+    sauvegarde->posx = (float)atoi(elem[5]);
+    sauvegarde->posy = (float)atoi(elem[6]);
+    sauvegarde->vies = atoi(elem[7]);
 
     return sauvegarde;
 }
 
 Save ** recupCheckpoint() {
-    Save ** liste_sauvegarde = malloc(10 * sizeof(struct Save*));
+    Save ** liste_sauvegarde = malloc(10 * sizeof(struct Save *));
     for (int i = 0; i < 10; i++) liste_sauvegarde[i] = NULL;
 
     char chemin[] = "data/sauvegardes.txt";  // Le chemin est à calculer depuis l'éxécutable.
@@ -36,10 +37,8 @@ Save ** recupCheckpoint() {
         if (fgets(line, sizeof(line), file) == NULL) break;
         liste_sauvegarde[i] = recupSave(line);
     }
-    if (fclose(file) == EOF)
-    {
-        return NULL;
-    }
+    if (fclose(file) == EOF) return NULL;
+
     return liste_sauvegarde;
 }
 
@@ -50,7 +49,7 @@ void ecritureSauvegarde(struct Save ** liste_sauvegarde) {
     if (file == NULL) return;
     for (int i = 0; i < 10; i++) {
         if (liste_sauvegarde[i] != NULL) {
-            fprintf(file, "%d,%d,%d,%d,%f,%f,%d\n", liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance, liste_sauvegarde[i]->score, liste_sauvegarde[i]->posx, liste_sauvegarde[i]->posy, liste_sauvegarde[i]->vies);
+            fprintf(file, "%d,%d,%d,%d,%d,%.0f,%.0f,%d\n", liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->distance, liste_sauvegarde[i]->coin, liste_sauvegarde[i]->goomba_tuee, liste_sauvegarde[i]->posx, liste_sauvegarde[i]->posy, liste_sauvegarde[i]->vies);
         }
     }
     if (fclose(file) == EOF) return;
@@ -74,7 +73,7 @@ void affichageSauvegarde(WIN * win,WIN * ascii, WIN * blocpiece, struct Save ** 
     for (int i = 0; i < 10; i++) {
         if (liste_sauvegarde[i] != NULL) {
             WINDOW * save = derwin(win->fenetre, 5, (win ->width - 7), 5+2*i, 0);
-            sprintf(text, "  >>> %d. Seed :%d - Pose en x/y : %.0f / %.0f - score : %d - Vies : %d",liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->posx, liste_sauvegarde[i]->posy, liste_sauvegarde[i]->score, liste_sauvegarde[i]->vies);
+            sprintf(text, "  >>> %d. Seed :%d - Pose en x/y : %.0f / %.0f - score : %d - Vies : %d",liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->posx, liste_sauvegarde[i]->posy, calculScore(liste_sauvegarde[i]->distance, liste_sauvegarde[i]->coin, liste_sauvegarde[i]->goomba_tuee), liste_sauvegarde[i]->vies);
         }
         else sprintf(text, "  >>> null");
         WINDOW * save = derwin(win->fenetre, 5, (win ->width - 7), 5+2*i, 0);
@@ -100,7 +99,7 @@ void supprSauvegarde(Save **liste_sauvegarde, int id){
     liste_sauvegarde[id]= NULL;
     for (int i = id + 1; i < 10; i++)
     {
-        liste_sauvegarde[i-1]= liste_sauvegarde[i];
+        liste_sauvegarde[i-1] = liste_sauvegarde[i];
         if (liste_sauvegarde[i-1] == NULL) break;
         liste_sauvegarde[i-1]->id--;
     }   

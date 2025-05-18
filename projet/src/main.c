@@ -86,10 +86,16 @@ int main() {
             case 0: nettoyerMenu(logo, menu, choix, controle, eloise, ascii, blocpiece);
                 Mix_HaltMusic();
                 Mix_PlayMusic(jeuzik, -1);
-                lancerPartie(menuzik);
+                lancerPartie(menuzik, NULL);
                 break;
             case 1: actionHiscores(choix, ascii, blocpiece, liste_score, &id_choix, selectSE, degatSE); break;
-            case 2: actionSauvegarde(choix, ascii, blocpiece, sauvegarde, &id_choix, selectSE, degatSE); break;
+            case 2: if (actionSauvegarde(choix, ascii, blocpiece, sauvegarde, &id_choix, selectSE, degatSE)) {
+                        nettoyerMenu(logo, menu, choix, controle, eloise, ascii, blocpiece);
+                        Mix_HaltMusic();
+                        Mix_PlayMusic(jeuzik, -1);
+                        lancerPartie(menuzik, sauvegarde[id_choix]);
+                    };
+                    break;
             case 3: run = 0; break;
         }
         affichageGenerale(logo, controle, eloise);

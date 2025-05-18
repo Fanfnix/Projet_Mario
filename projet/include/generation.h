@@ -32,6 +32,7 @@ struct Map {
     int height;
     int nb_chunks;
     struct Chunk * p_chunk;
+    struct Save * partie;
     struct Goomba ** liste_goomba;
 };
 

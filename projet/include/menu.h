@@ -36,12 +36,13 @@ typedef struct Save
     int id;
     int seed;
     int distance;
-    int score;
+    int coin;
+    int goomba_tuee;
     float posx;
     float posy;
     int vies;
 
-}Save;
+} Save;
 
 WIN * creerFenetre(WINDOW * fenetre, int width, int height);
 
@@ -81,7 +82,7 @@ Save * recupSave(char * str);
 Save ** recupCheckpoint();
 void ecritureSauvegarde(struct Save ** liste_sauvegarde);
 void affichageSauvegarde(WIN * win,WIN * ascii, WIN * blocpiece, Save ** liste_sauvegarde, int choisi);
-void actionSauvegarde(WIN* win,WIN * ascii, WIN * blocpiece, Save** liste_sauvegarde, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
+int actionSauvegarde(WIN* win,WIN * ascii, WIN * blocpiece, Save** liste_sauvegarde, int* id, Mix_Chunk* selectSE, Mix_Chunk* degatSE);
 void supprSauvegarde(Save ** liste_sauvegarde, int id);
 void libererSauvegarde(Save ** liste_sauvegarde);
 

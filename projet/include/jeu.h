@@ -5,19 +5,16 @@
 
 typedef struct  Mario {
     int id;
-    int X, Y;
     float x, y;
-    float speed;
     float vertical_speed;
-    int vies;
 } Mario;
 
-void lancerPartie(Mix_Music* menuzik);
+void lancerPartie(Mix_Music* menuzik, Save * partie);
 
 void actionGoombas(struct Map * niv);
 
-struct Mario * creerMario(int vies, float speed, float vertical_speed);
-void initMario(Mario * perso, struct Map * niv, WIN * fenetre);
+struct Mario * creerMario();
+void initMario(Mario * perso, struct Map * niv);
 void affichageMario(WIN * win, Mario * perso, int dmax);
 void actionMario(Mario * perso, struct Map * niv);
 void libMario(Mario * perso);

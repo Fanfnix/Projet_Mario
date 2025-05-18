@@ -1,6 +1,6 @@
 #include "../include/header.h"
 
-void lancerPartie(Mix_Music* menuzik) {
+void lancerPartie(Mix_Music* menuzik, Save * partie) {
 
     int max_fps = 60;
     
@@ -8,7 +8,12 @@ void lancerPartie(Mix_Music* menuzik) {
     srand(time(NULL));
     int min_seed = 16807;
     int max_seed = 2147483646;
-    int seed = ((rand() % (max_seed - min_seed + 1)) + min_seed) / VARIANCE * VARIANCE;  // Le "/ VARIANCE * VARIANCE" est pour s'assurer que la premiere generation sera à Y_MIN pour le raccordement
+    int seed;
+    if (partie == NULL) {
+        seed = ((rand() % (max_seed - min_seed + 1)) + min_seed) / VARIANCE * VARIANCE;  // Le "/ VARIANCE * VARIANCE" est pour s'assurer que la premiere generation sera à Y_MIN pour le raccordement
+    } else {
+        seed = partie->seed;
+    }
     int * table = creerTableSeed();
 
     // Creation des fenetre
@@ -91,7 +96,8 @@ void lancerPartie(Mix_Music* menuzik) {
 
     // Création d'un niveau vide avec mario
     struct Map * niv = creerMap(height_carte, nb_chunks);
-    Mario * perso = creerMario(3, 0.0, 0.0 );
+    Mario * perso = creerMario();
+
     // Vérification de la création du niveau
     if (!niv) {
         endwin();  // Sort la console du mode "ncurses"
@@ -102,8 +108,13 @@ void lancerPartie(Mix_Music* menuzik) {
     // Ajout de la génération de base
     struct Chunk * newChunk;
     for (int i = 0; i < nb_chunks; i++) {
-        if (i < 3) newChunk = genererChunk(niv, i, NULL, NULL);
-        else newChunk = genererChunk(niv, i, table, &seed);
+        if (partie == NULL) {
+            if (i < 3) newChunk = genererChunk(niv, i, NULL, NULL);
+            else newChunk = genererChunk(niv, i, table, &seed);
+        } else {
+            if (i < partie->distance / DISTANCE) newChunk = genererChunk(niv, i, NULL, NULL);
+            else newChunk = genererChunk(niv, i, table, &seed);
+        }
 
         if (newChunk == NULL) {
             endwin();
@@ -120,7 +131,15 @@ void lancerPartie(Mix_Music* menuzik) {
             if (newChunk != NULL) tmp_first->suivant = newChunk;
         }
     }
-    initMario(perso, niv, jeu);
+
+    if (partie == NULL) {
+        initMario(perso, niv);
+    } else {
+        perso->x = partie->posx;
+        perso->y = partie->posy;
+        perso->vertical_speed = 0.0f;
+    }
+
     nodelay(jeu->fenetre, true);
     keypad(jeu->fenetre, true);
 
@@ -139,11 +158,11 @@ void lancerPartie(Mix_Music* menuzik) {
 
     int freeze_frames = 0;
 
-    int goomba_tuee = 0;
-    int coin = 0;
-    int lifes = 3;
+    int goomba_tuee = (partie != NULL) ? partie->goomba_tuee : 0;
+    int coin = (partie != NULL) ? partie->coin : 0;
+    int lifes = (partie != NULL) ? partie->vies : 3;
 
-    int score = 0;
+    int score = calculScore(dmax + (perso->x - dmax), coin, goomba_tuee);
 
     Mix_Chunk* coinSE = Mix_LoadWAV("../musique/coin.wav");
     if (!coinSE) {
@@ -176,7 +195,7 @@ void lancerPartie(Mix_Music* menuzik) {
     
     if (strcmp(xorg, "x11\n") == 0) system("xset r rate 100 25");
 
-    while ((pressed = wgetch(jeu->fenetre)) != 27 &&lifes > 0) {
+    while ((pressed = wgetch(jeu->fenetre)) != 27 && lifes > 0) {
         begin = clock();
         // CODE >>>
 
