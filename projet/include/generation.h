@@ -13,11 +13,6 @@ struct Goomba {
     float speed;
 };
 
-typedef struct Drapeau {
-    int x, y, id; 
-    struct Save * save;
-}Drapeau;
-
 #define T_LISTE_GOOMBA 50
 #define SPEED_GOOMBA 0.075f
 

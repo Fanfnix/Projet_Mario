@@ -41,7 +41,6 @@ typedef struct Save
     float posx;
     float posy;
     int vies;
-
 } Save;
 
 WIN * creerFenetre(WINDOW * fenetre, int width, int height);

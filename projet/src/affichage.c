@@ -39,20 +39,21 @@ int convY(int y) {
     return TY * y + 1;
 }
 
-void affichageDrapeau(WIN * win, Drapeau * flag, int y, int x){
-    if(win == NULL || flag == NULL) return;
-    char chemin[255] = "../design/drapeau/drapeau1.txt";
+void affichageDrapeau(WIN * win, int y, int x, int dmax, int frame) {
+    if(win == NULL) return;
+    char chemin[255];
+    snprintf(chemin, 255, "../design/drapeau/drapeau%d.txt", frame);
     char tmp[255];
     FILE * file = fopen(chemin, "r");
-    for (int j = 5; j >= 0; j--) {
+    for (int j = 10; j >= 0; j--) {
         fgets(tmp, 4, file);
-        if ((win->width-1-convX(x)) < strlen(tmp)) tmp[(win->width-1-convX(x))] = '\0';
+        // if ((win->width-1-convX(x)) < strlen(tmp)) tmp[(win->width-1-convX(x))] = '\0';
         for (int k = 0; k < strlen(tmp); k++) {
             if (tmp[k] == '0') {
                 tmp[k] = ' ';
             }
         }
-        mvwaddstr(win->fenetre, convY(y)+1-j, convX(x), tmp);
+        mvwaddstr(win->fenetre, convY(y)+1-j, convX(x - dmax), tmp);
     }
     fclose(file);
 }
@@ -182,7 +183,7 @@ void afficherChunk(WIN * fenetre, struct Chunk * troncon, int dmax, int pos_plan
 }
 
 
-void afficherMap(WIN * fenetre, struct Map * niv, int dmax, int pos_plantes) {
+void afficherMap(WIN * fenetre, struct Map * niv, int dmax, int pos_plantes, int frame_drapeau) {
     if (niv == NULL || fenetre == NULL) return;
     struct Chunk * tmp_chunk = niv->p_chunk;
     if (tmp_chunk == NULL) {
@@ -205,6 +206,10 @@ void afficherMap(WIN * fenetre, struct Map * niv, int dmax, int pos_plantes) {
             snprintf(tmp, 511, "ID: %d, X: %d, Y: %d, x: %.2f, y: %.2f, S: %.2f, DIFF: %d", niv->liste_goomba[i]->id, convInt(niv->liste_goomba[i]->x), convInt(niv->liste_goomba[i]->y), niv->liste_goomba[i]->x, niv->liste_goomba[i]->y, niv->liste_goomba[i]->speed, fenetre->width-3-1 - convX(convInt(niv->liste_goomba[i]->x)));
             mvwaddstr(fenetre->fenetre, i+2, 1, tmp);
         }
+    }
+
+    if (niv->partie != NULL) {
+        affichageDrapeau(fenetre, convInt(niv->partie->posy), convInt(niv->partie->posx), dmax, frame_drapeau);
     }
 }
 

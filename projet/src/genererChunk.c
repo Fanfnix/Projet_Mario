@@ -18,7 +18,7 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
     int x_mystery, y_mystery, genere_mystery = 0;
     int startx_coin, x_coin = 0, y_coin = 0, nb_coin, compteur_coin = 0;
     int x_tuyaux, y_tuyaux;
-    int drapeau = 0, x_drapeau, y_drapeau;
+    int x_drapeau, y_drapeau;
     float x_goomba, y_goomba, speed_goomba;
     // <<< Variables
 
@@ -91,12 +91,15 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
         // >>> Goomba
 
         // Drapeau >>>       
-        if (id_chunk * DISTANCE + x % 150 == 0) {
+        if ((id_chunk * DISTANCE + x) % 150 == 0) {
             x_drapeau = id_chunk * DISTANCE + x;
             y_drapeau = niv->height - ymax - 1;
-            printf("Drapeau");
+            if (niv->partie == NULL) niv->partie = malloc(sizeof(Save));
+            if (niv->partie == NULL) return NULL;
+            niv->partie->posx = (float)x_drapeau;
+            niv->partie->posy = (float)y_drapeau;
         }
-        //<<< Drapeau
+        // <<< Drapeau
     }
     // Plateforme >>>
     if (plateforme) {
