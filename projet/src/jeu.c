@@ -109,12 +109,13 @@ int calculScore(int dmax, int coin, int goomba_tuee) {
     return 10 * dmax + 100 * coin + 1000 * goomba_tuee;
 }
 
-int actions_menu(WIN* pause, WIN* jeu, Mix_Chunk* selectSE) {
+int actions_menu(WIN* pause, Mix_Chunk* selectSE) {
+    keypad(pause->fenetre, true);
     int pressed;
     int id = 0;
     while (1){
         afficherPause(pause, id);
-        pressed = wgetch(jeu->fenetre);
+        pressed = wgetch(pause->fenetre);
         switch (pressed) {
             case KEY_UP:
                 id--;
@@ -125,8 +126,7 @@ int actions_menu(WIN* pause, WIN* jeu, Mix_Chunk* selectSE) {
                 Mix_PlayChannel(-1, selectSE, 0);
                 break;
             case 10:
-                if (id == 0) return 0;
-                if (id == 1) return 1;
+                return id;
         }
         if (id < 0) id = 1;
         if (id > 1) id = 0;

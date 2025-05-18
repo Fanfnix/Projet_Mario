@@ -13,6 +13,11 @@ struct Goomba {
     float speed;
 };
 
+struct Drapeau {
+    int x, y;
+    int frame;
+};
+
 #define T_LISTE_GOOMBA 50
 #define SPEED_GOOMBA 0.075f
 
@@ -28,6 +33,7 @@ struct Map {
     int nb_chunks;
     struct Chunk * p_chunk;
     struct Save * partie;
+    struct Drapeau * flag;
     struct Goomba ** liste_goomba;
 };
 
@@ -48,6 +54,8 @@ void libMemMap(struct Map * niv);
 struct Goomba * creerGoomba(int id, float x, float y, float speed);
 int ajouterGoomba(struct Goomba ** liste_goomba, struct Goomba * machin);
 int supprimerGoomba(struct Goomba ** liste_goomba, int id);
+
+struct Drapeau * creerDrapeau(int x, int y);
 
 struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * seed);
 

@@ -159,7 +159,6 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
 
     int anima_drapeau = 0;
     int cycle_drapeau = 0;
-    int frame_drapeau = 1;
 
     int freeze_frames = 0;
 
@@ -240,7 +239,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
                 }
                 break;
             case 27:
-                quit = actions_menu(pause, jeu, selectSE);
+                quit = actions_menu(pause, selectSE);
         }
 
         if (!verifHaut(niv, perso->x, perso->y, perso->vertical_speed)) perso->vertical_speed = 0.0f;
@@ -260,7 +259,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
         score = calculScore(dmax + (perso->x - dmax), coin, goomba_tuee);
 
         afficherMap_simp(mini_jeu, niv, perso, dmax);
-        afficherMap(jeu, niv, dmax, pos_plantes, frame_drapeau);
+        afficherMap(jeu, niv, dmax, pos_plantes);
         affichageMario(jeu, perso, dmax);
 
         if (freeze_frames != 0) freeze_frames--;
@@ -275,12 +274,23 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
             pos_plantes = 2;
         }
 
-        if (niv->partie != NULL) if (perso->x == convInt(niv->partie->posx)) anima_drapeau = 1;
+        if (niv->flag != NULL) if (perso->x == convInt(niv->flag->x)) {
+            if (niv->partie == NULL) niv->partie = malloc(sizeof(Save *));
+            if (niv->partie != NULL) {
+                niv->partie->seed = seed;
+                niv->partie->distance = dmax + (perso->x - dmax);
+                niv->partie->coin = coin;
+                niv->partie->goomba_tuee = goomba_tuee;
+                niv->partie->posx = perso->x;
+                niv->partie->posy = perso->y;
+                niv->partie->vies = lifes;
+            }
+            anima_drapeau = 1;
+        }
         if (anima_drapeau == 1) {
             cycle_drapeau++;
-            if (cycle_drapeau % 10 == 0 && cycle_drapeau <= 60) frame_drapeau++;
+            if (cycle_drapeau % 10 == 0 && cycle_drapeau <= 60) niv->flag->frame++;
             if (cycle_drapeau == 70) {
-                frame_drapeau = 1;
                 cycle_drapeau = 0;
                 anima_drapeau = 0;
             }

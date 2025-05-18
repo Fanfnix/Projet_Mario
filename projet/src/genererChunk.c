@@ -94,10 +94,12 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
         if ((id_chunk * DISTANCE + x) % 150 == 0) {
             x_drapeau = id_chunk * DISTANCE + x;
             y_drapeau = niv->height - ymax - 1;
-            if (niv->partie == NULL) niv->partie = malloc(sizeof(Save));
-            if (niv->partie == NULL) return NULL;
-            niv->partie->posx = (float)x_drapeau;
-            niv->partie->posy = (float)y_drapeau;
+
+            if (niv->flag != NULL) {
+                free(niv->flag);
+                niv->flag = NULL;
+            }
+            niv->flag = creerDrapeau(x_drapeau, y_drapeau);
         }
         // <<< Drapeau
     }

@@ -39,21 +39,20 @@ int convY(int y) {
     return TY * y + 1;
 }
 
-void affichageDrapeau(WIN * win, int y, int x, int dmax, int frame) {
+void affichageDrapeau(WIN * win, struct Drapeau * flag, int dmax) {
     if(win == NULL) return;
     char chemin[255];
-    snprintf(chemin, 255, "../design/drapeau/drapeau%d.txt", frame);
+    snprintf(chemin, 255, "../design/drapeau/drapeau%d.txt", flag->frame);
     char tmp[255];
     FILE * file = fopen(chemin, "r");
     for (int j = 10; j >= 0; j--) {
         fgets(tmp, 4, file);
-        // if ((win->width-1-convX(x)) < strlen(tmp)) tmp[(win->width-1-convX(x))] = '\0';
         for (int k = 0; k < strlen(tmp); k++) {
             if (tmp[k] == '0') {
                 tmp[k] = ' ';
             }
         }
-        mvwaddstr(win->fenetre, convY(y)+1-j, convX(x - dmax), tmp);
+        mvwaddstr(win->fenetre, convY(flag->y)+1-j, convX(flag->x - dmax), tmp);
     }
     fclose(file);
 }
@@ -183,7 +182,7 @@ void afficherChunk(WIN * fenetre, struct Chunk * troncon, int dmax, int pos_plan
 }
 
 
-void afficherMap(WIN * fenetre, struct Map * niv, int dmax, int pos_plantes, int frame_drapeau) {
+void afficherMap(WIN * fenetre, struct Map * niv, int dmax, int pos_plantes) {
     if (niv == NULL || fenetre == NULL) return;
     struct Chunk * tmp_chunk = niv->p_chunk;
     if (tmp_chunk == NULL) {
@@ -208,8 +207,8 @@ void afficherMap(WIN * fenetre, struct Map * niv, int dmax, int pos_plantes, int
         }
     }
 
-    if (niv->partie != NULL) {
-        affichageDrapeau(fenetre, convInt(niv->partie->posy), convInt(niv->partie->posx), dmax, frame_drapeau);
+    if (niv->flag != NULL) {
+        affichageDrapeau(fenetre, niv->flag, dmax);
     }
 }
 
@@ -234,15 +233,16 @@ void afficherTmp(WIN * tmp, int dmax, int lifes, int score) {
 }
 
 void afficherPause(WIN* pauseF, int id) {
+    wclear(pauseF->fenetre);
     wborder(pauseF->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
     mvwaddstr(pauseF->fenetre, 2, 15, "PAUSE");
     if (id == 0) {
-        mvwaddstr(pauseF->fenetre, 7, 15, "> continuer <");
-        mvwaddstr(pauseF->fenetre, 12, 15, "quitter");
+        mvwaddstr(pauseF->fenetre, 7, (pauseF->width - 13) / 2, "> continuer <");
+        mvwaddstr(pauseF->fenetre, 12, (pauseF->width - 7) / 2, "quitter");
     }
     else if (id == 1) {
-        mvwaddstr(pauseF->fenetre, 7, 15, "continuer");
-        mvwaddstr(pauseF->fenetre, 12, 15, "> quitter <");
+        mvwaddstr(pauseF->fenetre, 7, (pauseF->width - 9) / 2, "continuer");
+        mvwaddstr(pauseF->fenetre, 12, (pauseF->width - 11) / 2, "> quitter <");
     }
     wrefresh(pauseF->fenetre);
 }

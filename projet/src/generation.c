@@ -171,6 +171,8 @@ struct Map * creerMap(int height, int nb_chunks) {
     niv->height = height;
     niv->nb_chunks = nb_chunks;
     niv->p_chunk = NULL;
+    niv->partie = NULL;
+    niv->flag = NULL;
     niv->liste_goomba = malloc(T_LISTE_GOOMBA * sizeof(struct Goomba *));
     if (niv->liste_goomba == NULL) {
         free(niv);
@@ -243,4 +245,16 @@ int supprimerGoomba(struct Goomba ** liste_goomba, int id) {
         }
     }
     return 0;
+}
+
+
+/* === DRAPEAU === */
+
+// Creer Drapeau
+struct Drapeau * creerDrapeau(int x, int y) {
+    struct Drapeau * flag = malloc(sizeof(struct Drapeau));
+    if (flag == NULL) return NULL;
+    flag->x = x;
+    flag->y = y;
+    flag->frame = 1;
 }
