@@ -20,7 +20,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     WIN * tmp;
     WIN * jeu;
     WIN * mini_jeu;
-    WIN * pauseF;
+    WIN * pause;
 
     // Setup dimension fenêtre tmp
     int height_fenetre_tmp = 6;
@@ -54,14 +54,12 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
 
     // Creer fenetre de pause
     WINDOW* pause_fenetre = newwin(height_fenetre_pause + 2, width_fenetre_pause, starty_fenetre_pause, startx_fenetre_pause);
-    pauseF = creerFenetre(pause_fenetre, width_fenetre_pause, height_fenetre_pause);
-    if (!pauseF) {
+    pause = creerFenetre(pause_fenetre, width_fenetre_pause, height_fenetre_pause);
+    if (!pause) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return;
     }
-    wborder(pauseF->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
-    wrefresh(pauseF->fenetre);
 
     // Creer fenetre tmp
     WINDOW * tmp_fenetre = newwin(height_fenetre_tmp, width_fenetre_tmp, starty_fenetre_tmp, startx_fenetre_tmp);
@@ -154,7 +152,6 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
 
     int pressed;
 
-    int pause = 0;
     int quit = 0;
 
     int cycle_plantes = 0;
@@ -196,6 +193,12 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
         return;
     }
 
+    Mix_Chunk* selectSE = Mix_LoadWAV("../musique/select.wav");
+    if (!selectSE) {
+        printf("Erreur chargement: %s\n", Mix_GetError());
+        return;
+    }
+
     FILE * f = popen("echo $XDG_SESSION_TYPE", "r");
     char xorg[512] = {0};
     fgets(xorg, 512, f);
@@ -207,15 +210,14 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
         pressed = wgetch(jeu->fenetre);
         begin = clock();
         // CODE >>>
-        if (pause == 0) {
-            actionGoombas(niv);
-            actionMario(perso, niv);
+        actionGoombas(niv);
+        actionMario(perso, niv);
 
-            afficherTmp(tmp, dmax, lifes, score);
+        afficherTmp(tmp, dmax, lifes, score);
 
-            int test_d;
+        int test_d;
 
-            switch (pressed) {
+        switch (pressed) {
             case KEY_RIGHT:
                 if (!verifDroite(niv, perso->x, perso->y)) perso->x++;
                 if (convInt(perso->x) - dmax >= (jeu->width / 3 / TX)) dmax++;
@@ -238,64 +240,52 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
                 }
                 break;
             case 27:
-                pause = 1;
-                break;
-            }
-            if (!verifHaut(niv, perso->x, perso->y, perso->vertical_speed)) perso->vertical_speed = 0.0f;
-
-            if (surGoomba(niv, perso->x, perso->y, &goomba_tuee) == 0) {
-                perso->y--;
-                perso->vertical_speed -= 0.9f;
-            }
-
-
-            getCoin(niv, perso->x, perso->y, &coin, coinSE);
-            getLife(niv, perso->x, perso->y, &lifes, powerupSE);
-
-            touchePlante(niv, perso->x, perso->y, &lifes, degatSE, pos_plantes, &freeze_frames);
-            dansGoomba(niv, perso->x, perso->y, &lifes, degatSE, &freeze_frames);
-
-            score = calculScore(dmax + (perso->x - dmax), coin, goomba_tuee);
-
-            afficherMap_simp(mini_jeu, niv, perso, dmax);
-            afficherMap(jeu, niv, dmax, pos_plantes, frame_drapeau);
-            affichageMario(jeu, perso, dmax);
-
-            if (freeze_frames != 0) freeze_frames--;
-
-            cycle_plantes++;
-            if (cycle_plantes == 10) pos_plantes = 3;
-            if (cycle_plantes == 110) pos_plantes = 2;
-            if (cycle_plantes == 120 || cycle_plantes == 230) pos_plantes = 1;
-            if (cycle_plantes == 130) pos_plantes = 0;
-            if (cycle_plantes == 240) {
-                cycle_plantes = 0;
-                pos_plantes = 2;
-            }
-
-            if (niv->partie != NULL) if (perso->x == convInt(niv->partie->posx)) anima_drapeau = 1;
-            if (anima_drapeau == 1) {
-                cycle_drapeau++;
-                if (cycle_drapeau % 10 == 0 && cycle_drapeau <= 60) frame_drapeau++;
-                if (cycle_drapeau == 70) {
-                    frame_drapeau = 1;
-                    cycle_drapeau = 0;
-                    anima_drapeau = 0;
-                }
-            }
-
+                quit = actions_menu(pause, jeu, selectSE);
         }
-        else {
-            afficherPause(pauseF);
-            switch (pressed) {
-                case 32:
-                pause = 0;
-                break;
-                case 27:
-                    quit = 1;
-                    break;
+
+        if (!verifHaut(niv, perso->x, perso->y, perso->vertical_speed)) perso->vertical_speed = 0.0f;
+
+        if (surGoomba(niv, perso->x, perso->y, &goomba_tuee) == 0) {
+            perso->y--;
+            perso->vertical_speed -= 0.9f;
+        }
+
+
+        getCoin(niv, perso->x, perso->y, &coin, coinSE);
+        getLife(niv, perso->x, perso->y, &lifes, powerupSE);
+
+        touchePlante(niv, perso->x, perso->y, &lifes, degatSE, pos_plantes, &freeze_frames);
+        dansGoomba(niv, perso->x, perso->y, &lifes, degatSE, &freeze_frames);
+
+        score = calculScore(dmax + (perso->x - dmax), coin, goomba_tuee);
+
+        afficherMap_simp(mini_jeu, niv, perso, dmax);
+        afficherMap(jeu, niv, dmax, pos_plantes, frame_drapeau);
+        affichageMario(jeu, perso, dmax);
+
+        if (freeze_frames != 0) freeze_frames--;
+
+        cycle_plantes++;
+        if (cycle_plantes == 10) pos_plantes = 3;
+        if (cycle_plantes == 110) pos_plantes = 2;
+        if (cycle_plantes == 120 || cycle_plantes == 230) pos_plantes = 1;
+        if (cycle_plantes == 130) pos_plantes = 0;
+        if (cycle_plantes == 240) {
+            cycle_plantes = 0;
+            pos_plantes = 2;
+        }
+
+        if (niv->partie != NULL) if (perso->x == convInt(niv->partie->posx)) anima_drapeau = 1;
+        if (anima_drapeau == 1) {
+            cycle_drapeau++;
+            if (cycle_drapeau % 10 == 0 && cycle_drapeau <= 60) frame_drapeau++;
+            if (cycle_drapeau == 70) {
+                frame_drapeau = 1;
+                cycle_drapeau = 0;
+                anima_drapeau = 0;
             }
         }
+
 
         // <<< CODE
         end = clock();
@@ -332,6 +322,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     supprWin(jeu);
     supprWin(tmp);
     supprWin(mini_jeu);
+    supprWin(pause);
 
     libMario(perso);
 }

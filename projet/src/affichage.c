@@ -233,8 +233,16 @@ void afficherTmp(WIN * tmp, int dmax, int lifes, int score) {
     wrefresh(tmp->fenetre);
 }
 
-void afficherPause(WIN* pauseF) {
+void afficherPause(WIN* pauseF, int id) {
     wborder(pauseF->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
     mvwaddstr(pauseF->fenetre, 2, 15, "PAUSE");
+    if (id == 0) {
+        mvwaddstr(pauseF->fenetre, 7, 15, "> continuer <");
+        mvwaddstr(pauseF->fenetre, 12, 15, "quitter");
+    }
+    else if (id == 1) {
+        mvwaddstr(pauseF->fenetre, 7, 15, "continuer");
+        mvwaddstr(pauseF->fenetre, 12, 15, "> quitter <");
+    }
     wrefresh(pauseF->fenetre);
 }
