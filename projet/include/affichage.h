@@ -8,5 +8,6 @@ void afficherChunk(WIN* fenetre, struct Chunk* troncon, int dmax, int pos_plante
 
 void afficherMap(WIN* fenetre, struct Map* niv, int dmax, int pos_plantes);
 void afficherTmp(WIN * tmp, int dmax, int lifes, int score);
+void afficherPause(WIN* pauseF);
 
 #endif

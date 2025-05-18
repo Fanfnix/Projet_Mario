@@ -20,7 +20,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     WIN * tmp;
     WIN * jeu;
     WIN * mini_jeu;
-    WIN * pause;
+    WIN * pauseF;
 
     // Setup dimension fenêtre tmp
     int height_fenetre_tmp = 6;
@@ -35,10 +35,11 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     int starty_fenetre_jeu = starty_fenetre_tmp + height_fenetre_tmp;
 
     // Setup dimension fenêtre de pause
-    int height_fenetre_pause = 5;
-    int width_fenetre_pause = COLS;
-    int startx_fenetre_pause = 0;
-    int starty_fenetre_pause = 0;
+    int height_fenetre_pause = 12;
+    int width_fenetre_pause = 36;
+    int startx_fenetre_pause = (COLS / 2) - 18;
+    int starty_fenetre_pause = 10;
+
 
     // Creer fenetre de jeu
     WINDOW * jeu_fenetre = newwin(height_fenetre_jeu + 2, width_fenetre_jeu, starty_fenetre_jeu, startx_fenetre_jeu);
@@ -53,14 +54,14 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
 
     // Creer fenetre de pause
     WINDOW* pause_fenetre = newwin(height_fenetre_pause + 2, width_fenetre_pause, starty_fenetre_pause, startx_fenetre_pause);
-    pause = creerFenetre(pause_fenetre, width_fenetre_pause, height_fenetre_pause);
-    if (!pause) {
+    pauseF = creerFenetre(pause_fenetre, width_fenetre_pause, height_fenetre_pause);
+    if (!pauseF) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return;
     }
-    wborder(pause->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
-    wrefresh(pause->fenetre);
+    wborder(pauseF->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
+    wrefresh(pauseF->fenetre);
 
     // Creer fenetre tmp
     WINDOW * tmp_fenetre = newwin(height_fenetre_tmp, width_fenetre_tmp, starty_fenetre_tmp, startx_fenetre_tmp);
@@ -153,6 +154,9 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
 
     int pressed;
 
+    int pause = 0;
+    int quit = 0;
+
     int cycle_plantes = 0;
     int pos_plantes = 2;
 
@@ -195,23 +199,24 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     
     if (strcmp(xorg, "x11\n") == 0) system("xset r rate 100 25");
 
-    while ((pressed = wgetch(jeu->fenetre)) != 27 && lifes > 0) {
+    while (quit == 0 && lifes > 0) {
+        pressed = wgetch(jeu->fenetre);
         begin = clock();
         // CODE >>>
+        if (pause == 0) {
+            actionGoombas(niv);
+            actionMario(perso, niv);
 
-        actionGoombas(niv);
-        actionMario(perso, niv);
+            afficherTmp(tmp, dmax, lifes, score);
 
-        afficherTmp(tmp, dmax, lifes, score);
+            int test_d;
 
-        int test_d;
-
-        switch (pressed) {
+            switch (pressed) {
             case KEY_RIGHT:
                 if (!verifDroite(niv, perso->x, perso->y)) perso->x++;
-                if (convInt(perso->x)-dmax >= (jeu->width/3/TX)) dmax++;
-                if ((convInt(perso->x)%DISTANCE) == 0 && (convInt(perso->x)-dmax+1) == (jeu->width/3/TX)) {
-                    struct Chunk * tmp_chunk = niv->p_chunk;
+                if (convInt(perso->x) - dmax >= (jeu->width / 3 / TX)) dmax++;
+                if ((convInt(perso->x) % DISTANCE) == 0 && (convInt(perso->x) - dmax + 1) == (jeu->width / 3 / TX)) {
+                    struct Chunk* tmp_chunk = niv->p_chunk;
                     while (tmp_chunk->suivant != NULL) tmp_chunk = tmp_chunk->suivant;
                     if ((tmp_chunk->id + 1) == dmax / DISTANCE + niv->nb_chunks) {
                         avancerMapChunk(niv, table, &seed);
@@ -219,7 +224,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
                 }
                 break;
             case KEY_LEFT:
-                if (convInt(perso->x)-dmax > 0 && !verifGauche(niv, perso->x, perso->y)) perso->x--;
+                if (convInt(perso->x) - dmax > 0 && !verifGauche(niv, perso->x, perso->y)) perso->x--;
                 break;
             case 32:
                 if (verifSol(niv, perso->x, perso->y) == 1) {
@@ -228,40 +233,53 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
                     Mix_PlayChannel(-1, jumpSE, 0);
                 }
                 break;
+            case 27:
+                pause = 1;
+                break;
+            }
+            if (!verifHaut(niv, perso->x, perso->y, perso->vertical_speed)) perso->vertical_speed = 0.0f;
+
+            if (surGoomba(niv, perso->x, perso->y, &goomba_tuee) == 0) {
+                perso->y--;
+                perso->vertical_speed -= 0.9f;
+            }
+
+
+            getCoin(niv, perso->x, perso->y, &coin, coinSE);
+            getLife(niv, perso->x, perso->y, &lifes, powerupSE);
+
+            touchePlante(niv, perso->x, perso->y, &lifes, degatSE, pos_plantes, &freeze_frames);
+            dansGoomba(niv, perso->x, perso->y, &lifes, degatSE, &freeze_frames);
+
+            score = calculScore(dmax + (perso->x - dmax), coin, goomba_tuee);
+
+            afficherMap_simp(mini_jeu, niv, perso, dmax);
+            afficherMap(jeu, niv, dmax, pos_plantes);
+            affichageMario(jeu, perso, dmax);
+
+            if (freeze_frames != 0) freeze_frames--;
+
+            cycle_plantes++;
+            if (cycle_plantes == 10) pos_plantes = 3;
+            if (cycle_plantes == 110) pos_plantes = 2;
+            if (cycle_plantes == 120 || cycle_plantes == 230) pos_plantes = 1;
+            if (cycle_plantes == 130) pos_plantes = 0;
+            if (cycle_plantes == 240) {
+                cycle_plantes = 0;
+                pos_plantes = 2;
+            }
         }
-        if (!verifHaut(niv, perso->x, perso->y, perso->vertical_speed)) perso->vertical_speed = 0.0f;
-        
-        if (surGoomba(niv, perso->x, perso->y, &goomba_tuee) == 0) {
-            perso->y--;
-            perso->vertical_speed -= 0.9f;
+        else {
+            afficherPause(pauseF);
+            switch (pressed) {
+                case 32:
+                pause = 0;
+                break;
+                case 27:
+                    quit = 1;
+                    break;
+            }
         }
-        
-
-        getCoin(niv, perso->x, perso->y, &coin, coinSE);
-        getLife(niv, perso->x, perso->y, &lifes, powerupSE);
-
-        touchePlante(niv, perso->x, perso->y, &lifes, degatSE, pos_plantes, &freeze_frames);
-        dansGoomba(niv, perso->x, perso->y, &lifes, degatSE, &freeze_frames);
-
-        score = calculScore(dmax + (perso->x - dmax), coin, goomba_tuee);
-
-        afficherMap_simp(mini_jeu, niv, perso, dmax);
-        afficherMap(jeu, niv, dmax, pos_plantes);
-        affichageMario(jeu, perso, dmax);
-
-        if (freeze_frames != 0) freeze_frames--;
-
-        cycle_plantes++;
-        if (cycle_plantes == 10) pos_plantes = 3;
-        if (cycle_plantes == 110) pos_plantes = 2;
-        if (cycle_plantes == 120) pos_plantes = 1;
-        if (cycle_plantes == 130) pos_plantes = 0;
-        if (cycle_plantes == 230) pos_plantes = 1;
-        if (cycle_plantes == 240) {
-            cycle_plantes = 0;
-            pos_plantes = 2;
-        }
-
         // <<< CODE
         end = clock();
         timediff = (float)(end - begin) / CLOCKS_PER_SEC;

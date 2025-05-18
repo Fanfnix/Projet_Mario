@@ -227,3 +227,9 @@ void afficherTmp(WIN * tmp, int dmax, int lifes, int score) {
 	
     wrefresh(tmp->fenetre);
 }
+
+void afficherPause(WIN* pauseF) {
+    wborder(pauseF->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
+    mvwaddstr(pauseF->fenetre, 2, 15, "PAUSE");
+    wrefresh(pauseF->fenetre);
+}
