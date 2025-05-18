@@ -213,7 +213,7 @@ int surGoomba(struct Map* niv, float x, float y) {
 
         if (goomba_in_chunk < 0 || goomba_in_chunk >= DISTANCE) return -1;
 
-        if (id_chunk_goomba == id_chunk && goomba_in_chunk == mario_in_chunk && y_goomba == y_int) {
+        if (id_chunk_goomba == id_chunk && goomba_in_chunk == mario_in_chunk && y_goomba == y_int + 1) {
             return 0;
         }
     }

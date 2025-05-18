@@ -190,12 +190,12 @@ void lancerPartie(Mix_Music* menuzik) {
                 break;
         }
         if (!verifHaut(niv, perso->x, perso->y, perso->vertical_speed)) perso->vertical_speed = 0.0f;
-        /*
-        if (surGoomba(niv, perso->x, perso->y)) {
+        
+        if (surGoomba(niv, perso->x, perso->y) == 0) {
             perso->y--;
             perso->vertical_speed -= 0.9f;
         }
-        */
+        
 
         getCoin(niv, perso->x, perso->y, &coin, coinSE);
         getLife(niv, perso->x, perso->y, &lifes, powerupSE);
