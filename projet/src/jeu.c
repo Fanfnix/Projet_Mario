@@ -85,6 +85,7 @@ void actionGoombas(struct Map * niv) {
     }
 }
 
+
 void actionMario(Mario * perso, struct Map * niv){
     if (perso == NULL || niv == NULL) return;
     if (perso->y <= 2) {
@@ -105,6 +106,7 @@ void libMario(Mario * perso) {
     perso == NULL;
 }
 
+
 void checkpoint(Mario * perso, struct Save * checkpoint){
     if(perso == NULL || checkpoint == NULL) return ;
 
@@ -113,4 +115,9 @@ void checkpoint(Mario * perso, struct Save * checkpoint){
     // checkpoint->score = score;
     checkpoint->vies = perso->vies;
      
+}
+
+
+int calculScore(int dmax, int coin, int goomba_tuee) {
+    return 10 * dmax + 100 * coin + 1000 * goomba_tuee;
 }

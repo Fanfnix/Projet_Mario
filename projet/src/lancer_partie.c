@@ -121,8 +121,11 @@ void lancerPartie(Mix_Music* menuzik) {
 
     int freeze_frames = 0;
 
+    int goomba_tuee = 0;
     int coin = 0;
-    int lifes = 2;
+    int lifes = 3;
+
+    int score = 0;
 
     Mix_Chunk* coinSE = Mix_LoadWAV("../musique/coin.wav");
     if (!coinSE) {
@@ -155,14 +158,14 @@ void lancerPartie(Mix_Music* menuzik) {
     
     if (strcmp(xorg, "x11\n") == 0) system("xset r rate 100 25");
 
-    while ((pressed = wgetch(jeu->fenetre)) != 27) {
+    while ((pressed = wgetch(jeu->fenetre)) != 27 &&lifes > 0) {
         begin = clock();
         // CODE >>>
 
         actionGoombas(niv);
         actionMario(perso, niv);
 
-        afficherTmp(tmp, convInt(perso->x), convInt(perso->y), dmax, table, seed);
+        afficherTmp(tmp, dmax, lifes, score);
 
         int test_d;
 
@@ -191,7 +194,7 @@ void lancerPartie(Mix_Music* menuzik) {
         }
         if (!verifHaut(niv, perso->x, perso->y, perso->vertical_speed)) perso->vertical_speed = 0.0f;
         
-        if (surGoomba(niv, perso->x, perso->y) == 0) {
+        if (surGoomba(niv, perso->x, perso->y, &goomba_tuee) == 0) {
             perso->y--;
             perso->vertical_speed -= 0.9f;
         }
@@ -199,7 +202,12 @@ void lancerPartie(Mix_Music* menuzik) {
 
         getCoin(niv, perso->x, perso->y, &coin, coinSE);
         getLife(niv, perso->x, perso->y, &lifes, powerupSE);
+
         touchePlante(niv, perso->x, perso->y, &lifes, degatSE, pos_plantes, &freeze_frames);
+        dansGoomba(niv, perso->x, perso->y, &lifes, degatSE, &freeze_frames);
+
+        score = calculScore(dmax + (perso->x - dmax), coin, goomba_tuee);
+
         afficherMap_simp(mini_jeu, niv, perso, dmax);
         afficherMap(jeu, niv, dmax, pos_plantes);
         affichageMario(jeu, perso, dmax);

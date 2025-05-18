@@ -48,8 +48,6 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
     }
     // <<< Piece
 
-
-
     // Goomba >>>
     struct Goomba * goomba;
     if (!tuyau) {

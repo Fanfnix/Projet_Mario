@@ -208,30 +208,21 @@ void afficherMap(WIN * fenetre, struct Map * niv, int dmax, int pos_plantes) {
     }
 }
 
-void afficherTmp(WIN * tmp, int X, int Y, int dMax, int* table, int seed) {
+void afficherTmp(WIN * tmp, int dmax, int lifes, int score) {
     wclear(tmp->fenetre);
     wborder(tmp->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
     char elem[255] = "";
-    int x = X - dMax;
     
-    snprintf(elem, 255, "X = %d", X);
-    mvwaddstr(tmp->fenetre, 1, 1, elem);
-    strcpy(elem, "");
-
-    snprintf(elem, 255, "dMax = %d", dMax);
+    snprintf(elem, 255, "DMAX = %d", dmax);
     mvwaddstr(tmp->fenetre, 2, 1, elem);
     strcpy(elem, "");
 
-    snprintf(elem, 255, "x = %d", x);
+    snprintf(elem, 255, "LIFES = %d", lifes);
     mvwaddstr(tmp->fenetre, 3, 1, elem);
     strcpy(elem, "");
 
-    snprintf(elem, 255, "Y = %d", Y);
+    snprintf(elem, 255, "SCORE = %d", score);
     mvwaddstr(tmp->fenetre, 4, 1, elem);
-    strcpy(elem, "");
-
-    snprintf(elem, 255, "SEED = %d", seed);
-    mvwaddstr(tmp->fenetre, 1, 50, elem);
     strcpy(elem, "");
 	
     wrefresh(tmp->fenetre);

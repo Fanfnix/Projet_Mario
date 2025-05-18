@@ -30,10 +30,17 @@ int verifSol(struct Map * niv, float x, float y);
 int verifHaut(struct Map* niv, float x, float y, float vertical_speed);
 int verifDroite(struct Map * niv, float x, float y);
 int verifGauche(struct Map* niv, float x, float y);
+
 void getCoin(struct Map* niv, float x, float y, int * coin, Mix_Chunk* coinSE);
 void getLife(struct Map* niv, float x, float y, int* lifes, Mix_Chunk* powerupSE);
+
 void touchePlante(struct Map* niv, float x, float y, int* lifes, Mix_Chunk* degatSE, int pos_plantes, int* freeze_frames);
-int surGoomba(struct Map* niv, float x, float y);
+
+void dansGoomba(struct Map* niv, float x, float y, int * lifes, Mix_Chunk* degatSE, int* freeze_frames);
+int surGoomba(struct Map* niv, float x, float y, int * goomba_tuee);
+
+int calculScore(int dmax, int coin, int goomba_tuee);
+
 void checkpoint(Mario * perso, struct Save * checkpoint);
 
 #endif
