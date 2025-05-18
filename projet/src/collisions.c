@@ -159,7 +159,7 @@ void getLife(struct Map* niv, float x, float y, int* lifes, Mix_Chunk* powerupSE
 
 void touchePlante(struct Map* niv, float x, float y, int* lifes, Mix_Chunk* degatSE, int pos_plantes, int* freeze_frames) {
     if (niv == NULL) return;
-    if (freeze_frames != 0) return;
+    if ((*freeze_frames) != 0) return;
 
     int x_int = convInt(x);
     int y_int = convInt(y);
@@ -176,7 +176,7 @@ void touchePlante(struct Map* niv, float x, float y, int* lifes, Mix_Chunk* dega
     }
     if (tmp_chunk == NULL) return;
     if (tmp_chunk->id == id_chunk) {
-        if (tmp_chunk->area[y_int][pos_in_chunk] == 8 && pos_plantes >= 1 || (tmp_chunk->area[y_int][pos_in_chunk] == 9 && pos_plantes >= 2) || (tmp_chunk->area[y_int][pos_in_chunk] == 10 && pos_plantes >= 3) && *freeze_frames == 0) {
+        if ((tmp_chunk->area[y_int][pos_in_chunk] == 8 && pos_plantes >= 1) || (tmp_chunk->area[y_int][pos_in_chunk] == 9 && pos_plantes >= 2) || (tmp_chunk->area[y_int][pos_in_chunk] == 10 && pos_plantes >= 3)) {
             (*lifes)--;
             (*freeze_frames) = 60;
             Mix_PlayChannel(-1, degatSE, 0);

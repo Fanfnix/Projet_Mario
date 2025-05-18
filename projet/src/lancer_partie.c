@@ -15,6 +15,7 @@ void lancerPartie(Mix_Music* menuzik) {
     WIN * tmp;
     WIN * jeu;
     WIN * mini_jeu;
+    WIN * pause;
 
     // Setup dimension fenêtre tmp
     int height_fenetre_tmp = 6;
@@ -28,6 +29,12 @@ void lancerPartie(Mix_Music* menuzik) {
     int startx_fenetre_jeu = 0;
     int starty_fenetre_jeu = starty_fenetre_tmp + height_fenetre_tmp;
 
+    // Setup dimension fenêtre de pause
+    int height_fenetre_pause = 5;
+    int width_fenetre_pause = COLS;
+    int startx_fenetre_pause = 0;
+    int starty_fenetre_pause = 0;
+
     // Creer fenetre de jeu
     WINDOW * jeu_fenetre = newwin(height_fenetre_jeu + 2, width_fenetre_jeu, starty_fenetre_jeu, startx_fenetre_jeu);
     jeu = creerFenetre(jeu_fenetre, width_fenetre_jeu, height_fenetre_jeu);
@@ -38,6 +45,17 @@ void lancerPartie(Mix_Music* menuzik) {
     }
 	wborder(jeu->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
 	wrefresh(jeu->fenetre);
+
+    // Creer fenetre de pause
+    WINDOW* pause_fenetre = newwin(height_fenetre_pause + 2, width_fenetre_pause, starty_fenetre_pause, startx_fenetre_pause);
+    pause = creerFenetre(pause_fenetre, width_fenetre_pause, height_fenetre_pause);
+    if (!pause) {
+        endwin();  // Sort la console du mode "ncurses"
+        fprintf(stderr, "Erreur d'allocation mémoire\n");
+        return;
+    }
+    wborder(pause->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
+    wrefresh(pause->fenetre);
 
     // Creer fenetre tmp
     WINDOW * tmp_fenetre = newwin(height_fenetre_tmp, width_fenetre_tmp, starty_fenetre_tmp, startx_fenetre_tmp);
