@@ -77,10 +77,10 @@ void affichageSauvegarde(WIN * win,WIN * ascii, WIN * blocpiece, struct Save ** 
         }
         else sprintf(text, "null");
         WINDOW * save = derwin(win->fenetre, 7, (win ->width - 7), 5+2*i, 0);
-        mvwaddstr(save, 3, (win ->width - 72)/2, "-----------------------------------------------------------------------");
-        mvwaddstr(save, 4, (win->width + 68)/2, "|");
-        mvwaddstr(save, 4, (win ->width - 72)/2, "|");
-        mvwaddstr(save, 5, (win ->width - 72)/2, "-----------------------------------------------------------------------");
+        mvwaddstr(save, 3, (win ->width - 80)/2, "-------------------------------------------------------------------------------");
+        mvwaddstr(save, 4, (win->width + 76)/2, "|");
+        mvwaddstr(save, 4, (win ->width - 80)/2, "|");
+        mvwaddstr(save, 5, (win ->width - 80)/2, "-------------------------------------------------------------------------------");
         if (i == choisi) wattron(save, A_BOLD);
         mvwaddstr(save, 4, (win ->width - strlen(text))/2, text);
         if (i == choisi) wattroff(save, A_BOLD);
