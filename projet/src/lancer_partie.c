@@ -111,8 +111,7 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie) {
             if (i < 3) newChunk = genererChunk(niv, i, NULL, NULL);
             else newChunk = genererChunk(niv, i, table, &seed);
         } else {
-            if (i < partie->distance / DISTANCE) newChunk = genererChunk(niv, i, NULL, NULL);
-            else newChunk = genererChunk(niv, i, table, &seed);
+            newChunk = genererChunk(niv, i, table, &seed);
         }
 
         if (newChunk == NULL) {
@@ -148,7 +147,7 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie) {
     int tot_sec = 0;
     char txt_fps[255] = "\0";
 
-    int dmax = 0;
+    int dmax = (partie != NULL) ? partie->distance : 0;
 
     int pressed;
 
