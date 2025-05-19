@@ -56,7 +56,7 @@ void affichageDrapeau(WIN * win, struct Drapeau * flag, int dmax) {
             mvwaddstr(win->fenetre, convY(flag->y)+1-j, convX(flag->x - dmax), tmp);
         }
     }
-    fclose(file);
+    if (file != NULL) fclose(file);
 }
 
 
@@ -76,7 +76,7 @@ void affichageTuyau(WIN * win, int y, int x) {
             mvwaddnstr(win->fenetre, convY(y)+1-j, convX(x), tmp, 9);
         }
     }
-    fclose(file);
+    if (file != NULL) fclose(file);
 }
 
 
@@ -95,7 +95,7 @@ void affichageGoomba(WIN * win, struct Goomba * machin, int dmax) {
             mvwaddnstr(win->fenetre, convY(convInt(machin->y)) + 1 - j, convX(convInt(machin->x) - dmax), tmp, 3);
         }
     }
-    fclose(file);
+    if (file != NULL) fclose(file);
 }
 
 void affichageMario(WIN * win, Mario * perso, int dmax) {
@@ -113,7 +113,7 @@ void affichageMario(WIN * win, Mario * perso, int dmax) {
             mvwaddnstr(win->fenetre, convY(convInt(perso->y))-j+1, convX(convInt(perso->x - dmax)), tmp, 3);
         }
     }
-    fclose(file);
+    if (file != NULL) fclose(file);
 }
 
 
