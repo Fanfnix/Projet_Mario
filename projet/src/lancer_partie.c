@@ -1,6 +1,6 @@
 #include "../include/header.h"
 
-void lancerPartie(Mix_Music* menuzik, Save * partie) {
+Save * lancerPartie(Mix_Music* menuzik, Save * partie) {
 
     int max_fps = 60;
     
@@ -47,7 +47,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     if (!jeu) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
-        return;
+        return NULL;
     }
 	wborder(jeu->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
 	wrefresh(jeu->fenetre);
@@ -58,7 +58,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     if (!pause) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
-        return;
+        return NULL;
     }
 
     // Creer fenetre tmp
@@ -67,7 +67,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     if (!tmp) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
-        return;
+        return NULL;
     }
 
     // Setup dimension carte
@@ -88,7 +88,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     if (!mini_jeu) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
-        return;
+        return NULL;
     }
 	wborder(mini_jeu->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
 	wrefresh(mini_jeu->fenetre);
@@ -101,7 +101,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     if (!niv) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
-        return;
+        return NULL;
     }
 
     // Ajout de la génération de base
@@ -118,7 +118,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
         if (newChunk == NULL) {
             endwin();
             printf("ERR [main] : newChunk == NULL\n");
-            return;
+            return NULL;
         }
 
         struct Chunk * tmp_first = niv->p_chunk;
@@ -171,43 +171,43 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     Mix_Chunk* coinSE = Mix_LoadWAV("../musique/coin.wav");
     if (!coinSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
-        return;
+        return NULL;
     }
 
     Mix_Chunk* jumpSE = Mix_LoadWAV("../musique/jump.wav");
     if (!jumpSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
-        return;
+        return NULL;
     }
 
     Mix_Chunk* powerupSE = Mix_LoadWAV("../musique/powerup.wav");
     if (!powerupSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
-        return;
+        return NULL;
     }
 
     Mix_Chunk* degatSE = Mix_LoadWAV("../musique/degat.wav");
     if (!degatSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
-        return;
+        return NULL;
     }
 
     Mix_Chunk* selectSE = Mix_LoadWAV("../musique/select.wav");
     if (!selectSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
-        return;
+        return NULL;
     }
 
     Mix_Chunk* confirmeSE = Mix_LoadWAV("../musique/confirme.wav");
     if (!confirmeSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
-        return;
+        return NULL;
     }
 
     Mix_Chunk* mortgoombaSE = Mix_LoadWAV("../musique/mortgoomba.wav");
     if (!mortgoombaSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
-        return;
+        return NULL;
     }
 
     FILE * f = popen("echo $XDG_SESSION_TYPE", "r");
@@ -289,7 +289,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
         }
 
         if (niv->flag != NULL) if (perso->x == convInt(niv->flag->x)) {
-            if (niv->partie == NULL) niv->partie = malloc(sizeof(Save *));
+            if (niv->partie == NULL) niv->partie = malloc(sizeof(Save));
             if (niv->partie != NULL) {
                 if (niv->partie->posx != perso->x) {
                     niv->partie->seed = seed;
@@ -356,8 +356,5 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
 
     libMario(perso);
 
-    if (save == NULL) {
-        endwin();
-        printf("SAVE NULL\n");
-    }
+    return save;
 }

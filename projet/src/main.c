@@ -13,7 +13,7 @@ int main() {
     srand(time(NULL));
 
     struct Score ** liste_score;
-    Save ** sauvegarde;
+    Save ** liste_sauvegarde;
 
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         printf("Echec INIT_AUDIO\n");
@@ -74,7 +74,9 @@ int main() {
     affichageGenerale(logo, controle, eloise);
 
     liste_score = recupHiscores();
-    sauvegarde = recupCheckpoint();
+    liste_sauvegarde = recupCheckpoint();
+
+    Save * save = NULL;
 
     int id = 0;
     int id_choix = 0;
@@ -86,14 +88,14 @@ int main() {
             case 0: nettoyerMenu(logo, menu, choix, controle, eloise, ascii, blocpiece);
                 Mix_HaltMusic();
                 Mix_PlayMusic(jeuzik, -1);
-                lancerPartie(menuzik, NULL);
+                save = lancerPartie(menuzik, NULL);
                 break;
             case 1: actionHiscores(choix, ascii, blocpiece, liste_score, &id_choix, selectSE, degatSE); break;
-            case 2: if (actionSauvegarde(choix, ascii, blocpiece, sauvegarde, &id_choix, selectSE, degatSE)) {
+            case 2: if (actionSauvegarde(choix, ascii, blocpiece, liste_sauvegarde, &id_choix, selectSE, degatSE)) {
                         nettoyerMenu(logo, menu, choix, controle, eloise, ascii, blocpiece);
                         Mix_HaltMusic();
                         Mix_PlayMusic(jeuzik, -1);
-                        lancerPartie(menuzik, sauvegarde[id_choix]);
+                        save = lancerPartie(menuzik, liste_sauvegarde[id_choix]);
                     };
                     break;
             case 3: run = 0; break;
@@ -119,12 +121,21 @@ int main() {
     Mix_CloseAudio();
     SDL_Quit();
 
+    if (save != NULL) {
+        for (int i = 0; i < 10; i++) {
+            if (liste_sauvegarde[i] == NULL) {
+                liste_sauvegarde[i] = save;
+                break;
+            }
+        }
+    }
+
     trierHiscores(liste_score);
     ecritureHiscores(liste_score);
-    ecritureSauvegarde(sauvegarde);
+    ecritureSauvegarde(liste_sauvegarde);
 
     libererHiscores(liste_score);
-    libererSauvegarde(sauvegarde);
+    libererSauvegarde(liste_sauvegarde);
         
     return 0;
 }
