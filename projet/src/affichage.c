@@ -134,7 +134,9 @@ void afficherBloc(WIN * fenetre, int y, int x, int id_bloc, int pos_plantes) {
                 strcpy(haut, "\\w/");
                 strcpy(bas, " V ");
                 }
-            else strcpy(haut, "   "); strcpy(bas, "   ");
+            else {
+                strcpy(haut, "   "); strcpy(bas, "   ");
+            }
             break;
         case 9:
             if (pos_plantes == 2) {
@@ -145,14 +147,20 @@ void afficherBloc(WIN * fenetre, int y, int x, int id_bloc, int pos_plantes) {
                 strcpy(haut, " | ");
                 strcpy(bas, " | ");
             }
-            else strcpy(haut, "   "); strcpy(bas, "   ");
+            else {
+                strcpy(haut, "   ");
+                strcpy(bas, "   ");
+            }
             break;
         case 10:
             if (pos_plantes == 3) {
                 strcpy(haut, "\\w/");
                 strcpy(bas, " v ");
             }
-            else strcpy(haut, "   "); strcpy(bas, "   ");
+            else {
+                strcpy(haut, "   ");
+                strcpy(bas, "   ");
+            }
             break;
         default: strcpy(haut, "???"); strcpy(bas, "???"); break;
     }
