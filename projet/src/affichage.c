@@ -263,7 +263,7 @@ void afficherPause(WIN* pauseF, int id) {
 void afficherPseudo(WIN* pseudoF) {
     wclear(pseudoF->fenetre);
     wborder(pseudoF->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
-    mvwaddstr(pseudoF->fenetre, 2, 15, "ENREGISTRER UN SCORE");
-    mvwaddstr(pseudoF->fenetre, 7, (pseudoF->width - 13) / 2, "Choisissez un pseudo :");
+    mvwaddstr(pseudoF->fenetre, 2, (pseudoF->width - 20) / 2, "ENREGISTRER UN SCORE");
+    mvwaddstr(pseudoF->fenetre, 7, (pseudoF->width - 23) / 2, "PSEUDO [3 ch] : ");
     wrefresh(pseudoF->fenetre);
 }

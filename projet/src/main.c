@@ -88,8 +88,7 @@ int main() {
             case 0: nettoyerMenu(logo, menu, choix, controle, eloise, ascii, blocpiece);
                 Mix_HaltMusic();
                 Mix_PlayMusic(jeuzik, -1);
-<<<<<<< HEAD
-                save = lancerPartie(menuzik, NULL);
+                save = lancerPartie(menuzik, NULL, liste_score);
                 if (save != NULL) {
                     for (int i = 0; i < 10; i++) {
                         if (liste_sauvegarde[i] == NULL) {
@@ -99,16 +98,13 @@ int main() {
                         }
                     }
                 }
-=======
-                lancerPartie(menuzik, NULL, liste_score);
->>>>>>> 7bbad7f (Début pseudo + score)
                 break;
             case 1: actionHiscores(choix, ascii, blocpiece, liste_score, &id_choix, selectSE, degatSE); break;
             case 2: if (actionSauvegarde(choix, ascii, blocpiece, liste_sauvegarde, &id_choix, selectSE, degatSE)) {
                         nettoyerMenu(logo, menu, choix, controle, eloise, ascii, blocpiece);
                         Mix_HaltMusic();
                         Mix_PlayMusic(jeuzik, -1);
-                        save = lancerPartie(menuzik, liste_sauvegarde[id_choix]);
+                        save = lancerPartie(menuzik, liste_sauvegarde[id_choix], liste_score);
                         if (save != NULL) {
                             for (int i = 0; i < 10; i++) {
                                 if (liste_sauvegarde[i] == NULL) {
@@ -145,6 +141,7 @@ int main() {
 
     trierHiscores(liste_score);
     ecritureHiscores(liste_score);
+
     ecritureSauvegarde(liste_sauvegarde);
 
     libererHiscores(liste_score);

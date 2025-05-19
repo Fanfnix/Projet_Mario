@@ -1,6 +1,6 @@
 #include "../include/header.h"
 
-Save * lancerPartie(Mix_Music* menuzik, Save * partie, SCORE ** liste_score) {
+Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_score) {
 
     int max_fps = 60;
     
@@ -47,8 +47,7 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, SCORE ** liste_score) {
     int startx_fenetre_pseudo = (COLS / 2) - 18;
     int starty_fenetre_pseudo = 10;
     // Initialisation du pseudo
-    char nom_joueur[10];
-
+    char nom_joueur[10] = "\0";
 
     // Creer fenetre de jeu
     WINDOW * jeu_fenetre = newwin(height_fenetre_jeu + 2, width_fenetre_jeu, starty_fenetre_jeu, startx_fenetre_jeu);
@@ -76,7 +75,7 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, SCORE ** liste_score) {
     if (!pseudo) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
-        return;
+        return NULL;
     }
 
     // Creer fenetre tmp
@@ -346,12 +345,25 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, SCORE ** liste_score) {
         wrefresh(jeu->fenetre);
 
     }
-    for(int i = 0; i < 10; i++){
-        if()    
-    }
-    nom_joueur = choix_pseudo(pseudo, nom_joueur);
 
     system("xset r rate 500 33");
+
+    for(int i = 0; i < 10; i++) {
+        if (liste_score[i] != NULL) liste_score[i]->id = i;
+        else {
+            liste_score[i] = malloc(sizeof(struct Score));
+            if (liste_score[i] != NULL) {
+                liste_score[i]->score = score;
+                strcpy(liste_score[i]->pseudo, choix_pseudo(pseudo, nom_joueur));
+                if (i > 0)
+                    if (liste_score[i-1] != NULL)
+                        liste_score[i]->id = liste_score[i-1]->id + 1;
+                    else
+                        liste_score[i]->id = i;
+            }
+            break;
+        }
+    }
 
     Mix_HaltMusic();
     Mix_PlayMusic(menuzik, -1);

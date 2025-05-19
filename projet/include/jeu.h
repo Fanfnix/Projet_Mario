@@ -9,7 +9,7 @@ typedef struct  Mario {
     float vertical_speed;
 } Mario;
 
-Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct SCORE ** liste_sauvegarde);
+Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sauvegarde);
 
 void actionGoombas(struct Map * niv);
 

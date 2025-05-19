@@ -133,7 +133,7 @@ int actions_menu(WIN* pause, Mix_Chunk* selectSE, Mix_Chunk* confirmeSE) {
     }     
 }
 
-char * choix_pseudo(WIN * pseudo, char nom_joueur[10]){
+char * choix_pseudo(WIN * pseudo, char nom_joueur[10]) {
     keypad(pseudo->fenetre, false);
     nodelay(pseudo->fenetre, false);
     echo();
@@ -141,5 +141,6 @@ char * choix_pseudo(WIN * pseudo, char nom_joueur[10]){
     for(int i = 0; i < 3; i++){
         nom_joueur[i] = (char)wgetch(pseudo->fenetre);
     }
+    noecho();
     return nom_joueur;
 }

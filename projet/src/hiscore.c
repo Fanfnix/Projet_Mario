@@ -105,7 +105,7 @@ void affichageHiscores(WIN * win, WIN * ascii, WIN * blocpiece, struct Score ** 
     affichageBlocpiece(blocpiece);
 
 }
-void supprHiscores(struct Score ** liste_score, int id){
+void supprHiscores(struct Score ** liste_score, int id) {
     if (liste_score == NULL)
     {
         printf("Pas de score a supprimer");
