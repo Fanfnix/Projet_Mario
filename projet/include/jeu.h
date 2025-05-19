@@ -40,6 +40,6 @@ int calculScore(int dmax, int coin, int goomba_tuee);
 
 void checkpoint(Mario * perso, struct Save * checkpoint);
 
-int actions_menu(WIN* pause, Mix_Chunk* selectSE);
+int actions_menu(WIN* pause, Mix_Chunk* selectSE, Mix_Chunk* confirmeSE);
 
 #endif

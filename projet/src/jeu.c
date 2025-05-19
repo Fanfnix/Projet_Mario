@@ -109,7 +109,7 @@ int calculScore(int dmax, int coin, int goomba_tuee) {
     return 10 * dmax + 100 * coin + 1000 * goomba_tuee;
 }
 
-int actions_menu(WIN* pause, Mix_Chunk* selectSE) {
+int actions_menu(WIN* pause, Mix_Chunk* selectSE, Mix_Chunk* confirmeSE) {
     keypad(pause->fenetre, true);
     int pressed;
     int id = 0;

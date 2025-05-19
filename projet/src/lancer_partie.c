@@ -198,6 +198,18 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
         return;
     }
 
+    Mix_Chunk* confirmeSE = Mix_LoadWAV("../musique/confirme.wav");
+    if (!confirmeSE) {
+        printf("Erreur chargement: %s\n", Mix_GetError());
+        return;
+    }
+
+    Mix_Chunk* mortgoombaSE = Mix_LoadWAV("../musique/mortgoomba.wav");
+    if (!mortgoombaSE) {
+        printf("Erreur chargement: %s\n", Mix_GetError());
+        return;
+    }
+
     FILE * f = popen("echo $XDG_SESSION_TYPE", "r");
     char xorg[512] = {0};
     fgets(xorg, 512, f);
@@ -239,7 +251,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
                 }
                 break;
             case 27:
-                quit = actions_menu(pause, selectSE);
+                quit = actions_menu(pause, selectSE,confirmeSE);
         }
 
         if (!verifHaut(niv, perso->x, perso->y, perso->vertical_speed)) perso->vertical_speed = 0.0f;
@@ -247,6 +259,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
         if (surGoomba(niv, perso->x, perso->y, &goomba_tuee) == 0) {
             perso->y--;
             perso->vertical_speed -= 0.9f;
+            Mix_PlayChannel(-1, mortgoombaSE, 0);
         }
 
 
@@ -324,6 +337,9 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     Mix_FreeChunk(jumpSE);
     Mix_FreeChunk(powerupSE);
     Mix_FreeChunk(degatSE);
+    Mix_FreeChunk(selectSE);
+    Mix_FreeChunk(confirmeSE);
+    Mix_FreeChunk(mortgoombaSE);
 
     Save * save = niv->partie;
 
