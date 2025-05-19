@@ -88,6 +88,7 @@ int main() {
             case 0: nettoyerMenu(logo, menu, choix, controle, eloise, ascii, blocpiece);
                 Mix_HaltMusic();
                 Mix_PlayMusic(jeuzik, -1);
+<<<<<<< HEAD
                 save = lancerPartie(menuzik, NULL);
                 if (save != NULL) {
                     for (int i = 0; i < 10; i++) {
@@ -98,6 +99,9 @@ int main() {
                         }
                     }
                 }
+=======
+                lancerPartie(menuzik, NULL, liste_score);
+>>>>>>> 7bbad7f (Début pseudo + score)
                 break;
             case 1: actionHiscores(choix, ascii, blocpiece, liste_score, &id_choix, selectSE, degatSE); break;
             case 2: if (actionSauvegarde(choix, ascii, blocpiece, liste_sauvegarde, &id_choix, selectSE, degatSE)) {

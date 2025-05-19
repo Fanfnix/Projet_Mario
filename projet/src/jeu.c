@@ -130,5 +130,16 @@ int actions_menu(WIN* pause, Mix_Chunk* selectSE, Mix_Chunk* confirmeSE) {
         }
         if (id < 0) id = 1;
         if (id > 1) id = 0;
-    }      
+    }     
+}
+
+char * choix_pseudo(WIN * pseudo, char nom_joueur[10]){
+    keypad(pseudo->fenetre, false);
+    nodelay(pseudo->fenetre, false);
+    echo();
+    afficherPseudo(pseudo);
+    for(int i = 0; i < 3; i++){
+        nom_joueur[i] = (char)wgetch(pseudo->fenetre);
+    }
+    return nom_joueur;
 }

@@ -1,6 +1,6 @@
 #include "../include/header.h"
 
-Save * lancerPartie(Mix_Music* menuzik, Save * partie) {
+Save * lancerPartie(Mix_Music* menuzik, Save * partie, SCORE ** liste_score) {
 
     int max_fps = 60;
     
@@ -21,6 +21,7 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie) {
     WIN * jeu;
     WIN * mini_jeu;
     WIN * pause;
+    WIN * pseudo;
 
     // Setup dimension fenêtre tmp
     int height_fenetre_tmp = 6;
@@ -39,6 +40,14 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie) {
     int width_fenetre_pause = 36;
     int startx_fenetre_pause = (COLS / 2) - 18;
     int starty_fenetre_pause = 10;
+
+    // Setup dimension fenêtre pseudo
+    int height_fenetre_pseudo = 12;
+    int width_fenetre_pseudo = 36;
+    int startx_fenetre_pseudo = (COLS / 2) - 18;
+    int starty_fenetre_pseudo = 10;
+    // Initialisation du pseudo
+    char nom_joueur[10];
 
 
     // Creer fenetre de jeu
@@ -59,6 +68,15 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie) {
         endwin();  // Sort la console du mode "ncurses"
         fprintf(stderr, "Erreur d'allocation mémoire\n");
         return NULL;
+    }
+
+    // Creer fenetre demande pseudo
+    WINDOW* pseudo_fenetre = newwin(height_fenetre_pseudo + 2, width_fenetre_pseudo, starty_fenetre_pseudo, startx_fenetre_pseudo);
+    pseudo = creerFenetre(pseudo_fenetre, width_fenetre_pseudo, height_fenetre_pseudo);
+    if (!pseudo) {
+        endwin();  // Sort la console du mode "ncurses"
+        fprintf(stderr, "Erreur d'allocation mémoire\n");
+        return;
     }
 
     // Creer fenetre tmp
@@ -326,7 +344,12 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie) {
         snprintf(txt_fps, 254, "FPS : %.1lf | NB_FRAMES : %d | TOT_SEC : %d", fps, nb_frames, tot_sec);
         mvwaddstr(jeu->fenetre, 1, 1, txt_fps);
         wrefresh(jeu->fenetre);
+
     }
+    for(int i = 0; i < 10; i++){
+        if()    
+    }
+    nom_joueur = choix_pseudo(pseudo, nom_joueur);
 
     system("xset r rate 500 33");
 

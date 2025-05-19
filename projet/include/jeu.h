@@ -9,7 +9,7 @@ typedef struct  Mario {
     float vertical_speed;
 } Mario;
 
-Save * lancerPartie(Mix_Music* menuzik, Save * partie);
+Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct SCORE ** liste_sauvegarde);
 
 void actionGoombas(struct Map * niv);
 
@@ -41,5 +41,6 @@ int calculScore(int dmax, int coin, int goomba_tuee);
 void checkpoint(Mario * perso, struct Save * checkpoint);
 
 int actions_menu(WIN* pause, Mix_Chunk* selectSE, Mix_Chunk* confirmeSE);
+char * choix_pseudo(WIN * pseudo, char nom_joueur[10]);
 
 #endif
