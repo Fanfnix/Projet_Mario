@@ -229,7 +229,7 @@ void afficherTmp(WIN * tmp, int dmax, int lifes, int score) {
     mvwaddstr(tmp->fenetre, 2, 1, elem);
     strcpy(elem, "");
 
-    snprintf(elem, 255, "LIFES = %d", lifes);
+    snprintf(elem, 255, "LIVES = %d", lifes);
     mvwaddstr(tmp->fenetre, 3, 1, elem);
     strcpy(elem, "");
 

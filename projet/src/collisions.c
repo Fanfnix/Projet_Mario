@@ -105,6 +105,7 @@ int verifGauche(struct Map* niv, float x, float y) {
 
 void getCoin(struct Map* niv, float x, float y, int * coin, Mix_Chunk* coinSE) {
     if (niv == NULL) return;
+    if (y <= 1) return;
 
     int x_int = convInt(x);
     int y_int = convInt(y);
@@ -126,12 +127,18 @@ void getCoin(struct Map* niv, float x, float y, int * coin, Mix_Chunk* coinSE) {
             tmp_chunk->area[y_int][pos_in_chunk] = 0;
             Mix_PlayChannel(-1, coinSE, 0);
         }
+        else if (tmp_chunk->area[y_int - 1][pos_in_chunk] == 4) {
+            (*coin)++;
+            tmp_chunk->area[y_int-1][pos_in_chunk] = 0;
+            Mix_PlayChannel(-1, coinSE, 0);
+        }
     }
     return ;
 }
 
 void getLife(struct Map* niv, float x, float y, int* lifes, Mix_Chunk* powerupSE) {
     if (niv == NULL) return;
+    if (y <= 1) return;
 
     int x_int = convInt(x);
     int y_int = convInt(y);
@@ -151,6 +158,11 @@ void getLife(struct Map* niv, float x, float y, int* lifes, Mix_Chunk* powerupSE
         if (tmp_chunk->area[y_int][pos_in_chunk] == 7) {
             (*lifes)++;
             tmp_chunk->area[y_int][pos_in_chunk] = 0;
+            Mix_PlayChannel(-1, powerupSE, 0);
+        }
+        if (tmp_chunk->area[y_int-1][pos_in_chunk] == 7) {
+            (*lifes)++;
+            tmp_chunk->area[y_int-1][pos_in_chunk] = 0;
             Mix_PlayChannel(-1, powerupSE, 0);
         }
     }
