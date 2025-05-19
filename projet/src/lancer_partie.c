@@ -128,7 +128,7 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sco
             if (i < 3) newChunk = genererChunk(niv, i, NULL, NULL);
             else newChunk = genererChunk(niv, i, table, &seed);
         } else {
-            newChunk = genererChunk(niv, i, table, &seed);
+            newChunk = genererChunk(niv, i + partie->distance / DISTANCE, table, &seed);
         }
 
         if (newChunk == NULL) {
@@ -164,7 +164,7 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sco
     int tot_sec = 0;
     char txt_fps[255] = "\0";
 
-    int dmax = (partie != NULL) ? partie->distance : 0;
+    int dmax = 0;
 
     int pressed;
 
@@ -182,7 +182,7 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sco
     int coin = (partie != NULL) ? partie->coin : 0;
     int lifes = (partie != NULL) ? partie->vies : 3;
 
-    int score = calculScore(dmax + (perso->x - dmax), coin, goomba_tuee);
+    int score = calculScore(perso->x, coin, goomba_tuee);
 
     Mix_Chunk* coinSE = Mix_LoadWAV("../musique/coin.wav");
     if (!coinSE) {
@@ -268,7 +268,9 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sco
                 }
                 break;
             case 27:
+                system("xset r rate 500 33");
                 quit = actions_menu(pause, selectSE,confirmeSE);
+                system("xset r rate 100 25");
         }
 
         if (!verifHaut(niv, perso->x, perso->y, perso->vertical_speed)) perso->vertical_speed = 0.0f;
@@ -288,9 +290,11 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sco
 
         score = calculScore(dmax + (perso->x - dmax), coin, goomba_tuee);
 
-        afficherMap_simp(mini_jeu, niv, perso, dmax);
-        afficherMap(jeu, niv, dmax, pos_plantes);
-        affichageMario(jeu, perso, dmax);
+        int dmax_affichage = (partie != NULL) ? partie->distance : 0;
+
+        afficherMap_simp(mini_jeu, niv, perso, dmax + dmax_affichage);
+        afficherMap(jeu, niv, dmax + dmax_affichage, pos_plantes);
+        affichageMario(jeu, perso, dmax + dmax_affichage);
 
         if (freeze_frames != 0) freeze_frames--;
 
@@ -347,26 +351,27 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sco
     }
 
     system("xset r rate 500 33");
-
-    for(int i = 0; i < 10; i++) {
-        if (liste_score[i] != NULL) liste_score[i]->id = i;
-        else {
-            char * nom_tmp = choix_pseudo(pseudo, nom_joueur);
-            if (nom_tmp == NULL) break;
-            liste_score[i] = malloc(sizeof(struct Score));
-            if (liste_score[i] != NULL) {
-                strcpy(liste_score[i]->pseudo, nom_tmp);
-                liste_score[i]->score = score;
-                if (i > 0)
-                    if (liste_score[i-1] != NULL)
-                        liste_score[i]->id = liste_score[i-1]->id + 1;
-                    else
-                        liste_score[i]->id = i;
+    if (lifes > 0) {
+        for(int i = 0; i < 10; i++) {
+            if (liste_score[i] != NULL) liste_score[i]->id = i;
+            else {
+                char * nom_tmp = choix_pseudo(pseudo, nom_joueur);
+                if (nom_tmp == NULL) break;
+                liste_score[i] = malloc(sizeof(struct Score));
+                if (liste_score[i] != NULL) {
+                    strcpy(liste_score[i]->pseudo, nom_tmp);
+                    liste_score[i]->score = score;
+                    if (i > 0)
+                        if (liste_score[i-1] != NULL)
+                            liste_score[i]->id = liste_score[i-1]->id + 1;
+                        else
+                            liste_score[i]->id = i;
+                }
+                break;
             }
-            break;
         }
     }
-
+    
     Mix_HaltMusic();
     Mix_PlayMusic(menuzik, -1);
 
