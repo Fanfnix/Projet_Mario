@@ -215,12 +215,13 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     fgets(xorg, 512, f);
     pclose(f);
     
-    if (strcmp(xorg, "x11\n") == 0) system("xset r rate 100 25");
+    system("xset r rate 100 25");
 
     while (quit == 0 && lifes > 0) {
         pressed = wgetch(jeu->fenetre);
         begin = clock();
         // CODE >>>
+
         actionGoombas(niv);
         actionMario(perso, niv);
 
@@ -290,13 +291,15 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
         if (niv->flag != NULL) if (perso->x == convInt(niv->flag->x)) {
             if (niv->partie == NULL) niv->partie = malloc(sizeof(Save *));
             if (niv->partie != NULL) {
-                niv->partie->seed = seed;
-                niv->partie->distance = dmax + (perso->x - dmax);
-                niv->partie->coin = coin;
-                niv->partie->goomba_tuee = goomba_tuee;
-                niv->partie->posx = perso->x;
-                niv->partie->posy = perso->y;
-                niv->partie->vies = lifes;
+                if (niv->partie->posx != perso->x) {
+                    niv->partie->seed = seed;
+                    niv->partie->distance = dmax + (perso->x - dmax);
+                    niv->partie->coin = coin;
+                    niv->partie->goomba_tuee = goomba_tuee;
+                    niv->partie->posx = perso->x;
+                    niv->partie->posy = perso->y;
+                    niv->partie->vies = lifes;
+                }
             }
             anima_drapeau = 1;
         }
@@ -308,7 +311,6 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
                 anima_drapeau = 0;
             }
         }
-
 
         // <<< CODE
         end = clock();
@@ -327,7 +329,7 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
         wrefresh(jeu->fenetre);
     }
 
-    if (strcmp(xorg, "x11\n") == 0) system("xset r rate 500 33");
+    system("xset r rate 500 33");
 
     Mix_HaltMusic();
     Mix_PlayMusic(menuzik, -1);
@@ -353,4 +355,9 @@ void lancerPartie(Mix_Music* menuzik, Save * partie) {
     supprWin(pause);
 
     libMario(perso);
+
+    if (save == NULL) {
+        endwin();
+        printf("SAVE NULL\n");
+    }
 }

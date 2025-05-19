@@ -196,6 +196,7 @@ void libMemMap(struct Map * niv) {
         return;
     }
     struct Chunk * tmp_chunk = NULL;
+    for (int i = 0; i < T_LISTE_GOOMBA; i++) if (niv->liste_goomba[0] != NULL) supprimerGoomba(niv->liste_goomba, niv->liste_goomba[0]->id);
     while (niv->p_chunk->suivant != NULL) {
         tmp_chunk = niv->p_chunk->suivant;
         libMemChunk(niv->p_chunk);

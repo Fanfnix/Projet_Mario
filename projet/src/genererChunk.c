@@ -90,7 +90,7 @@ struct Chunk * genererChunk(struct Map * niv, int id_chunk, int * table, int * s
         }
         // >>> Goomba
 
-        // Drapeau >>>       
+        // Drapeau >>>
         if ((id_chunk * DISTANCE + x) % 150 == 0) {
             x_drapeau = id_chunk * DISTANCE + x;
             y_drapeau = niv->height - ymax - 1;
