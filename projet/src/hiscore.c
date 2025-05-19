@@ -88,17 +88,15 @@ void affichageHiscores(WIN * win, WIN * ascii, WIN * blocpiece, struct Score ** 
     wattroff(win->fenetre, A_BOLD);
     char text[255];
     for (int i = 0; i < 10; i++) {
-        if (liste_score[i] != NULL) sprintf(text, "  >>> %d. %s - %d", i+1, liste_score[i]->pseudo, liste_score[i]->score);
-        else sprintf(text, "  >>> null");
-        WINDOW * score = derwin(win->fenetre, 7, (win ->width - 7), 6+3*i, 0);
-        if (i == choisi) wattron(score, A_BOLD);
-        mvwaddstr(score, 3, (win ->width - 37)/2, "------------------------------------");
-        mvwaddstr(score, 4, (win ->width - 37)/2, "                                   |");
-        mvwaddstr(score, 5, (win ->width - 37)/2, "                                   |");
-        mvwaddstr(score, 6, (win ->width - 37)/2, "------------------------------------");
-        mvwaddstr(score, 4, (win ->width - strlen(text))/2, text);
+        if (liste_score[i] != NULL) sprintf(text, "  %d. %s - %d", i+1, liste_score[i]->pseudo, liste_score[i]->score);
+        else sprintf(text, "  null");
+        WINDOW * score = derwin(win->fenetre, 7, (win ->width - 7), 5+2*i, 0);
+        mvwaddstr(score, 3, (win ->width - 37)/2, "-------------------------------------");
+        mvwaddstr(score, 4, (win->width + 36)/2, "|");
         mvwaddstr(score, 4, (win ->width - 37)/2, "|");
-        mvwaddstr(score, 5, (win ->width - 37)/2, "|");
+        mvwaddstr(score, 5, (win ->width - 37)/2, "-------------------------------------");
+        if (i == choisi) wattron(score, A_BOLD);
+        mvwaddstr(score, 4, (win ->width - strlen(text))/2, text);
         if (i == choisi) wattroff(score, A_BOLD);
     }
     mvwaddstr(win->fenetre, 50, 2, " [DEL] to delete a score");

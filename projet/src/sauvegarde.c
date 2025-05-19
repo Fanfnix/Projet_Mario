@@ -73,12 +73,16 @@ void affichageSauvegarde(WIN * win,WIN * ascii, WIN * blocpiece, struct Save ** 
     for (int i = 0; i < 10; i++) {
         if (liste_sauvegarde[i] != NULL) {
             WINDOW * save = derwin(win->fenetre, 5, (win ->width - 7), 5+2*i, 0);
-            sprintf(text, "  >>> %d. Seed :%d - Pose en x/y : %.0f / %.0f - score : %d - Vies : %d",liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->posx, liste_sauvegarde[i]->posy, calculScore(liste_sauvegarde[i]->distance, liste_sauvegarde[i]->coin, liste_sauvegarde[i]->goomba_tuee), liste_sauvegarde[i]->vies);
+            sprintf(text, "%d. Seed :%d - Pose en x/y : %.0f / %.0f - score : %d - Vies : %d",liste_sauvegarde[i]->id, liste_sauvegarde[i]->seed, liste_sauvegarde[i]->posx, liste_sauvegarde[i]->posy, calculScore(liste_sauvegarde[i]->distance, liste_sauvegarde[i]->coin, liste_sauvegarde[i]->goomba_tuee), liste_sauvegarde[i]->vies);
         }
-        else sprintf(text, "  >>> null");
-        WINDOW * save = derwin(win->fenetre, 5, (win ->width - 7), 5+2*i, 0);
+        else sprintf(text, "null");
+        WINDOW * save = derwin(win->fenetre, 7, (win ->width - 7), 5+2*i, 0);
+        mvwaddstr(save, 3, (win ->width - 72)/2, "-----------------------------------------------------------------------");
+        mvwaddstr(save, 4, (win->width + 68)/2, "|");
+        mvwaddstr(save, 4, (win ->width - 72)/2, "|");
+        mvwaddstr(save, 5, (win ->width - 72)/2, "-----------------------------------------------------------------------");
         if (i == choisi) wattron(save, A_BOLD);
-        mvwaddstr(save, 2, (win ->width - strlen(text))/2, text);
+        mvwaddstr(save, 4, (win ->width - strlen(text))/2, text);
         if (i == choisi) wattroff(save, A_BOLD);
     }
     mvwaddstr(win->fenetre, 50, 2, " [DEL] to delete a save");
