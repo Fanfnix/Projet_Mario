@@ -125,6 +125,7 @@ int main() {
         for (int i = 0; i < 10; i++) {
             if (liste_sauvegarde[i] == NULL) {
                 liste_sauvegarde[i] = save;
+                liste_sauvegarde[i]->id = i;
                 break;
             }
         }
