@@ -351,10 +351,12 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sco
     for(int i = 0; i < 10; i++) {
         if (liste_score[i] != NULL) liste_score[i]->id = i;
         else {
+            char * nom_tmp = choix_pseudo(pseudo, nom_joueur);
+            if (nom_tmp == NULL) break;
             liste_score[i] = malloc(sizeof(struct Score));
             if (liste_score[i] != NULL) {
+                strcpy(liste_score[i]->pseudo, nom_tmp);
                 liste_score[i]->score = score;
-                strcpy(liste_score[i]->pseudo, choix_pseudo(pseudo, nom_joueur));
                 if (i > 0)
                     if (liste_score[i-1] != NULL)
                         liste_score[i]->id = liste_score[i-1]->id + 1;

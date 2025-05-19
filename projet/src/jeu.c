@@ -142,5 +142,6 @@ char * choix_pseudo(WIN * pseudo, char nom_joueur[10]) {
         nom_joueur[i] = (char)wgetch(pseudo->fenetre);
     }
     noecho();
+    if (strcmp(nom_joueur, "000") == 0) return NULL;
     return nom_joueur;
 }
