@@ -42,7 +42,7 @@ int convY(int y) {
 void affichageDrapeau(WIN * win, struct Drapeau * flag, int dmax) {
     if(win == NULL) return;
     char chemin[255];
-    snprintf(chemin, 255, "../design/drapeau/drapeau%d.txt", flag->frame);
+    snprintf(chemin, 255, "./design/drapeau/drapeau%d.txt", flag->frame);
     char tmp[255];
     FILE * file = fopen(chemin, "r");
     for (int j = 10; j >= 0; j--) {
@@ -62,7 +62,7 @@ void affichageDrapeau(WIN * win, struct Drapeau * flag, int dmax) {
 
 void affichageTuyau(WIN * win, int y, int x) {
      if(win == NULL) return;
-    char chemin[255] = "../design/tuyau/tuyau1.txt";
+    char chemin[255] = "./design/tuyau/tuyau1.txt";
     char tmp[255];
     FILE * file = fopen(chemin, "r");
     for (int j = 3; j >= 0; j--) {
@@ -82,7 +82,7 @@ void affichageTuyau(WIN * win, int y, int x) {
 
 void affichageGoomba(WIN * win, struct Goomba * machin, int dmax) {
     if (machin == NULL) return;
-    char chemin[255] = "../design/goomba/goomba1.txt";
+    char chemin[255] = "./design/goomba/goomba1.txt";
     char tmp[255];
     FILE * file = fopen(chemin, "r");
     for (int j = 1; j >= 0; j--) {
@@ -100,7 +100,7 @@ void affichageGoomba(WIN * win, struct Goomba * machin, int dmax) {
 
 void affichageMario(WIN * win, Mario * perso, int dmax) {
     if (perso == NULL) return;
-    char chemin[255] = "../design/mario/mario1.txt";
+    char chemin[255] = "./design/mario/mario1.txt";
     char tmp[255];
     FILE * file = fopen(chemin, "r");
     for (int j = 3; j >= 0; j--) {
@@ -209,14 +209,11 @@ void afficherMap(WIN * fenetre, struct Map * niv, int dmax, int pos_plantes) {
         afficherChunk(fenetre, tmp_chunk, dmax, pos_plantes);
     }
     
-    char tmp[512];
     for (int i = 0; i < T_LISTE_GOOMBA; i++) {
         if (niv->liste_goomba[i] != NULL) {
             if (convX(convInt(niv->liste_goomba[i]->x - dmax)) < fenetre->width-3-1) {
                 affichageGoomba(fenetre, niv->liste_goomba[i], dmax);
             }
-            snprintf(tmp, 511, "ID: %d, X: %d, Y: %d, x: %.2f, y: %.2f, S: %.2f, DIFF: %d", niv->liste_goomba[i]->id, convInt(niv->liste_goomba[i]->x), convInt(niv->liste_goomba[i]->y), niv->liste_goomba[i]->x, niv->liste_goomba[i]->y, niv->liste_goomba[i]->speed, fenetre->width-3-1 - convX(convInt(niv->liste_goomba[i]->x)));
-            mvwaddstr(fenetre->fenetre, i+2, 1, tmp);
         }
     }
 

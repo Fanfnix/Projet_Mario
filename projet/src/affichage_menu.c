@@ -1,7 +1,7 @@
 #include "../include/header.h"
 
 void affichageDessinmenu(WIN * eloise){
-    char chemin[] = "../design/dessinmenu/dessinmenu1.txt";
+    char chemin[] = "./design/dessinmenu/dessinmenu1.txt";
     FILE * file = fopen(chemin, "r");
     if (file != NULL){
         for (int y = 0; y < HEIGHT_ELOISE; y++){
@@ -20,7 +20,7 @@ void affichageDessinmenu(WIN * eloise){
 }
 
 void affichageAscii(WIN * ascii){
-    char chemin[] = "../design/ascii/ascii1.txt";
+    char chemin[] = "./design/ascii/ascii1.txt";
     FILE * file = fopen(chemin, "r");
     if (file != NULL){
         for (int y = 0; y < HEIGHT_ASCII; y++){
@@ -39,7 +39,7 @@ void affichageAscii(WIN * ascii){
 }
 
 void affichageBlocpiece(WIN * blocpiece){
-    char chemin[] = "../design/blocpiece/blocpiece1.txt";
+    char chemin[] = "./design/blocpiece/blocpiece1.txt";
     FILE * file = fopen(chemin, "r");
     if (file != NULL){
         for (int y = 0; y < HEIGHT_BLOCPIECE; y++){
@@ -58,7 +58,7 @@ void affichageBlocpiece(WIN * blocpiece){
 }
 
 void affichageRetromario(WIN * logo) {
-    char chemin[] = "../design/retromario/retromario1.txt";  // Le chemin est à calculer depuis l'éxécutable.
+    char chemin[] = "./design/retromario/retromario1.txt";  // Le chemin est à calculer depuis l'éxécutable.
     FILE * file = fopen(chemin, "r");
     if (file != NULL) {
         wattron(logo->fenetre, A_BOLD);

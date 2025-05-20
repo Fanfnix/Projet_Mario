@@ -19,7 +19,7 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sco
     // Creation des fenetre
     WIN * tmp;
     WIN * jeu;
-    WIN * mini_jeu;
+    // WIN * mini_jeu;
     WIN * pause;
     WIN * pseudo;
 
@@ -95,20 +95,20 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sco
     int nb_chunks = width_carte / DISTANCE + 2;
 
     // Setup dimension fenêtre mini_jeu
-    int height_fenetre_mini_jeu = height_carte;
-    int width_fenetre_mini_jeu = COLS;
-    int startx_fenetre_mini_jeu = 0;
-    int starty_fenetre_mini_jeu = starty_fenetre_jeu + height_fenetre_jeu + 2;
+    // int height_fenetre_mini_jeu = height_carte;
+    // int width_fenetre_mini_jeu = COLS;
+    // int startx_fenetre_mini_jeu = 0;
+    // int starty_fenetre_mini_jeu = starty_fenetre_jeu + height_fenetre_jeu + 2;
 
-    WINDOW * mini_jeu_fenetre = newwin(height_fenetre_mini_jeu + 2, width_fenetre_mini_jeu, starty_fenetre_mini_jeu, startx_fenetre_mini_jeu);
-    mini_jeu = creerFenetre(mini_jeu_fenetre, width_fenetre_mini_jeu, height_fenetre_mini_jeu);
-    if (!mini_jeu) {
-        endwin();  // Sort la console du mode "ncurses"
-        fprintf(stderr, "Erreur d'allocation mémoire\n");
-        return NULL;
-    }
-	wborder(mini_jeu->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
-	wrefresh(mini_jeu->fenetre);
+    // WINDOW * mini_jeu_fenetre = newwin(height_fenetre_mini_jeu + 2, width_fenetre_mini_jeu, starty_fenetre_mini_jeu, startx_fenetre_mini_jeu);
+    // mini_jeu = creerFenetre(mini_jeu_fenetre, width_fenetre_mini_jeu, height_fenetre_mini_jeu);
+    // if (!mini_jeu) {
+    //     endwin();  // Sort la console du mode "ncurses"
+    //     fprintf(stderr, "Erreur d'allocation mémoire\n");
+    //     return NULL;
+    // }
+	// wborder(mini_jeu->fenetre, '|', '|', '-', '-', '+', '+', '+', '+');
+	// wrefresh(mini_jeu->fenetre);
 
     // Création d'un niveau vide avec mario
     struct Map * niv = creerMap(height_carte, nb_chunks);
@@ -184,43 +184,43 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sco
 
     int score = calculScore(perso->x, coin, goomba_tuee);
 
-    Mix_Chunk* coinSE = Mix_LoadWAV("../musique/coin.wav");
+    Mix_Chunk* coinSE = Mix_LoadWAV("./musique/coin.wav");
     if (!coinSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
         return NULL;
     }
 
-    Mix_Chunk* jumpSE = Mix_LoadWAV("../musique/jump.wav");
+    Mix_Chunk* jumpSE = Mix_LoadWAV("./musique/jump.wav");
     if (!jumpSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
         return NULL;
     }
 
-    Mix_Chunk* powerupSE = Mix_LoadWAV("../musique/powerup.wav");
+    Mix_Chunk* powerupSE = Mix_LoadWAV("./musique/powerup.wav");
     if (!powerupSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
         return NULL;
     }
 
-    Mix_Chunk* degatSE = Mix_LoadWAV("../musique/degat.wav");
+    Mix_Chunk* degatSE = Mix_LoadWAV("./musique/degat.wav");
     if (!degatSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
         return NULL;
     }
 
-    Mix_Chunk* selectSE = Mix_LoadWAV("../musique/select.wav");
+    Mix_Chunk* selectSE = Mix_LoadWAV("./musique/select.wav");
     if (!selectSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
         return NULL;
     }
 
-    Mix_Chunk* confirmeSE = Mix_LoadWAV("../musique/confirme.wav");
+    Mix_Chunk* confirmeSE = Mix_LoadWAV("./musique/confirme.wav");
     if (!confirmeSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
         return NULL;
     }
 
-    Mix_Chunk* mortgoombaSE = Mix_LoadWAV("../musique/mortgoomba.wav");
+    Mix_Chunk* mortgoombaSE = Mix_LoadWAV("./musique/mortgoomba.wav");
     if (!mortgoombaSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
         return NULL;
@@ -292,7 +292,7 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sco
 
         int dmax_affichage = (partie != NULL) ? partie->distance : 0;
 
-        afficherMap_simp(mini_jeu, niv, perso, dmax + dmax_affichage);
+        // afficherMap_simp(mini_jeu, niv, perso, dmax + dmax_affichage);
         afficherMap(jeu, niv, dmax + dmax_affichage, pos_plantes);
         affichageMario(jeu, perso, dmax + dmax_affichage);
 
@@ -392,7 +392,7 @@ Save * lancerPartie(Mix_Music* menuzik, Save * partie, struct Score ** liste_sco
 
     supprWin(jeu);
     supprWin(tmp);
-    supprWin(mini_jeu);
+    // supprWin(mini_jeu);
     supprWin(pause);
 
     libMario(perso);

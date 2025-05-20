@@ -27,31 +27,31 @@ int main() {
 
     // Creer musique/sons
 
-    Mix_Music * menuzik = Mix_LoadMUS("../musique/monbeaumenu.mp3");
+    Mix_Music * menuzik = Mix_LoadMUS("./musique/monbeaumenu.mp3");
     if (!menuzik) {
         printf("Echec Mix_LoadMUS\n");
         return 0;
     }
 
-    Mix_Music* jeuzik = Mix_LoadMUS("../musique/allan-venture.mp3");
+    Mix_Music* jeuzik = Mix_LoadMUS("./musique/allan-venture.mp3");
     if (!jeuzik) {
         printf("Echec Mix_LoadMUS\n");
         return 0;
     }
 
-    Mix_Chunk* selectSE = Mix_LoadWAV("../musique/select.wav");
+    Mix_Chunk* selectSE = Mix_LoadWAV("./musique/select.wav");
     if (!selectSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
         return 0;
     }
 
-    Mix_Chunk* degatSE = Mix_LoadWAV("../musique/degat.wav");
+    Mix_Chunk* degatSE = Mix_LoadWAV("./musique/degat.wav");
     if (!degatSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
         return 0;
     }
 
-    Mix_Chunk* confirmeSE = Mix_LoadWAV("../musique/confirme.wav");
+    Mix_Chunk* confirmeSE = Mix_LoadWAV("./musique/confirme.wav");
     if (!confirmeSE) {
         printf("Erreur chargement: %s\n", Mix_GetError());
         return 0;
